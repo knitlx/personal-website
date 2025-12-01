@@ -1,26 +1,154 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Базовые переменные
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --primary-color: #7B68EE; /* Фиолетовый */
+    --accent-color: #00C4FF; /* Голубой */
+    --background-color: #ffffff;
+    --text-color: #333333;
+    
+    /* НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ГРАДИЕНТА */
+    --soft-violet: rgba(123, 104, 238, 0.08); /* Очень бледный фиолетовый */
+    --soft-blue: rgba(0, 196, 255, 0.08); /* Очень бледный голубой */
+    --soft-glow: rgba(255, 255, 255, 0.5); /* Белое свечение */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom CSS for AI Feature Icons with emojis */
+.ai-feature-icon::before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.ai-feature-item:nth-child(1) .ai-feature-icon::before { content: "📝"; border-color: #a3a3e6; } /* Structure/texts */
+.ai-feature-item:nth-child(2) .ai-feature-icon::before { content: "✨"; border-color: #79d6f2; } /* Visual */
+.ai-feature-item:nth-child(3) .ai-feature-icon::before { content: "💻"; border-color: #f7a268; } /* Code */
+.ai-feature-item:nth-child(4) .ai-feature-icon::before { content: "🚀"; border-color: #80e69f; } /* Deploy */
+
+/* Обновленный стиль карточек, делаем их более "технологичными" */
+.what-i-do-item,
+.portfolio-item,
+.ai-feature-item {
+    border: none; /* Убираем скучную рамку */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Мягкая тень */
+    position: relative;
+    overflow: hidden; /* Скрываем выходящий за рамки псевдоэлемент */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.what-i-do-item:hover,
+.portfolio-item:hover,
+.ai-feature-item:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2); /* Увеличиваем тень */
 }
 
+/* Добавляем тонкий неоновый контур по краю при наведении */
+.what-i-do-item::after,
+.portfolio-item::after,
+.ai-feature-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    /* Создаем цветной контур, который будет виден при наведении */
+    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    border-image-slice: 1;
+    opacity: 0; /* Скрыто по умолчанию */
+}
+
+.what-i-do-item:hover::after,
+.portfolio-item:hover::after,
+.ai-feature-item:hover::after {
+    opacity: 1; /* Показываем при наведении */
+}
+
+/* Custom CSS for Portfolio Icon background colors */
+.portfolio-item:nth-child(1) .portfolio-icon { background-color: var(--primary-color); } /* Purple */
+.portfolio-item:nth-child(2) .portfolio-icon { background-color: #f7a268; } /* Orange */
+.portfolio-item:nth-child(3) .portfolio-icon { background-color: var(--accent-color); } /* Blue */
+
+/* Custom CSS for Portfolio Item Link arrow */
+.portfolio-item-link::after {
+    content: "→"; /* Arrow character */
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+}
+
+.portfolio-item-link:hover::after {
+    transform: translateY(-50%) translateX(3px); /* Move arrow slightly on hover */
+}
+
+/* Custom CSS for What I Do section list markers */
+.what-i-do-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-color); /* Голубая точка */
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+/* Custom CSS for What I Do section icons */
+.what-i-do-icon::before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.what-i-do-item:nth-child(1) .what-i-do-icon { background-color: var(--primary-color); }
+.what-i-do-item:nth-child(1) .what-i-do-icon::before { content: "📋"; }
+
+.what-i-do-item:nth-child(2) .what-i-do-icon { background-color: #f7a268; }
+.what-i-do-item:nth-child(2) .what-i-do-icon::before { content: "⚙️"; }
+
+.what-i-do-item:nth-child(3) .what-i-do-icon { background-color: var(--accent-color); }
+.what-i-do-item:nth-child(3) .what-i-do-icon::before { content: "💻"; }
+
+.what-i-do-item:nth-child(4) .what-i-do-icon { background-color: #80e69f; }
+.what-i-do-item:nth-child(4) .what-i-do-icon::before { content: "🔍"; }
+
+/*
+  Универсальный сброс (частично уже делается Tailwind Base)
+*/
+* {
+    box-sizing: border-box;
+    /* margin и padding уже сбрасываются Tailwind Base */
+    /* font-family будет задан через next/font/google */
+}
+
+/*
+  Стилизация body и .container
+*/
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-color);
+    /* Добавляем очень мягкий градиент на весь фон */
+    background: radial-gradient(at top left, var(--soft-blue) 0%, transparent 45%),
+                radial-gradient(at bottom right, var(--soft-violet) 0%, transparent 50%),
+                var(--background-color);
+    background-attachment: fixed; /* Фиксируем градиент, чтобы он не прокручивался */
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px; /* Ограничиваем ширину контента */
+    margin: 0 auto; /* Центрируем контейнер */
 }
