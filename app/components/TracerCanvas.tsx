@@ -35,7 +35,7 @@ const TracerCanvas = () => {
         this.state = 'drawing';
         this.path = [];
         this.currentPos = { x: Math.random() * width, y: Math.random() * height };
-        this.speed = 4;
+        this.speed = 6;
         this.activationTimer = 0;
         this.setNewTarget();
       }
@@ -73,7 +73,7 @@ const TracerCanvas = () => {
             if (distance < this.speed) {
                 this.currentPos = { ...currentSegment.end };
                 this.state = 'activating';
-                this.activationTimer = 30; // frames
+                this.activationTimer = 10; // frames
             } else {
                 this.currentPos.x += (dx / distance) * this.speed;
                 this.currentPos.y += (dy / distance) * this.speed;
@@ -89,6 +89,11 @@ const TracerCanvas = () => {
 
       draw() {
           if (this.path.length === 0) return;
+
+          // --- Glow Effect ---
+          ctx.shadowColor = tracerColor;
+          ctx.shadowBlur = 10;
+          // ---
 
           // Draw all segments in the path
           for (let i = 0; i < this.path.length; i++) {
@@ -127,6 +132,10 @@ const TracerCanvas = () => {
               ctx.lineWidth = i === this.path.length - 1 ? 2 : 1.5; // Thicker head
               ctx.stroke();
           }
+
+          // --- Reset Glow ---
+          ctx.shadowBlur = 0;
+          // ---
           
           // Draw activation animation
           if (this.state === 'activating') {
