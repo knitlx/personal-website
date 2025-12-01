@@ -8,15 +8,15 @@
   Базовые переменные
 */
 :root {
-    --primary-color: #7B68EE; /* Фиолетовый */
-    --accent-color: #00C4FF; /* Голубой */
-    --background-color: #ffffff;
-    --text-color: #333333;
+    --primary-color: #7B68EE; /* Фиолетовый (Основной) */
+    --accent-color: #00C4FF; /* Голубой (Акцентный) */
+    --background-color: #ffffff; /* Белый фон */
+    --text-color: #333333; /* Темный текст */
     
-    /* НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ГРАДИЕНТА */
-    --soft-violet: rgba(123, 104, 238, 0.08); /* Очень бледный фиолетовый */
-    --soft-blue: rgba(0, 196, 255, 0.08); /* Очень бледный голубой */
-    --soft-glow: rgba(255, 255, 255, 0.5); /* Белое свечение */
+    /* НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ЗАМЕТНОГО ГРАДИЕНТА */
+    --soft-violet: rgba(72, 61, 139, 0.1); /* ИНДИГО (#483D8B) - не розовит */
+    --soft-blue: rgba(0, 196, 255, 0.12);   /* Снизили насыщенность */
+    --soft-glow: rgba(255, 255, 255, 0.5); 
 }
 
 /* Custom CSS for AI Feature Icons with emojis */
@@ -32,14 +32,37 @@
 .ai-feature-item:nth-child(3) .ai-feature-icon::before { content: "💻"; border-color: #f7a268; } /* Code */
 .ai-feature-item:nth-child(4) .ai-feature-icon::before { content: "🚀"; border-color: #80e69f; } /* Deploy */
 
+/* ======================================================= */
+/* 1. Обновление: Каждая карточка (.what-i-do-item) */
+/* ======================================================= */
+
+.what-i-do-item {
+    background-color: var(--card-background); 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 12px;
+    padding: 25px; 
+    max-width: 500px; /* Ограничиваем ширину карточки */
+    
+    /* НОВЫЕ ПРАВИЛА: Используем Flexbox для выстраивания элементов */
+    display: flex;
+    align-items: flex-start; /* Выравнивание элементов по левому краю */
+    text-align: left; /* Выравнивание текста по левому краю */
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
 /* Обновленный стиль карточек, делаем их более "технологичными" */
-.what-i-do-item,
 .portfolio-item,
 .ai-feature-item {
-    border: none; /* Убираем скучную рамку */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Мягкая тень */
+    background-color: var(--card-background); /* Фон карточки темнее, чем body */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая белая граница */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Более заметная тень */
     position: relative;
     overflow: hidden; /* Скрываем выходящий за рамки псевдоэлемент */
+    transition: all 0.3s ease;
 }
 
 .what-i-do-item:hover,
@@ -138,13 +161,16 @@
 /*
   Стилизация body и .container
 */
+/* ПРИМЕНЯЕМ К ОСНОВЕ */
 body {
+    background-color: var(--background-color);
     color: var(--text-color);
-    /* Добавляем очень мягкий градиент на весь фон */
-    background: radial-gradient(at top left, var(--soft-blue) 0%, transparent 45%),
+    
+    /* УСИЛЕННЫЙ ФОНОВЫЙ ГРАДИЕНТ: Голубой слева сверху, Фиолетовый справа снизу */
+    background: radial-gradient(at top left, var(--soft-blue) 0%, transparent 40%),
                 radial-gradient(at bottom right, var(--soft-violet) 0%, transparent 50%),
                 var(--background-color);
-    background-attachment: fixed; /* Фиксируем градиент, чтобы он не прокручивался */
+    background-attachment: fixed; /* Фиксируем пятна, чтобы они не прокручивались */
 }
 
 .container {

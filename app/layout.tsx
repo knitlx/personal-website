@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter as FontInter } from "next/font/google"; // Import Inter font
+import { Inter as FontInter, Unbounded as FontUnbounded } from "next/font/google"; // Import Inter and Unbounded fonts
 
 import "./globals.css";
 import Header from "./components/Header";
@@ -8,6 +8,12 @@ import Footer from "./components/Footer";
 const fontInter = FontInter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const fontUnbounded = FontUnbounded({
+  subsets: ["cyrillic"],
+  variable: "--font-unbounded",
   display: "swap",
 });
 
@@ -26,12 +32,8 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning={true}>
       <head>
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,700,500,600,300&display=swap"
-        />
       </head>
-      <body className={`${fontInter.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
