@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const Header = () => (
-  <header className="bg-[#FFFFFF] shadow-[0_4px_12px_rgba(0,0,0,0.05)] py-[15px] sticky top-0 z-[1000]">
+  <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] py-[15px] sticky top-0 z-[1000]">
     <div className="container flex justify-between items-center">
       <Link href="/" className="logo text-2xl font-bold text-[#7B68EE] hover:text-[#00C4FF] transition-colors duration-300 tracking-tight no-underline">
         Бизнес-ассистент

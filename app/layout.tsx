@@ -19,6 +19,8 @@ const fontUnbounded = FontUnbounded({
 
 
 
+import TracerCanvas from "./components/TracerCanvas";
+
 export const metadata: Metadata = {
   title: "Мой личный сайт",
   description: "Описание моего личного сайта",
@@ -34,9 +36,14 @@ export default function RootLayout({
       <head>
       </head>
       <body className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}>
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <div className="relative flex-grow">
+          <TracerCanvas />
+          <div className="site-content relative z-0 flex flex-col flex-grow">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );

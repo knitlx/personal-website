@@ -1,20 +1,15 @@
 import Link from "next/link";
 
-
-
-
-
-
 export default function HomePage() {
   return (
     <div className="relative flex flex-col items-center justify-center pt-8 pb-8 bg-transparent min-h-[calc(100vh-120px)]">
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
+        <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] py-12">
             <div className="container flex justify-between items-center gap-[40px]">
                 <div className="flex-1 max-w-[55%]">
-                    <h1 className="font-unbounded text-[56px] font-bold leading-[1.1] text-[#333333] mb-[15px]">AI-универсал и бизнес-ассистент</h1>
+                    <h1 className="font-unbounded text-[48px] font-bold leading-[1.1] mb-[15px]">AI-универсал и бизнес-ассистент</h1>
                     <p className="text-[20px] font-normal text-[#666] mb-[30px] max-w-[500px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
                     <div className="bg-white/90 border-l-[4px] border-[#7B68EE] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
                         <p className="text-[#555]">

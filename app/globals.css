@@ -165,16 +165,54 @@
 body {
     background-color: var(--background-color);
     color: var(--text-color);
-    
-    /* УСИЛЕННЫЙ ФОНОВЫЙ ГРАДИЕНТ: Голубой слева сверху, Фиолетовый справа снизу */
-    background: radial-gradient(at top left, var(--soft-blue) 0%, transparent 40%),
-                radial-gradient(at bottom right, var(--soft-violet) 0%, transparent 50%),
-                var(--background-color);
-    background-attachment: fixed; /* Фиксируем пятна, чтобы они не прокручивались */
+    position: relative; /* Необходимо для z-index псевдо-элемента */
+}
+
+#tracer-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Place it on top of the default stacking context */
+    pointer-events: none; /* Make it non-interactive */
+    background-color: transparent;
 }
 
 .container {
     width: 90%;
     max-width: 1200px; /* Ограничиваем ширину контента */
     margin: 0 auto; /* Центрируем контейнер */
+}
+
+ @keyframes move-background {
+    0% {
+        /* Начальное положение: смещаем немного влево и вверх */
+        background-position: 0% 0%;
+    }
+    100% {
+        /* Конечное положение: смещаем немного вправо и вниз */
+        background-position: 100% 100%;
+    }
+}
+
+/* Анимация для мигающего курсора в JS-компоненте */
+.blinking-caret {
+    font-weight: normal;
+    color: var(--primary-color);
+    animation: blink-caret-js 1s step-end infinite;
+}
+
+/* Класс для остановки анимации, когда набор текста завершен */
+.blinking-caret--paused {
+    animation: none;
+}
+
+@keyframes blink-caret-js {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: var(--primary-color);
+    }
 }
