@@ -41,22 +41,22 @@ export default function HomePage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[25px] mt-[40px]">
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <div className="ai-feature-icon w-[50px] h-[50px] rounded-full flex items-center justify-center mx-auto mb-[15px] text-2xl bg-[#f0f0f8] border border-[#e0e0f0] relative"></div> {/* Placeholder for icon */}
+                        <img src="/icons/structure-texts.png" alt="Структура и тексты" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
                         <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Структура и тексты</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">сгенерированы совместно с GPT-5.1</p>
                     </div>
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <div className="ai-feature-icon w-[50px] h-[50px] rounded-full flex items-center justify-center mx-auto mb-[15px] text-2xl bg-[#f0f0f8] border border-[#e0e0f0] relative"></div> {/* Placeholder for icon */}
+                        <img src="/icons/design.png" alt="Визуал" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
                         <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Визуал</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">создан AI</p>
                     </div>
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <div className="ai-feature-icon w-[50px] h-[50px] rounded-full flex items-center justify-center mx-auto mb-[15px] text-2xl bg-[#f0f0f8] border border-[#e0e0f0] relative"></div> {/* Placeholder for icon */}
+                        <img src="/icons/code.png" alt="Код" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
                         <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Код</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">полностью сгенерирован через Gemini CLI</p>
                     </div>
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <div className="ai-feature-icon w-[50px] h-[50px] rounded-full flex items-center justify-center mx-auto mb-[15px] text-2xl bg-[#f0f0f8] border border-[#e0e0f0] relative"></div> {/* Placeholder for icon */}
+                        <img src="/icons/deploy.png" alt="Деплой" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
                         <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Деплой</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">Railway</p>
                     </div>
@@ -70,23 +70,23 @@ export default function HomePage() {
                 <h2 className="font-unbounded text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Мои проекты</h2>
                 <p className="text-[18px] text-[#666] max-w-[700px] mx-auto mb-[50px]">Примеры проектов, которые я собрала с помощью AI.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] mt-[40px]">
-                    <div className="portfolio-item bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out relative overflow-hidden">
-                        <div className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px] bg-[#7B68EE] text-white"></div> {/* Placeholder for icon */}
+                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                        <img src="/icons/icon-telegram-bot.png" alt="Telegram Bot Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">Финансовый Telegram-бот</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Учёт доходов и расходов, визуальный интерфейс в mini-app.</p>
-                        <Link href="/lab" className="portfolio-item-link inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Подробнее</Link>
+                        <Link href="/lab" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Подробнее</Link>
                     </div>
-                    <div className="portfolio-item bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out relative overflow-hidden">
-                        <div className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px] bg-[#f7a268] text-white"></div> {/* Placeholder for icon */}
+                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                        <img src="/icons/icon-pdf.png" alt="PDF Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PDF конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Превращение HTML-страниц в PDF.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
+                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
                     </div>
-                    <div className="portfolio-item bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out relative overflow-hidden">
-                        <div className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px] bg-[#00C4FF] text-white"></div> {/* Placeholder for icon */}
+                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                        <img src="/icons/icon-pptx.png" alt="PPTX Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PPTX конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Генерация презентаций из HTML-шаблонов.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
+                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
                     </div>
                 </div>
                 <div className="mt-[50px]">
