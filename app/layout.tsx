@@ -19,6 +19,7 @@ const fontUnbounded = FontUnbounded({
 
 
 
+import PlexusCanvas from "./components/PlexusCanvas";
 import TracerCanvas from "./components/TracerCanvas";
 
 export const metadata: Metadata = {
@@ -37,8 +38,9 @@ export default function RootLayout({
       </head>
       <body className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}>
         <div className="relative flex-grow">
-          <TracerCanvas />
-          <div className="site-content relative z-0 flex flex-col flex-grow">
+          {/* <TracerCanvas /> */}
+          {/* <PlexusCanvas /> */}
+          <div className="site-content relative z-10 flex flex-col flex-grow">
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />
