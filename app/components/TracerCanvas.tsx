@@ -35,7 +35,7 @@ const TracerCanvas = () => {
         this.state = 'drawing';
         this.path = [];
         this.currentPos = { x: Math.random() * width, y: Math.random() * height };
-        this.speed = Math.random() * 1.5 + 1;
+        this.speed = 4;
         this.activationTimer = 0;
         this.setNewTarget();
       }
@@ -44,7 +44,7 @@ const TracerCanvas = () => {
           const lastSegment = this.path.length > 0 ? this.path[this.path.length - 1] : { end: this.currentPos, lastDirection: Math.random() > 0.5 ? 'horizontal' : 'vertical' };
           
           const newDirection = lastSegment.lastDirection === 'horizontal' ? 'vertical' : 'horizontal';
-          const length = Math.random() * 150 + 100;
+          const length = 75;
           const sign = Math.random() > 0.5 ? 1 : -1;
 
           const startPoint = { ...lastSegment.end };
@@ -57,7 +57,7 @@ const TracerCanvas = () => {
           }
 
           this.path.push({ start: startPoint, end: endPoint, lastDirection: newDirection });
-          if (this.path.length > 2) {
+          if (this.path.length > 4) {
               this.path.shift();
           }
           this.currentPos = { ...startPoint };
@@ -90,38 +90,41 @@ const TracerCanvas = () => {
       draw() {
           if (this.path.length === 0) return;
 
-          // Draw the current segment
-          const currentSegment = this.path[this.path.length - 1];
-          ctx.beginPath();
-          ctx.moveTo(currentSegment.start.x, currentSegment.start.y);
-          ctx.lineTo(this.currentPos.x, this.currentPos.y);
-          ctx.strokeStyle = tracerColor;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          // Draw the previous segment (the "tail") and animate it shrinking
-          if (this.path.length > 1) {
-              const previousSegment = this.path[0];
-              const currentProgress = Math.sqrt(
-                  Math.pow(this.currentPos.x - currentSegment.start.x, 2) +
-                  Math.pow(this.currentPos.y - currentSegment.start.y, 2)
-              );
-              const totalLength = Math.sqrt(
-                  Math.pow(currentSegment.end.x - currentSegment.start.x, 2) +
-                  Math.pow(currentSegment.end.y - currentSegment.start.y, 2)
-              );
-              const progressRatio = currentProgress / totalLength;
-
-              const tailStart = {
-                  x: previousSegment.start.x + (previousSegment.end.x - previousSegment.start.x) * progressRatio,
-                  y: previousSegment.start.y + (previousSegment.end.y - previousSegment.start.y) * progressRatio
-              };
-
+          // Draw all segments in the path
+          for (let i = 0; i < this.path.length; i++) {
+              const segment = this.path[i];
               ctx.beginPath();
-              ctx.moveTo(tailStart.x, tailStart.y);
-              ctx.lineTo(previousSegment.end.x, previousSegment.end.y);
+              
+              let drawStart = { ...segment.start };
+              let drawEnd = { ...segment.end };
+
+              // For the very last segment (the head), draw it growing
+              if (i === this.path.length - 1) {
+                  drawEnd = { ...this.currentPos };
+              }
+              // For the very first segment (the tail), draw it shrinking
+              if (i === 0 && this.path.length > 1) {
+                  const currentSegment = this.path[this.path.length - 1];
+                  const totalDistanceCurrent = Math.sqrt(
+                      Math.pow(currentSegment.end.x - currentSegment.start.x, 2) +
+                      Math.pow(currentSegment.end.y - currentSegment.start.y, 2)
+                  );
+                  const currentProgress = Math.sqrt(
+                      Math.pow(this.currentPos.x - currentSegment.start.x, 2) +
+                      Math.pow(this.currentPos.y - currentSegment.start.y, 2)
+                  );
+                  const progressRatio = currentProgress / totalDistanceCurrent;
+
+                  drawStart = {
+                      x: segment.start.x + (segment.end.x - segment.start.x) * progressRatio,
+                      y: segment.start.y + (segment.end.y - segment.start.y) * progressRatio
+                  };
+              }
+
+              ctx.moveTo(drawStart.x, drawStart.y);
+              ctx.lineTo(drawEnd.x, drawEnd.y);
               ctx.strokeStyle = tracerColor;
-              ctx.lineWidth = 1;
+              ctx.lineWidth = i === this.path.length - 1 ? 2 : 1.5; // Thicker head
               ctx.stroke();
           }
           
