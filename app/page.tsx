@@ -23,8 +23,7 @@ export default function HomePage() {
                                                 Обсудить проект
                                             </Link>                    </div>
                 </div>
-                <div className="flex-1 flex justify-center items-center p-5">
-                    {/* Placeholder for your photo */}
+                <div className="flex justify-center items-center p-5 max-w-[400px] mx-auto">
                     <img src="/profile.png" alt="Ваше фото" className="max-w-full h-auto block rounded-[15px] shadow-[0_10px_30px_rgba(0,0,0,0.1)]" />
                 </div>
             </div>
@@ -89,7 +88,7 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="mt-[50px]">
-                    <Link href="/lab" className="button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE]">
+                    <Link href="/lab" className="button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
                         Смотреть все кейсы
                     </Link>
                 </div>
@@ -165,7 +164,7 @@ export default function HomePage() {
                     <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
                         Написать мне
                     </Link>
-                    <Link href="/lab" className="w-full button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE]">
+                    <Link href="/lab" className="w-full button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
                         Смотреть кейсы
                     </Link>
                 </div>
