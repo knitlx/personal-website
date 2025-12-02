@@ -104,9 +104,9 @@
 
 /* Custom CSS for Portfolio Item Link arrow */
 .portfolio-item-link::after {
-    content: "→"; /* Arrow character */
+    content: "\00A0→"; /* Non-breaking space + Arrow character */
     position: absolute;
-    right: 0;
+    right: -2px; /* Adjusted to create space */
     top: 50%;
     transform: translateY(-50%);
     transition: transform 0.2s ease;

@@ -74,19 +74,19 @@ export default function HomePage() {
                         <img src="/icons/icon-telegram-bot.png" alt="Telegram Bot Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">Финансовый Telegram-бот</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Учёт доходов и расходов, визуальный интерфейс в mini-app.</p>
-                        <Link href="/lab" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Подробнее</Link>
+                        <Link href="/lab" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать </Link>
                     </div>
                     <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
                         <img src="/icons/icon-pdf.png" alt="PDF Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PDF конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Превращение HTML-страниц в PDF.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
+                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать </Link>
                     </div>
                     <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
                         <img src="/icons/icon-pptx.png" alt="PPTX Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PPTX конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Генерация презентаций из HTML-шаблонов.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать</Link>
+                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#00C4FF] hover:border-[#00C4FF]">Попробовать </Link>
                     </div>
                 </div>
                 <div className="mt-[50px]">
@@ -162,13 +162,11 @@ export default function HomePage() {
             <div className="container">
                 <h2 className="font-unbounded text-[38px] font-bold text-[#333333] mb-[15px]">Есть задача или идея?</h2>
                 <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">Давайте разберёмся вместе и найдём рабочее решение.</p>
-                <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px]">
-                    <Link href="/contact" className="flex items-center justify-center py-[14px] px-[30px] rounded-lg text-base font-semibold no-underline transition-all duration-300 ease-in-out cursor-pointer max-sm:w-full bg-[#00C4FF] text-white border-2 border-[#00C4FF] hover:bg-[#00B3E8] hover:shadow-[0_4px_15px_rgba(0,196,255,0.4)]">
-                        <span className="w-[18px] h-[18px] mr-2"></span> {/* Placeholder for icon */}
+                <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
+                    <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(90deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
                         Написать мне
                     </Link>
-                    <Link href="/lab" className="flex items-center justify-center py-[14px] px-[30px] rounded-lg text-base font-semibold no-underline transition-all duration-300 ease-in-out cursor-pointer max-sm:w-full bg-transparent text-[#333333] border-2 border-[#ccc] hover:text-[#7B68EE] hover:border-[#7B68EE] hover:bg-white">
-                        <span className="w-[18px] h-[18px] mr-2"></span> {/* Placeholder for icon */}
+                    <Link href="/lab" className="w-full button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE]">
                         Смотреть кейсы
                     </Link>
                 </div>
