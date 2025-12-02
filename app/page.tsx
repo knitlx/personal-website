@@ -107,7 +107,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
                     <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
                         <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <div className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] text-[22px] text-[var(--background-color)] relative"></div>
+                            <img src="/icons/icon-systematization.png" alt="Систематизация и структура" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
                             <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Систематизация и структура</h3>
                         </div>
                         <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
@@ -119,7 +119,7 @@ export default function HomePage() {
                     </div>
                     <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
                         <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <div className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] text-[22px] text-[var(--background-color)] relative"></div>
+                            <img src="/icons/icon-automation-ai.png" alt="Автоматизации и AI-решения" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
                             <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Автоматизации и AI-решения</h3>
                         </div>
                         <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
@@ -131,7 +131,7 @@ export default function HomePage() {
                     </div>
                     <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
                         <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <div className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] text-[22px] text-[var(--background-color)] relative"></div>
+                            <img src="/icons/icon-tools-development.png" alt="Мини-инструменты и разработки" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
                             <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Мини-инструменты и разработки</h3>
                         </div>
                         <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
@@ -143,7 +143,7 @@ export default function HomePage() {
                     </div>
                     <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
                         <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <div className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] text-[22px] text-[var(--background-color)] relative"></div>
+                            <img src="/icons/icon-understand-do.png" alt="Разобраться и сделать" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
                             <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Разобраться и сделать</h3>
                         </div>
                         <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
