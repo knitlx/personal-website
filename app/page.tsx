@@ -23,8 +23,8 @@ export default function HomePage() {
                                                 Обсудить проект
                                             </Link>                    </div>
                 </div>
-                <div className="flex justify-center items-center p-5 max-w-[400px] mx-auto">
-                    <img src="/profile.png" alt="Ваше фото" className="max-w-full h-auto block rounded-[15px] shadow-[0_10px_30px_rgba(0,0,0,0.1)]" />
+                <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative"> {/* Убрал p-5 */}
+                    <img src="/profile.png" alt="Ваше фото" className="profile-photo p-5 max-w-full h-auto block" /> {/* Добавил p-5 */}
                 </div>
             </div>
         </section>

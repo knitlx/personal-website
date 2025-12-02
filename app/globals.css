@@ -148,6 +148,26 @@
     transform: scale(1.02); /* Немного увеличим для анимации */
 }
 
+/* --- Photo Styling --- */
+.photo-wrapper {
+    position: relative; /* already added in HTML, but good to re-state intention */
+    overflow: hidden; /* Important to contain the ::after pseudo-element */
+    /* border-radius: 50%; -- Убираем, если фото не круглое */
+    /* aspect-ratio: 1 / 1; -- Убираем, если фото не квадратное */
+    display: flex; /* Ensure content is centered */
+    justify-content: center;
+    align-items: center;
+    background-color: transparent !important; /* Делаем фон прозрачным принудительно */
+}
+
+.profile-photo {
+    height: auto; 
+    object-fit: cover;
+    display: block;
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    mix-blend-mode: multiply;
+}
+
 
 /* Custom CSS for What I Do section list markers */
 .what-i-do-list li::before {
