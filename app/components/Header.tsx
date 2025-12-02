@@ -4,7 +4,7 @@ const Header = () => (
   <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] py-[15px] sticky top-0 z-[1000]">
     <div className="container flex justify-between items-center">
       <Link href="/" className="logo text-2xl font-bold bg-gradient-to-b from-[var(--accent-color)] to-[var(--primary-color)] bg-clip-text text-transparent transition-colors duration-300 tracking-tight no-underline">
-        Бизнес-ассистент
+        AI-универсал
       </Link>
       <nav className="main-nav">
         <ul className="list-none flex items-center">

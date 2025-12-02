@@ -164,8 +164,7 @@
     height: auto; 
     object-fit: cover;
     display: block;
-    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-    mix-blend-mode: multiply;
+    mask-image: radial-gradient(circle, black 70%, transparent 100%);
 }
 
 

@@ -6,10 +6,11 @@ export default function HomePage() {
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] py-12">
+        <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
             <div className="container flex justify-between items-center gap-[40px]">
                 <div className="flex-1 max-w-[55%]">
-                    <h1 className="font-unbounded text-[48px] font-bold leading-[1.1] mb-[15px]">AI-универсал и бизнес-ассистент</h1>
+                    <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
+                    <h1 className="font-unbounded text-[48px] font-bold leading-[1.1] mb-[15px]">AI-универсал и промт-инженер</h1>
                     <p className="text-[20px] font-normal text-[#666] mb-[30px] max-w-[500px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
                     <div className="bg-white/90 border-l-[4px] border-[#7B68EE] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
                         <p className="text-[#555]">
@@ -23,8 +24,8 @@ export default function HomePage() {
                                                 Обсудить проект
                                             </Link>                    </div>
                 </div>
-                <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative"> {/* Убрал p-5 */}
-                    <img src="/profile.png" alt="Ваше фото" className="profile-photo p-5 max-w-full h-auto block" /> {/* Добавил p-5 */}
+                <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative">
+                    <img src="/profile.png" alt="Ваше фото" className="profile-photo p-5 max-w-full h-auto block" />
                 </div>
             </div>
         </section>
