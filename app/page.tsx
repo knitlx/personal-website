@@ -10,7 +10,9 @@ export default function HomePage() {
             <div className="container flex justify-between items-center gap-[40px]">
                 <div className="flex-1 max-w-[55%]">
                     <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
-                    <h1 className="font-unbounded text-[48px] font-bold leading-[1.1] mb-[15px]">AI-универсал и промт-инженер</h1>
+                    <h1 className="font-unbounded-fix text-[48px] font-bold leading-[1.1] mb-[15px]">
+                        AI-универсал и промт-инженер
+                    </h1>
                     <p className="text-[20px] font-normal text-[#666] mb-[30px] max-w-[500px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
                     <div className="bg-white/90 border-l-[4px] border-[#7B68EE] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
                         <p className="text-[#555]">
@@ -33,7 +35,7 @@ export default function HomePage() {
         {/* AI-created site section */}
         <section className="py-16 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
             <div className="container">
-                <h2 className="font-unbounded text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
+                <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
                 <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
                     AI использован на каждом этапе разработки: структура, тексты, визуал и весь код.
                     Это рабочий пример того, как я применяю промт-инженерию в практических задачах.
@@ -66,7 +68,7 @@ export default function HomePage() {
         {/* Portfolio Preview */}
         <section className="py-12 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
             <div className="container">
-                <h2 className="font-unbounded text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Мои проекты</h2>
+                <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Мои проекты</h2>
                 <p className="text-[18px] text-[#666] max-w-[700px] mx-auto mb-[50px]">Примеры проектов, которые я собрала с помощью AI.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] mt-[40px]">
                     <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
@@ -99,7 +101,7 @@ export default function HomePage() {
         {/* What I Do section */}
         <section className="py-8 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
             <div className="container">
-                <h2 className="font-unbounded text-[36px] font-bold leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
+                <h2 className="font-unbounded-fix text-[36px] font-bold leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
                 <p className="text-base text-[#666] max-w-[800px] mx-auto mb-[30px]">
                     Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.
                 </p>
@@ -159,7 +161,7 @@ export default function HomePage() {
         {/* CTA section */}
         <section className="bg-transparent py-8 text-center backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
             <div className="container">
-                <h2 className="font-unbounded text-[38px] font-bold text-[#333333] mb-[15px]">Есть задача или идея?</h2>
+                <h2 className="font-unbounded-fix text-[38px] font-bold text-[#333333] mb-[15px]">Есть задача или идея?</h2>
                 <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">Давайте разберёмся вместе и найдём рабочее решение.</p>
                 <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
                     <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">

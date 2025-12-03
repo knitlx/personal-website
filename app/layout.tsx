@@ -15,6 +15,7 @@ const fontUnbounded = FontUnbounded({
   subsets: ["cyrillic"],
   variable: "--font-unbounded",
   display: "swap",
+  weight: ['400', '700'],
 });
 
 

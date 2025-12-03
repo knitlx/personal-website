@@ -278,3 +278,9 @@ body {
         color: var(--primary-color);
     }
 }
+
+
+/* Fix for custom font class not working */
+.font-unbounded-fix {
+  font-family: var(--font-unbounded);
+}
