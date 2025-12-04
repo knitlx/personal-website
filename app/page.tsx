@@ -24,8 +24,8 @@ export default function HomePage() {
                     </div>
                     <div className="flex gap-[15px] items-center mt-[-5px]">
                                             <Link href="/contact" className="inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
-                                                <span className="block bg-white text-center text-[#6F71F0] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
-                                                    Обсудить проект
+                                                <span className="block bg-white text-center font-bold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
+                                                    <span className="gradient-text-button">Обсудить проект</span>
                                                 </span>
                                             </Link>                    </div>
                 </div>
@@ -50,8 +50,8 @@ export default function HomePage() {
                         <p className="text-sm text-[#888] leading-tight mt-auto">сгенерированы совместно с GPT-5.1</p>
                     </div>
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <img src="/icons/design.png" alt="Визуал" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Визуал</h3>
+                        <img src="/icons/design.png" alt="Дизайн" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
+                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Дизайн</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">создан AI</p>
                     </div>
                     <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
