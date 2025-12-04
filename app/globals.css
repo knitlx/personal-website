@@ -91,6 +91,7 @@
     border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
     border-image-slice: 1;
     opacity: 0; /* Скрыто по умолчанию */
+    pointer-events: none; /* Make overlay non-interactive */
 }
 
 .what-i-do-item:hover::after,
@@ -292,6 +293,10 @@ body {
   transition: color 0.3s ease;
 }
 
+
+
+
+
 .block:hover .gradient-text-button {
   background-image: none;
   -webkit-background-clip: initial;
@@ -299,32 +304,37 @@ body {
   color: white;
 }
 
-/* Arrow between AI feature cards */
-.ai-feature-item {
-  position: relative; /* Ensure the pseudo-element is positioned relative to the card */
-}
 
+
+/* Default state: No arrow */
 .ai-feature-item:not(:last-child)::before {
-  content: '>';
-  position: absolute;
-  top: 50%;
-  right: -28px; /* Position it in the middle of the 25px gap */
-  transform: translateY(-50%);
-  font-size: 24px;
-  color: #ccc;
-  z-index: -1; /* Place it behind the next card */
+  display: none;
 }
 
-/* Hide arrow for the last item on medium screens (2 columns) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .ai-feature-item:nth-child(2n)::before {
-    display: none;
-  }
-}
-
-/* Hide arrow for the last item on large screens (4 columns) */
+/* On large screens, show the connector line and define its animation */
 @media (min-width: 1024px) {
+  .ai-feature-item:not(:last-child)::before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 24px; /* The gap */
+    height: 2px;
+    background-image: linear-gradient(to right, #ccc 50%, transparent 50%);
+    background-size: 8px 2px;
+    background-repeat: repeat-x;
+    transform: translateY(-50%);
+    transition: background-image 0.3s ease;
+  }
+
+  /* But hide it after the 4th item (the last in the row) */
   .ai-feature-item:nth-child(4n)::before {
     display: none;
+  }
+
+  /* When hovering the card, make the line solid */
+  .ai-feature-item:hover::before {
+    background-image: linear-gradient(to right, #888 100%, transparent 0%);
   }
 }

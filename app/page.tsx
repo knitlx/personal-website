@@ -43,28 +43,23 @@ export default function HomePage() {
                     AI использован на каждом этапе разработки: структура, тексты, визуал и весь код.
                     Это рабочий пример того, как я применяю промт-инженерию в практических задачах.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[25px] mt-[40px]">
-                    <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <img src="/icons/structure-texts.png" alt="Структура и тексты" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Структура и тексты</h3>
-                        <p className="text-sm text-[#888] leading-tight mt-auto">сгенерированы совместно с GPT-5.1</p>
-                    </div>
-                    <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <img src="/icons/design.png" alt="Дизайн" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Дизайн</h3>
-                        <p className="text-sm text-[#888] leading-tight mt-auto">создан AI</p>
-                    </div>
-                    <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <img src="/icons/code.png" alt="Код" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Код</h3>
-                        <p className="text-sm text-[#888] leading-tight mt-auto">полностью сгенерирован через Gemini CLI</p>
-                    </div>
-                    <div className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between relative overflow-hidden">
-                        <img src="/icons/deploy.png" alt="Деплой" className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                        <h3 className="text-[18px] font-semibold text-[#333333] mb-2">Деплой</h3>
-                        <p className="text-sm text-[#888] leading-tight mt-auto">Railway</p>
-                    </div>
+                
+                <div className="flex flex-wrap items-stretch justify-center gap-6 mt-[40px]">
+                    {[
+                        { icon: "/icons/structure-texts.png", alt: "Структура и тексты", title: "Структура и тексты", desc: "сгенерированы совместно с GPT-5.1" },
+                        { icon: "/icons/design.png", alt: "Дизайн", title: "Дизайн", desc: "создан AI" },
+                        { icon: "/icons/code.png", alt: "Код", title: "Код", desc: "полностью сгенерирован через Gemini CLI" },
+                        { icon: "/icons/deploy.png", alt: "Деплой", title: "Деплой", desc: "Railway" },
+                    ].map((feature) => (
+                        <div key={feature.title} className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                            <img src={feature.icon} alt={feature.alt} className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
+                            <h3 className="text-[18px] font-semibold text-[#333333] mb-2">{feature.title}</h3>
+                            <p className="text-sm text-[#888] leading-tight mt-auto">{feature.desc}</p>
+                        </div>
+                    ))}
                 </div>
+
+
             </div>
         </section>
 
@@ -74,23 +69,23 @@ export default function HomePage() {
                 <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Мои проекты</h2>
                 <p className="text-[18px] text-[#666] max-w-[700px] mx-auto mb-[50px]">Примеры проектов, которые я собрала с помощью AI.</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] mt-[40px]">
-                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
                         <img src="/icons/icon-telegram-bot.png" alt="Telegram Bot Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">Финансовый Telegram-бот</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Учёт доходов и расходов, визуальный интерфейс в mini-app.</p>
-                        <Link href="/lab" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
+                        <Link href="/lab" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
                     </div>
-                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
                         <img src="/icons/icon-pdf.png" alt="PDF Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PDF конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Превращение HTML-страниц в PDF.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
+                        <Link href="/lab/converters" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
                     </div>
-                    <div className="portfolio-item pointer-events-none bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
+                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
                         <img src="/icons/icon-pptx.png" alt="PPTX Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
                         <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PPTX конвертер</h3>
                         <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Генерация презентаций из HTML-шаблонов.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
+                        <Link href="/lab/converters" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
                     </div>
                 </div>
                                 <div className="mt-[50px]">
@@ -167,8 +162,8 @@ export default function HomePage() {
                 <h2 className="font-unbounded-fix text-[38px] font-bold text-[#333333] mb-[15px]">Есть задача или идея?</h2>
                 <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">Давайте разберёмся вместе и найдём рабочее решение.</p>
                 <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
-                    <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
-                        Написать мне
+                    <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] text-white shadow-[0_4px_10px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)]">
+                        <span className="inline-block translate-y-[-1px]">Написать мне</span>
                     </Link>
                     <Link href="/lab" className="w-full inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
                         <span className="block bg-white text-center text-[#1E1E1E] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
