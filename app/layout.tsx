@@ -24,8 +24,24 @@ import PlexusCanvas from "./components/PlexusCanvas";
 import TracerCanvas from "./components/TracerCanvas";
 
 export const metadata: Metadata = {
-  title: "Мой личный сайт",
-  description: "Описание моего личного сайта",
+  metadataBase: new URL("https://your-future-domain.com"), 
+  title: "Александра | AI-универсал и промт-инженер",
+  description: "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса. Разработка ботов, мини-приложений и другие кейсы.",
+  openGraph: {
+    title: "Александра | AI-универсал и промт-инженер",
+    description: "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
+    url: "https://your-future-domain.com", // <-- ЗАГЛУШКА, замените на ваш домен
+    siteName: "Портфолио Александры",
+    images: [
+      {
+        url: "/profile.png", // Путь к вашему фото
+        width: 400,
+        height: 400,
+      },
+    ],
+    locale: "ru_RU",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -36,6 +52,34 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning={true}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Person",
+                "name": "Александра",
+                "url": "https://your-future-domain.com",
+                "image": "https://your-future-domain.com/profile.png",
+                "jobTitle": "AI-универсал и промт-инженер",
+                "sameAs": [
+                  "https://github.com/knitlx"
+                ]
+              },
+              {
+                "@type": "WebSite",
+                "url": "https://your-future-domain.com",
+                "name": "Портфолио Александры",
+                "author": {
+                  "@type": "Person",
+                  "name": "Александра"
+                },
+                "description": "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса."
+              }
+            ]
+          })}}
+        />
       </head>
       <body className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}>
         <div className="relative flex-grow">

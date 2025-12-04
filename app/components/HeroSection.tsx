@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from "next/link";
 import GradientBorderButton from "./GradientBorderButton";
 
@@ -25,7 +26,14 @@ export default function HeroSection() {
                                         </GradientBorderButton>                    </div>
             </div>
             <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative">
-                <img src="/profile.png" alt="Ваше фото" className="profile-photo p-5 max-w-full h-auto block" />
+                <Image 
+                    src="/profile.png" 
+                    alt="Ваше фото" 
+                    width={400} 
+                    height={400} 
+                    priority 
+                    className="profile-photo p-5 max-w-full h-auto block object-cover" 
+                />
             </div>
         </div>
     </section>

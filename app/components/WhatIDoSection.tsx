@@ -1,5 +1,6 @@
 import { whatIDo } from "../data/homePageData";
 import styles from './WhatIDoSection.module.css';
+import Image from 'next/image'; // Added Image import
 
 export default function WhatIDoSection() {
   return (
@@ -13,7 +14,13 @@ export default function WhatIDoSection() {
                 {whatIDo.map((item) => (
                     <div key={item.title} className={`${styles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}>
                         <div className="flex items-center">
-                            <img src={item.icon} alt={item.alt} className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
+                            <Image 
+                                src={item.icon} 
+                                alt={item.alt} 
+                                width={42} 
+                                height={42} 
+                                className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" 
+                            />
                             <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">{item.title}</h3>
                         </div>
                         <ul className={`${styles.whatIDoList} list-none p-0 mt-[20px] w-full`}>
