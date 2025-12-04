@@ -1,4 +1,8 @@
-import Link from "next/link";
+import HeroSection from "./components/HeroSection";
+import AiCreatedSiteSection from "./components/AiCreatedSiteSection";
+import PortfolioPreviewSection from "./components/PortfolioPreviewSection";
+import WhatIDoSection from "./components/WhatIDoSection";
+import CtaSection from "./components/CtaSection";
 
 export default function HomePage() {
   return (
@@ -6,173 +10,14 @@ export default function HomePage() {
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Hero Section */}
-        <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
-            <div className="container flex justify-between items-center gap-[40px]">
-                <div className="flex-1 max-w-[60%]">
-                    <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
-                    <h1 className="flex items-center mb-[15px]">
-                        <span className="font-unbounded-fix text-[110px] font-bold bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)] bg-clip-text text-transparent leading-none">AI</span>
-                        <span className="font-unbounded-fix text-[45px] font-bold leading-tight ml-4 relative -translate-y-[5px] text-[#100010]">универсал и промт-инженер</span>
-                    </h1>
-                    <p className="font-unbounded-fix text-[20px] font-bold tracking-[0.09em] opacity-[0.53] bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)] bg-clip-text text-transparent mb-[30px] max-w-[600px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
-                    <div className="bg-white/90 border-l-[4px] border-r-[4px] border-[#6F71F0] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
-                        <p className="text-[#555]">
-                            Я объединяю системное мышление, работу руками и современные AI-инструменты.
-                            Создаю ботов, автоматизации и мини-приложения, которые упрощают процессы
-                            и помогают команде работать быстрее и без лишней рутины.
-                        </p>
-                    </div>
-                    <div className="flex gap-[15px] items-center mt-[-5px]">
-                                            <Link href="/contact" className="inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
-                                                <span className="block bg-white text-center font-bold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
-                                                    <span className="gradient-text-button">Обсудить проект</span>
-                                                </span>
-                                            </Link>                    </div>
-                </div>
-                <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative">
-                    <img src="/profile.png" alt="Ваше фото" className="profile-photo p-5 max-w-full h-auto block" />
-                </div>
-            </div>
-        </section>
+        <HeroSection />
 
-        {/* AI-created site section */}
-        <section className="py-16 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
-            <div className="container">
-                <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
-                <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
-                    AI использован на каждом этапе разработки: структура, тексты, визуал и весь код.
-                    Это рабочий пример того, как я применяю промт-инженерию в практических задачах.
-                </p>
-                
-                <div className="flex flex-wrap items-stretch justify-center gap-6 mt-[40px]">
-                    {[
-                        { icon: "/icons/structure-texts.png", alt: "Структура и тексты", title: "Структура и тексты", desc: "сгенерированы совместно с GPT-5.1" },
-                        { icon: "/icons/design.png", alt: "Дизайн", title: "Дизайн", desc: "создан AI" },
-                        { icon: "/icons/code.png", alt: "Код", title: "Код", desc: "полностью сгенерирован через Gemini CLI" },
-                        { icon: "/icons/deploy.png", alt: "Деплой", title: "Деплой", desc: "Railway" },
-                    ].map((feature) => (
-                        <div key={feature.title} className="ai-feature-item bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
-                            <img src={feature.icon} alt={feature.alt} className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" />
-                            <h3 className="text-[18px] font-semibold text-[#333333] mb-2">{feature.title}</h3>
-                            <p className="text-sm text-[#888] leading-tight mt-auto">{feature.desc}</p>
-                        </div>
-                    ))}
-                </div>
+        <AiCreatedSiteSection />
 
+        <PortfolioPreviewSection />
 
-            </div>
-        </section>
-
-        {/* Portfolio Preview */}
-        <section className="py-12 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
-            <div className="container">
-                <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Мои проекты</h2>
-                <p className="text-[18px] text-[#666] max-w-[700px] mx-auto mb-[50px]">Примеры проектов, которые я собрала с помощью AI.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] mt-[40px]">
-                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
-                        <img src="/icons/icon-telegram-bot.png" alt="Telegram Bot Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
-                        <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">Финансовый Telegram-бот</h3>
-                        <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Учёт доходов и расходов, визуальный интерфейс в mini-app.</p>
-                        <Link href="/lab" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
-                    </div>
-                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
-                        <img src="/icons/icon-pdf.png" alt="PDF Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
-                        <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PDF конвертер</h3>
-                        <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Превращение HTML-страниц в PDF.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
-                    </div>
-                    <div className="portfolio-item  bg-[#f7f9fc] rounded-xl px-[25px] py-[30px] text-left transition-all duration-300 ease-in-out">
-                        <img src="/icons/icon-pptx.png" alt="PPTX Converter Icon" className="portfolio-icon w-[50px] h-[50px] rounded-lg flex items-center justify-center mb-[15px] text-[28px]" />
-                        <h3 className="text-[22px] font-semibold text-[#333333] mb-[10px]">HTML → PPTX конвертер</h3>
-                        <p className="text-[15px] text-[#888] leading-snug mb-[15px] min-h-[45px]">Генерация презентаций из HTML-шаблонов.</p>
-                        <Link href="/lab/converters" className="portfolio-item-link relative z-10 inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
-                    </div>
-                </div>
-                                <div className="mt-[50px]">
-                                    <Link href="/lab" className="inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">                                                    <span className="block bg-white text-center text-[#1E1E1E] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
-                                                        Смотреть все кейсы
-                                                    </span>
-                                                </Link>                </div>
-            </div>
-        </section>
-
-        {/* What I Do section */}
-        <section className="py-8 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
-            <div className="container">
-                <h2 className="font-unbounded-fix text-[36px] font-bold leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
-                <p className="text-base text-[#666] max-w-[800px] mx-auto mb-[30px]">
-                    Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
-                    <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
-                        <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <img src="/icons/icon-systematization.png" alt="Систематизация и структура" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
-                            <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Систематизация и структура</h3>
-                        </div>
-                        <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">базы знаний</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">регламенты и инструкции</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">структуры курсов и проектов</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">таблицы, списки, дашборды</li>
-                        </ul>
-                    </div>
-                    <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
-                        <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <img src="/icons/icon-automation-ai.png" alt="Автоматизации и AI-решения" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
-                            <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Автоматизации и AI-решения</h3>
-                        </div>
-                        <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">автоматизация задач</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">работа с AI-инструментами</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">разработка логики процессов</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">построение рабочих схем</li>
-                        </ul>
-                    </div>
-                    <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
-                        <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <img src="/icons/icon-tools-development.png" alt="Мини-инструменты и разработки" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
-                            <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Мини-инструменты и разработки</h3>
-                        </div>
-                        <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">Telegram-боты</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">мини-приложения (AI + веб-интерфейсы)</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">скрипты, парсеры, конвертеры</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">прототипы инструментов</li>
-                        </ul>
-                    </div>
-                    <div className="what-i-do-item bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden">
-                        <div className="flex items-center"> {/* New wrapper for icon and title */}
-                            <img src="/icons/icon-understand-do.png" alt="Разобраться и сделать" className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" />
-                            <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">Разобраться и сделать</h3>
-                        </div>
-                        <ul className="what-i-do-list list-none p-0 mt-[20px] w-full">
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">изучить тему</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">собрать информацию</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">предложить варианты решения</li>
-                            <li className="text-[15px] text-[#555] leading-tight mb-[6px] relative pl-[20px]">оформить результат в понятном виде</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {/* CTA section */}
-        <section className="bg-transparent py-8 text-center backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
-            <div className="container">
-                <h2 className="font-unbounded-fix text-[38px] font-bold text-[#333333] mb-[15px]">Есть задача или идея?</h2>
-                <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">Давайте разберёмся вместе и найдём рабочее решение.</p>
-                <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
-                    <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-2.5 px-5 rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] text-white shadow-[0_4px_10px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)]">
-                        <span className="inline-block translate-y-[-1px]">Написать мне</span>
-                    </Link>
-                    <Link href="/lab" className="w-full inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
-                        <span className="block bg-white text-center text-[#1E1E1E] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
-                            Смотреть кейсы
-                        </span>
-                    </Link>
-                </div>
-            </div>
-        </section>
+                <WhatIDoSection />
+        <CtaSection />
 
       </div>
     </div>

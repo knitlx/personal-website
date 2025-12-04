@@ -37,7 +37,7 @@ const Header = () => (
             </Link>
           </li>
           <li className="ml-[25px]">
-            <Link href="/contact" className="button-cta py-2.5 px-5 font-semibold text-white bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] rounded-lg shadow-[0_4px_10px_rgba(123,104,238,0.4)] hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline"><span className="inline-block translate-y-[-1px]">Обсудить проект</span></Link>
+            <Link href="/contact" className="button-cta py-2.5 px-5 font-semibold text-white button-gradient rounded-lg shadow-button-cta hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline"><span className="inline-block translate-y-[-1px]">Обсудить проект</span></Link>
           </li>
         </ul>
       </nav>

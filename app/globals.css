@@ -4,6 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ======================================================= */
+/* Refactored Utility Classes */
+/* ======================================================= */
+.gradient-hero-ai {
+  @apply bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)];
+}
+.gradient-hero-desc {
+  @apply bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)];
+}
+.button-gradient {
+  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)];
+}
+.shadow-highlight {
+  @apply shadow-[0_4px_10px_rgba(0,0,0,0.04)];
+}
+.shadow-button-cta {
+  @apply shadow-[0_4px_10px_rgba(123,104,238,0.4)];
+}
+.hover-shadow-button-strong {
+  @apply hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)];
+}
+
 /*
   Базовые переменные
 */
@@ -21,121 +43,13 @@
     --soft-glow: rgba(255, 255, 255, 0.5); 
 }
 
-/* Custom CSS for AI Feature Icons with emojis */
-.ai-feature-icon::before {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-.ai-feature-item:nth-child(1) .ai-feature-icon::before { content: "📝"; border-color: #a3a3e6; } /* Structure/texts */
-.ai-feature-item:nth-child(2) .ai-feature-icon::before { content: "✨"; border-color: #79d6f2; } /* Visual */
-.ai-feature-item:nth-child(3) .ai-feature-icon::before { content: "💻"; border-color: #f7a268; } /* Code */
-.ai-feature-item:nth-child(4) .ai-feature-icon::before { content: "🚀"; border-color: #80e69f; } /* Deploy */
+
 
 /* ======================================================= */
 /* 1. Обновление: Каждая карточка (.what-i-do-item) */
 /* ======================================================= */
 
-.what-i-do-item {
-    background-color: var(--card-background); 
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    border-radius: 12px;
-    padding: 25px; 
-    max-width: 500px; /* Ограничиваем ширину карточки */
-    
-    /* НОВЫЕ ПРАВИЛА: Используем Flexbox для выстраивания элементов */
-    display: flex;
-    align-items: flex-start; /* Выравнивание элементов по левому краю */
-    text-align: left; /* Выравнивание текста по левому краю */
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-/* Обновленный стиль карточек, делаем их более "технологичными" */
-.portfolio-item,
-.ai-feature-item {
-    background-color: var(--card-background); /* Фон карточки темнее, чем body */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая белая граница */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Более заметная тень */
-    position: relative;
-    /* overflow: hidden; Removed to allow arrows to be visible */
-    transition: all 0.3s ease;
-}
-
-.what-i-do-item:hover,
-.portfolio-item:hover,
-.ai-feature-item:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2); /* Увеличиваем тень */
-}
-
-/* Добавляем тонкий неоновый контур по краю при наведении */
-.what-i-do-item::after,
-.portfolio-item::after,
-.ai-feature-item::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 12px;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    /* Создаем цветной контур, который будет виден при наведении */
-    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
-    border-image-slice: 1;
-    opacity: 0; /* Скрыто по умолчанию */
-    pointer-events: none; /* Make overlay non-interactive */
-}
-
-.what-i-do-item:hover::after,
-.portfolio-item:hover::after,
-.ai-feature-item:hover::after {
-    opacity: 1; /* Показываем при наведении */
-}
-
-/* Custom CSS for Portfolio Icon background colors */
-.portfolio-item:nth-child(1) .portfolio-icon { background-color: var(--primary-color); } /* Purple */
-.portfolio-item:nth-child(2) .portfolio-icon { background-color: #f7a268; } /* Orange */
-.portfolio-item:nth-child(3) .portfolio-icon { background-color: var(--accent-color); } /* Blue */
-
-/* Custom CSS for Portfolio Item Link arrow */
-.portfolio-item-link::after {
-    content: "\00A0→"; /* Non-breaking space + Arrow character */
-    position: absolute;
-    right: -2px; /* Adjusted to create space */
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.2s ease;
-}
-
-.portfolio-item-link:hover::after {
-    transform: translateY(-50%) translateX(3px); /* Move arrow slightly on hover */
-}
-
-/* Custom CSS for Portfolio Item Link Underline on Hover (using ::before) */
-.portfolio-item-link::before {
-    content: '';
-    position: absolute;
-    bottom: -5px; /* Adjust as needed */
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--primary-color); /* Или акцентный цвет, как в хедере */
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-    transform-origin: center;
-}
-
-.portfolio-item-link:hover::before {
-    transform: scaleX(1);
-}
 
 
 /* Custom CSS for Logo Hover Effect */
@@ -168,38 +82,7 @@
 }
 
 
-/* Custom CSS for What I Do section list markers */
-.what-i-do-list li::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: var(--accent-color); /* Голубая точка */
-    border-radius: 50%;
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 8px;
-}
 
-/* Custom CSS for What I Do section icons */
-.what-i-do-icon::before {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-.what-i-do-item:nth-child(1) .what-i-do-icon { background-color: var(--primary-color); }
-.what-i-do-item:nth-child(1) .what-i-do-icon::before { content: "📋"; }
-
-.what-i-do-item:nth-child(2) .what-i-do-icon { background-color: #f7a268; }
-.what-i-do-item:nth-child(2) .what-i-do-icon::before { content: "⚙️"; }
-
-.what-i-do-item:nth-child(3) .what-i-do-icon { background-color: var(--accent-color); }
-.what-i-do-item:nth-child(3) .what-i-do-icon::before { content: "💻"; }
-
-.what-i-do-item:nth-child(4) .what-i-do-icon { background-color: #80e69f; }
-.what-i-do-item:nth-child(4) .what-i-do-icon::before { content: "🔍"; }
 
 /*
   Универсальный сброс (частично уже делается Tailwind Base)
@@ -306,35 +189,4 @@ body {
 
 
 
-/* Default state: No arrow */
-.ai-feature-item:not(:last-child)::before {
-  display: none;
-}
 
-/* On large screens, show the connector line and define its animation */
-@media (min-width: 1024px) {
-  .ai-feature-item:not(:last-child)::before {
-    display: block;
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    width: 24px; /* The gap */
-    height: 2px;
-    background-image: linear-gradient(to right, #ccc 50%, transparent 50%);
-    background-size: 8px 2px;
-    background-repeat: repeat-x;
-    transform: translateY(-50%);
-    transition: background-image 0.3s ease;
-  }
-
-  /* But hide it after the 4th item (the last in the row) */
-  .ai-feature-item:nth-child(4n)::before {
-    display: none;
-  }
-
-  /* When hovering the card, make the line solid */
-  .ai-feature-item:hover::before {
-    background-image: linear-gradient(to right, #888 100%, transparent 0%);
-  }
-}

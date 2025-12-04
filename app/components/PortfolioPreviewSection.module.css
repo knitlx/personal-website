@@ -1,0 +1,91 @@
+/* Base styles for the portfolio item card */
+.portfolioItem {
+    background-color: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for the card */
+.portfolioItem:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2);
+}
+
+/* Neon border pseudo-element */
+.portfolioItem::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px; /* This should match the card's border-radius */
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    border-image-slice: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Show the neon border on hover */
+.portfolioItem:hover::after {
+    opacity: 1;
+}
+
+/* Custom background colors for the icons within each card */
+/* Note: These are descendant selectors. The .portfolio-icon class itself is NOT modular. */
+.portfolioItem:nth-child(1) .portfolio-icon { background-color: var(--primary-color); }
+.portfolioItem:nth-child(2) .portfolio-icon { background-color: #f7a268; }
+.portfolioItem:nth-child(3) .portfolio-icon { background-color: var(--accent-color); }
+
+/* Link within the card */
+.portfolioItemLink {
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+    color: #7B68EE; /* Match your theme */
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    padding-right: 15px; /* Space for the arrow */
+}
+.portfolioItemLink:hover {
+    color: #7B68EE; /* Or a different hover color */
+}
+
+
+/* Arrow pseudo-element for the link */
+.portfolioItemLink::after {
+    content: "\00A0→";
+    position: absolute;
+    right: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+}
+
+.portfolioItemLink:hover::after {
+    transform: translateY(-50%) translateX(3px);
+}
+
+/* Underline pseudo-element for the link */
+.portfolioItemLink::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+.portfolioItemLink:hover::before {
+    transform: scaleX(1);
+}
