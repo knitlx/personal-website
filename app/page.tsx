@@ -8,13 +8,14 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
             <div className="container flex justify-between items-center gap-[40px]">
-                <div className="flex-1 max-w-[55%]">
+                <div className="flex-1 max-w-[60%]">
                     <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
-                    <h1 className="font-unbounded-fix text-[48px] font-bold leading-[1.1] mb-[15px]">
-                        AI-универсал и промт-инженер
+                    <h1 className="flex items-center mb-[15px]">
+                        <span className="font-unbounded-fix text-[110px] font-bold bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)] bg-clip-text text-transparent leading-none">AI</span>
+                        <span className="font-unbounded-fix text-[45px] font-bold leading-tight ml-4 relative -translate-y-[5px] text-[#100010]">универсал и промт-инженер</span>
                     </h1>
-                    <p className="text-[20px] font-normal text-[#666] mb-[30px] max-w-[500px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
-                    <div className="bg-white/90 border-l-[4px] border-[#7B68EE] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
+                    <p className="font-unbounded-fix text-[20px] font-bold tracking-[0.09em] opacity-[0.53] bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)] bg-clip-text text-transparent mb-[30px] max-w-[600px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
+                    <div className="bg-white/90 border-l-[4px] border-r-[4px] border-[#6F71F0] p-5 rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.04)] mb-[30px] text-[15px] leading-relaxed">
                         <p className="text-[#555]">
                             Я объединяю системное мышление, работу руками и современные AI-инструменты.
                             Создаю ботов, автоматизации и мини-приложения, которые упрощают процессы
@@ -22,8 +23,10 @@ export default function HomePage() {
                         </p>
                     </div>
                     <div className="flex gap-[15px] items-center mt-[-5px]">
-                                            <Link href="/contact" className="no-underline font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
-                                                Обсудить проект
+                                            <Link href="/contact" className="inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
+                                                <span className="block bg-white text-center text-[#6F71F0] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
+                                                    Обсудить проект
+                                                </span>
                                             </Link>                    </div>
                 </div>
                 <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative">
@@ -90,11 +93,11 @@ export default function HomePage() {
                         <Link href="/lab/converters" className="portfolio-item-link pointer-events-auto inline-block text-[#7B68EE] font-semibold no-underline border-b-2 border-transparent transition-all duration-200 ease-in-out relative pr-[15px] hover:text-[#7B68EE]">Попробовать </Link>
                     </div>
                 </div>
-                <div className="mt-[50px]">
-                    <Link href="/lab" className="button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
-                        Смотреть все кейсы
-                    </Link>
-                </div>
+                                <div className="mt-[50px]">
+                                    <Link href="/lab" className="inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">                                                    <span className="block bg-white text-center text-[#1E1E1E] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
+                                                        Смотреть все кейсы
+                                                    </span>
+                                                </Link>                </div>
             </div>
         </section>
 
@@ -167,8 +170,10 @@ export default function HomePage() {
                     <Link href="/contact" className="w-full flex items-center justify-center no-underline font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out text-center bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] text-white shadow-[0_4px_15px_rgba(123,104,238,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
                         Написать мне
                     </Link>
-                    <Link href="/lab" className="w-full button-cta-all-cases bg-transparent text-[#7B68EE] border-2 border-[#7B68EE] font-semibold py-3 px-[30px] rounded-lg no-underline transition-all duration-300 ease-in-out inline-block hover:bg-[#7B68EE] hover:text-white hover:border-[#7B68EE] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)]">
-                        Смотреть кейсы
+                    <Link href="/lab" className="w-full inline-block rounded-lg p-[1px] bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] shadow-[0_4px_10px_rgba(123,104,238,0.4)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)] no-underline">
+                        <span className="block bg-white text-center text-[#1E1E1E] font-semibold py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out hover:bg-transparent hover:text-white">
+                            Смотреть кейсы
+                        </span>
                     </Link>
                 </div>
             </div>

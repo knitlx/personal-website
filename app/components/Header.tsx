@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const Header = () => (
-  <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] py-[15px] sticky top-0 z-[1000]">
+  <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-[1000]">
     <div className="container flex justify-between items-center">
-      <Link href="/" className="logo text-2xl font-bold bg-gradient-to-b from-[var(--accent-color)] to-[var(--primary-color)] bg-clip-text text-transparent transition-colors duration-300 tracking-tight no-underline">
-        AI-универсал
+      <Link href="/" className="logo font-unbounded-fix text-[20px] font-bold bg-gradient-to-b from-[#9137DF] to-[#6F71F0] bg-clip-text text-transparent transition-colors duration-300 leading-[58px] tracking-[-0.05em] no-underline">
+        AI - универсал
       </Link>
       <nav className="main-nav">
         <ul className="list-none flex items-center">
@@ -37,9 +37,7 @@ const Header = () => (
             </Link>
           </li>
           <li className="ml-[25px]">
-            <Link href="/contact" className="button-cta py-2.5 px-5 font-semibold text-white bg-[linear-gradient(0deg,var(--primary-color)_0%,var(--accent-color)_100%)] rounded-lg shadow-[0_4px_10px_rgba(123,104,238,0.4)] hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline">
-              Обсудить проект
-            </Link>
+            <Link href="/contact" className="button-cta py-2.5 px-5 font-semibold text-white bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)] rounded-lg shadow-[0_4px_10px_rgba(123,104,238,0.4)] hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline"><span className="inline-block translate-y-[-1px]">Обсудить проект</span></Link>
           </li>
         </ul>
       </nav>

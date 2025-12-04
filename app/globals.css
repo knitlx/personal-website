@@ -143,8 +143,7 @@
 }
 
 .logo:hover {
-    text-shadow: 0 0 1px rgba(var(--accent-color-rgb), 0.5), /* Минимальное свечение от акцентного цвета */
-                 0 0 3px rgba(var(--primary-color-rgb), 0.3); /* Минимальное свечение от основного цвета */
+    text-shadow: 0 0 1px rgba(var(--accent-color-rgb), 0.8); /* Четкий синий контур/свечение */
     transform: scale(1.02); /* Немного увеличим для анимации */
 }
 
