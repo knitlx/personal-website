@@ -53,22 +53,20 @@ export default function AboutPage() {
         <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-gradient-to-r from-green-200 to-red-200 rounded-full opacity-20 filter blur-3xl z-0 animate-blob animation-delay-4000 mix-blend-multiply"></div>
         <div className="max-w-7xl mx-auto w-full">
           <section className="bg-white rounded-lg shadow-md p-8 md:p-12 mb-16">
-            <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12">
-              <div className="flex-shrink-0">
+            <div className="flex flex-col items-start gap-4">
+              <div className="flex items-center gap-4">
                 <Image
-                  src="/profile.png"
+                  src="/new_profile_image.png"
                   alt="Воронова Александра"
-                  width={150}
-                  height={150}
+                  width={64}
+                  height={64}
                   className="rounded-full object-cover"
                 />
+                <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-gray-900 font-unbounded-fix text-left">Воронова Александра</h1>
               </div>
-              <div className="md:pt-2">
-                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 mb-10 font-unbounded-fix text-center md:text-center">Воронова Александра</h1>
-                <div className="text-base text-gray-700 space-y-2 text-center md:text-left">
-                  <p>Я помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать AI-инструменты, которые действительно приносят пользу.</p>
-                  <p>Работаю на стыке системного мышления и технологий: упрощаю процессы, автоматизирую рутину и делаю решения удобными в ежедневной работе.</p>
-                </div>
+              <div className="text-base text-gray-700 space-y-2 text-left">
+                <p>Я помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать AI-инструменты и автоматизации, которые действительно приносят пользу.</p>
+                <p>Работаю на стыке системного мышления и технологий: упрощаю процессы, проектирую и внедряю автоматизации, которые снимают ручную рутину и делают работу удобнее каждый день.</p>
               </div>
             </div>
           </section>
@@ -77,31 +75,29 @@ export default function AboutPage() {
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <PhilosophyIcon />
-                <h2 className="text-3xl font-bold text-gray-900 font-unbounded-fix">Философия работы</h2>
+                <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Философия работы</h2>
               </div>
               <div className="text-base text-gray-700 space-y-2">
-                <p>Я начинаю с понимания сути: разбираю задачу, выделяю главное и убираю лишнее — и только потом создаю инструмент или автоматизацию.</p>
-                <blockquote className="pl-4 italic border-l-4 border-[#AB5EED] text-gray-600">
-                  "AI для меня — не магия, а партнёр. Я использую его в проектах и в жизни: чтобы искать идеи, проверять гипотезы и ускорять рутинные задачи. Он помогает смотреть шире и приходить к рабочим решениям."
-                </blockquote>
-                <p>Для меня важно, чтобы решением было легко пользоваться каждый день.</p>
+                <p>Я начинаю с понимания сути: разбираю задачу, выделяю главное и убираю лишнее — и только потом создаю инструмент или автоматизацию под конкретный рабочий процесс.</p>
+                <p>AI для меня — не магия, а партнёр. Я использую его в проектах и в жизни: чтобы искать идеи, проверять гипотезы, ускорять рутинные действия и находить более простые способы решения задач. Он помогает смотреть шире и получать работающий результат.</p>
+                <p>Для меня важно, чтобы инструменты и автоматизации были понятными — такими, которыми легко пользоваться каждый день.</p>
               </div>
             </section>
 
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <HowIWorkIcon />
-                <h2 className="text-3xl font-bold text-gray-900 font-unbounded-fix">Как я работаю</h2>
+                <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Как я работаю</h2>
               </div>
               <div className="text-base text-gray-700 space-y-2">
                 <ul className="list-disc list-inside space-y-1">
                   <li>Вникаю в контекст. Собираю данные, уточняю вводные и нахожу главное.</li>
-                  <li>Строю логику. Анализирую процессы, определяю, что можно упростить и что стоит автоматизировать.</li>
-                  <li>Предлагаю варианты. От быстрых решений до вариантов, которые закрывают задачу глубже.</li>
-                  <li>Реализую. Прототип, автоматизация или структура — адаптированная под реальные условия.</li>
-                  <li>Довожу до удобства. Убираю лишнее и проверяю, насколько решением удобно пользоваться в работе.</li>
+                  <li>Строю логику. Анализирую процессы и определяю, какие шаги можно упростить или автоматизировать, чтобы убрать ручную работу.</li>
+                  <li>Предлагаю варианты. От быстрых автоматизаций до более глубоких решений — в зависимости от задачи и ресурсов.</li>
+                  <li>Реализую. Собираю автоматизацию, прототип или структуру и адаптирую под реальные условия работы.</li>
+                  <li>Довожу до удобства. Убираю лишнее и проверяю, чтобы автоматизация действительно помогала, а не усложняла процесс.</li>
                 </ul>
-                <p>Так вы получаете не только идею, но и <span className="font-semibold text-[#619BEC]">рабочий, надёжный результат</span>.</p>
+                <p>В результате вы получаете не идею «на бумаге», а рабочую автоматизацию или инструмент, встроенный в реальные процессы.</p>
               </div>
             </section>
           </div>
@@ -109,30 +105,38 @@ export default function AboutPage() {
           <section className="bg-white rounded-lg shadow-md p-8 md:p-12 mb-16">
             <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
               <SkillsIcon />
-              <h2 className="text-3xl font-bold text-gray-900 font-unbounded-fix">Технические навыки и инструменты</h2>
+              <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Технические навыки и инструменты</h2>
             </div>
-            <div className="text-base text-gray-700 space-y-4">
-              <p className="text-center">Я сочетаю системное мышление, технологии и AI — подбираю инструменты под задачу, а не наоборот.</p>
+            <div className="text-base text-gray-700">
+              <p className="mb-4">Я сочетаю системное мышление, технологии и AI, чтобы проектировать и внедрять автоматизации под задачи бизнеса.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
               {(() => {
                 const skills = {
-                  "AI и технологии": ["промт-инжиниринг", "генеративные модели", "понимание логики кода", "API и интеграции", "автоматизации", "лёгкая веб-разработка"],
+                  "AI и автоматизации": [
+                    "проектирование и разработка автоматизаций под рабочие процессы",
+                    "n8n (сценарии, логика, интеграции)",
+                    "API и webhooks, работа с внешними сервисами",
+                    "генеративные AI-модели и промт-инжиниринг",
+                    "лёгкая веб-разработка для интерфейсов и вспомогательных инструментов"
+                  ],
                   "Структура и данные": ["систематизация информации", "анализ и синтез данных", "документация", "базы знаний"],
                   "AI-контент и медиа": ["генерация изображений и видео", "базовая работа с графикой и монтажом", "подготовка текстов"],
-                  "Рабочие процессы": ["уточнение размытых задач", "ресёрч", "формирование требований", "приоритизация", "взаимодействие с командами"],
+                  "Рабочие процессы": ["уточнение размытых задач", "ресёрч", "формирование требований", "приоритизация", "взаимодействие с командами и подрядчиками"],
                 };
                 return Object.entries(skills).map(([category, items]) => (
                   <div key={category}>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">{category}:</h3>
-                    <div className="flex flex-wrap gap-2">
+                    <ul className="list-disc list-inside space-y-1">
                       {items.map((skill) => (
-                        <span key={skill} className="bg-[#ECF2FD] text-[#619BEC] text-sm font-medium px-4 py-2 rounded-full">
+                        <li key={skill} className="text-base text-gray-700">
                           {skill}
-                        </span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 ))
               })()}
+              </div>
             </div>
           </section>
 
@@ -140,25 +144,25 @@ export default function AboutPage() {
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <WhoAmIForIcon />
-                <h2 className="text-3xl font-bold text-gray-900 font-unbounded-fix">Кому я подхожу</h2>
+                <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Кому я подхожу</h2>
               </div>
               <div className="text-base text-gray-700 space-y-2">
-                <p>Я полезна там, где много задач, мало ясности и нужно навести цифровой порядок.</p>
-                <p>Со мной чаще всего работают малый бизнес, небольшие команды и предприниматели — тем, кому важны <span className="font-semibold text-[#AB5EED]">простые решения и спокойный, понятный подход</span>.</p>
-                <p>Помогаю в проектах, где нужно разобраться в хаосе, выстроить логику процессов или подобрать подходящие AI-инструменты.</p>
-                <p>Если вам нужен универсал, который аккуратно разбирается в задаче, упрощает её и доводит до рабочего результата — я подойду.</p>
+                <p>Я полезна там, где много задач, мало ясности и нужно навести цифровой порядок и снять ручную рутину.</p>
+                <p>Чаще всего со мной работают малый бизнес, небольшие команды и предприниматели, которым важны простые автоматизации и спокойный, понятный подход.</p>
+                <p>Помогаю в проектах, где нужно разобрать хаотичные процессы, выстроить логику работы и внедрить автоматизации или AI-инструменты под реальные задачи.</p>
+                <p>Если вам нужен универсал, который разберётся в процессах, предложит понятные варианты автоматизации и доведёт всё до рабочего результата — я подойду.</p>
               </div>
             </section>
 
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <PersonalIcon />
-                <h2 className="text-3xl font-bold text-gray-900 font-unbounded-fix">Немного личного</h2>
+                <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Немного личного</h2>
               </div>
               <div className="text-base text-gray-700 space-y-2">
-                <p>Мне близка системность: я лучше работаю, когда информация и задачи организованы.</p>
-                <p>AI — часть моей повседневной работы и жизни. Я обращаюсь к нему за идеями, планированием, обучением и бытовыми решениями — он помогает быстрее находить рабочие варианты.</p>
-                <p>По характеру я спокойная и внимательная: предпочитаю продуманность скорости и довожу задачи до результата, которым можно пользоваться каждый день.</p>
+                <p>Мне близка системность: я лучше работаю, когда информация, задачи и процессы организованы.</p>
+                <p>AI — часть моей повседневной работы и жизни. Я обращаюсь к нему за идеями, планированием, обучением и бытовыми задачами — он помогает быстрее находить рабочие варианты и принимать решения.</p>
+                <p>По характеру я спокойная и внимательная. Предпочитаю не торопиться без смысла, а продумывать решения так, чтобы ими было удобно пользоваться каждый день.</p>
               </div>
             </section>
           </div>

@@ -6,7 +6,7 @@ export default function AiCreatedSiteSection() {
   return (
     <section className="py-16 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
         <div className="container">
-            <h2 className="font-unbounded-fix text-[40px] font-bold leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
+            <h2 className="font-unbounded-fix text-[40px] font-medium leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
             <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
                 AI использован на каждом этапе разработки: структура, тексты, визуал и весь код.
                 Это рабочий пример того, как я применяю промт-инженерию в практических задачах.
@@ -20,7 +20,7 @@ export default function AiCreatedSiteSection() {
                             alt={feature.alt} 
                             width={70} 
                             height={70} 
-                            className="ai-feature-icon w-[70px] h-[70px] rounded-full flex items-center justify-center mx-auto mb-[15px] relative" 
+                            className="ai-feature-icon w-[70px] h-[70px] flex items-center justify-center mx-auto mb-[15px] relative" 
                         />
                         <h3 className="text-[18px] font-semibold text-[#333333] mb-2">{feature.title}</h3>
                         <p className="text-sm text-[#888] leading-tight mt-auto">{feature.desc}</p>

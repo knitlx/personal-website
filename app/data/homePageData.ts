@@ -1,5 +1,5 @@
 export const aiFeatures = [
-    { icon: "/icons/structure-texts.png", alt: "Структура и тексты", title: "Структура и тексты", desc: "сгенерированы совместно с GPT-5.1" },
+    { icon: "/icons/structure.png", alt: "Структура и тексты", title: "Структура и тексты", desc: "сгенерированы совместно с GPT-5.1" },
     { icon: "/icons/design.png", alt: "Дизайн", title: "Дизайн", desc: "создан AI" },
     { icon: "/icons/code.png", alt: "Код", title: "Код", desc: "полностью сгенерирован через Gemini CLI" },
     { icon: "/icons/deploy.png", alt: "Деплой", title: "Деплой", desc: "Railway" },
@@ -7,7 +7,18 @@ export const aiFeatures = [
 
 export const whatIDo = [
     {
-        icon: "/icons/icon-systematization.png",
+        icon: "/icons/automatisation.png",
+        alt: "Автоматизации и AI-решения",
+        title: "Автоматизации и AI-решения",
+        list: [
+            "автоматизация ручных и повторяющихся задач",
+            "разработка сценариев и логики автоматизаций",
+            "интеграция AI-инструментов в рабочие процессы",
+            "внедрение и адаптация автоматизаций под реальные задачи",
+        ]
+    },
+    {
+        icon: "/icons/sistem.png",
         alt: "Систематизация и структура",
         title: "Систематизация и структура",
         list: [
@@ -18,18 +29,7 @@ export const whatIDo = [
         ]
     },
     {
-        icon: "/icons/icon-automation-ai.png",
-        alt: "Автоматизации и AI-решения",
-        title: "Автоматизации и AI-решения",
-        list: [
-            "автоматизация задач",
-            "работа с AI-инструментами",
-            "разработка логики процессов",
-            "построение рабочих схем",
-        ]
-    },
-    {
-        icon: "/icons/icon-tools-development.png",
+        icon: "/icons/tools.png",
         alt: "Мини-инструменты и разработки",
         title: "Мини-инструменты и разработки",
         list: [
@@ -40,7 +40,7 @@ export const whatIDo = [
         ]
     },
     {
-        icon: "/icons/icon-understand-do.png",
+        icon: "/icons/todo.png",
         alt: "Разобраться и сделать",
         title: "Разобраться и сделать",
         list: [

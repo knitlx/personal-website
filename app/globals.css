@@ -14,7 +14,7 @@
   @apply bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)];
 }
 .button-gradient {
-  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)];
+  @apply bg-[linear-gradient(135deg,rgba(171,94,237,0.9)_50%,rgba(122,104,238,0.9)_80%)];
 }
 .shadow-highlight {
   @apply shadow-[0_4px_10px_rgba(0,0,0,0.04)];
@@ -32,8 +32,8 @@
 :root {
     --primary-color: #7B68EE; /* Фиолетовый (Основной) */
     --primary-color-rgb: 123, 104, 238; /* RGB для var(--primary-color) */
-    --accent-color: #00C4FF; /* Голубой (Акцентный) */
-    --accent-color-rgb: 0, 196, 255; /* RGB для var(--accent-color) */
+    --accent-color: #7A68EE; /* Фиолетовый (Акцентный) */
+    --accent-color-rgb: 122, 104, 238; /* RGB для var(--accent-color) */
     --background-color: #ffffff; /* Белый фон */
     --text-color: #333333; /* Темный текст */
     

@@ -6,7 +6,7 @@ export default function WhatIDoSection() {
   return (
     <section className="py-8 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
         <div className="container">
-            <h2 className="font-unbounded-fix text-[36px] font-bold leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
+            <h2 className="font-unbounded-fix text-[36px] font-medium leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
             <p className="text-base text-[#666] max-w-[800px] mx-auto mb-[30px]">
                 Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.
             </p>
@@ -19,9 +19,9 @@ export default function WhatIDoSection() {
                                 alt={item.alt} 
                                 width={42} 
                                 height={42} 
-                                className="what-i-do-icon w-[42px] h-[42px] rounded-full flex items-center justify-center mr-[15px] relative" 
+                                className="what-i-do-icon w-[42px] h-[42px] flex items-center justify-center mr-[15px] relative" 
                             />
-                            <h3 className="what-i-do-item-title text-[20px] font-bold text-[var(--accent-color)] mb-0">{item.title}</h3>
+                            <h3 className="what-i-do-item-title text-[18px] font-semibold text-[#333333] mb-0">{item.title}</h3>
                         </div>
                         <ul className={`${styles.whatIDoList} list-none p-0 mt-[20px] w-full`}>
                             {item.list.map((listItem) => (

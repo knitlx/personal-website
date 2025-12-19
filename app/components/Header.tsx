@@ -11,7 +11,10 @@ const Header = () => {
     <>
       <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-[1000]">
         <div className="container flex justify-between items-center">
-          <Link href="/" className="logo font-unbounded-fix text-[20px] font-bold bg-gradient-to-b from-[#9137DF] to-[#6F71F0] bg-clip-text text-transparent transition-colors duration-300 leading-[58px] tracking-[-0.05em] no-underline">
+          <Link 
+            href="/" 
+            className="logo font-unbounded-fix text-[20px] font-bold bg-gradient-to-b from-[#9137DF] to-[#6F71F0] bg-clip-text text-transparent transition-colors duration-300 leading-[58px] tracking-[-0.05em] no-underline hover:text-[#7A68EE] hover:!bg-none hover:!bg-clip-content"
+          >
             AI - универсал
           </Link>
           <nav className="main-nav">
@@ -47,7 +50,7 @@ const Header = () => {
               <li className="ml-[25px]">
                 <button 
                   onClick={() => setIsModalOpen(true)}
-                  className="button-cta py-2.5 px-5 font-semibold text-white button-gradient rounded-lg shadow-button-cta hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline"
+                  className="button-cta py-[7px] px-[15px] font-semibold text-white button-gradient rounded-lg shadow-button-cta hover:shadow-[0_6px_15px_rgba(123,104,238,0.5)] transition-all duration-300 hover:-translate-y-0.5 no-underline cursor-pointer"
                 >
                   <span className="inline-block translate-y-[-1px]">Обсудить проект</span>
                 </button>

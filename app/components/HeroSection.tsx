@@ -14,16 +14,18 @@ export default function HeroSection() {
           <div className="container flex justify-between items-center gap-[40px]">
               <div className="flex-1 max-w-[60%]">
                   <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
-                  <h1 className="flex items-center mb-[15px]">
-                      <span className="font-unbounded-fix text-[110px] font-bold gradient-hero-ai bg-clip-text text-transparent leading-none">AI</span>
-                      <span className="font-unbounded-fix text-[45px] font-bold leading-tight ml-4 relative -translate-y-[5px] text-[#100010]">универсал и промт-инженер</span>
+                  <h1 className="mb-[15px]">
+                      <div className="flex items-start">
+                          <span className="font-unbounded-fix text-[110px] font-semibold gradient-hero-ai bg-clip-text text-transparent leading-none">AI</span>
+                          <span className="font-unbounded-fix text-[45px] font-semibold leading-[1.1] text-[#333333] ml-4 max-w-md -translate-y-[4px]">специалист и разработчик</span>
+                      </div>
+                      <div className="font-unbounded-fix text-[45px] font-semibold leading-tight text-[#333333] relative -translate-y-[16px]">автоматизаций</div>
                   </h1>
-                  <p className="font-unbounded-fix text-[20px] font-bold tracking-[0.09em] opacity-[0.53] gradient-hero-desc bg-clip-text text-transparent mb-[30px] max-w-[600px]">Навожу порядок в цифровых задачах и настраиваю работающие процессы</p>
+                  <p className="font-unbounded-fix text-[20px] font-bold tracking-[0.09em] opacity-[0.53] gradient-hero-desc bg-clip-text text-transparent mb-[30px] max-w-[600px]">Навожу порядок в цифровых задачах и автоматизирую рабочие процессы</p>
                   <div className="bg-white/90 border-l-[4px] border-r-[4px] border-[#6F71F0] p-5 rounded-lg shadow-highlight mb-[30px] text-[15px] leading-relaxed">
                       <p className="text-[#555]">
-                          Я объединяю системное мышление, работу руками и современные AI-инструменты.
-                          Создаю ботов, автоматизации и мини-приложения, которые упрощают процессы
-                          и помогают команде работать быстрее и без лишней рутины.
+                          Я объединяю системное мышление, разработку и AI, чтобы убирать ручную работу и упрощать процессы.
+                          Проектирую и внедряю автоматизации, ботов и мини-приложения, которые помогают командам работать быстрее и спокойнее каждый день.
                       </p>
                   </div>
                   <div className="flex gap-[15px] items-center mt-[-5px]">

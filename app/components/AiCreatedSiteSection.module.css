@@ -38,32 +38,4 @@
 .aiFeatureItem:nth-child(3) .ai-feature-icon::before { content: "💻"; border-color: #f7a268; }
 .aiFeatureItem:nth-child(4) .ai-feature-icon::before { content: "🚀"; border-color: #80e69f; }
 
-/* Connector lines */
-.aiFeatureItem:not(:last-child)::before {
-  display: none;
-}
 
-@media (min-width: 1024px) {
-  .aiFeatureItem:not(:last-child)::before {
-    display: block;
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    width: 24px;
-    height: 2px;
-    background-image: linear-gradient(to right, #ccc 50%, transparent 50%);
-    background-size: 8px 2px;
-    background-repeat: repeat-x;
-    transform: translateY(-50%);
-    transition: background-image 0.3s ease;
-  }
-
-  .aiFeatureItem:nth-child(4n)::before {
-    display: none;
-  }
-
-  .aiFeatureItem:hover::before {
-    background-image: linear-gradient(to right, #888 100%, transparent 0%);
-  }
-}
