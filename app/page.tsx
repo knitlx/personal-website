@@ -6,20 +6,27 @@ import CtaSection from "./components/CtaSection";
 
 export default function HomePage() {
   return (
-    <div className="relative flex flex-col items-center justify-center pt-8 pb-8 bg-transparent min-h-[calc(100vh-120px)]">
-      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative flex flex-col pt-8 pb-8 bg-white min-h-[calc(100vh-120px)]">
 
-        {/* Hero Section */}
+        {/* Hero Section is constrained internally */}
         <HeroSection />
 
+        {/* AI Section is full-width bg */}
         <AiCreatedSiteSection />
 
-        <PortfolioPreviewSection />
+        {/* This div wraps the white-background sections */}
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PortfolioPreviewSection />
+        </div>
 
-                <WhatIDoSection />
-        <CtaSection />
+        {/* What I Do Section is full-width bg */}
+        <WhatIDoSection />
 
-      </div>
+        {/* This div wraps the final white-background section */}
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CtaSection />
+        </div>
+
     </div>
   );
 }

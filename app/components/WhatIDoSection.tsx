@@ -4,7 +4,7 @@ import Image from 'next/image'; // Added Image import
 
 export default function WhatIDoSection() {
   return (
-    <section className="py-8 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
+    <section className="bg-[#F9FAFB] py-8 text-center mb-[50px]">
         <div className="container">
             <h2 className="font-unbounded-fix text-[36px] font-medium leading-tight text-[#333333] mb-[10px]">Что я делаю</h2>
             <p className="text-base text-[#666] max-w-[800px] mx-auto mb-[30px]">

@@ -4,9 +4,9 @@ import Image from 'next/image'; // Added Image import
 
 export default function AiCreatedSiteSection() {
   return (
-    <section className="py-16 text-center bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)] mb-[50px]">
+    <section className="bg-[#F9FAFB] py-16 text-center mb-[50px]">
         <div className="container">
-            <h2 className="font-unbounded-fix text-[40px] font-medium leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
+            <h2 className="font-unbounded-fix text-[32px] font-medium leading-tight text-[#333333] mb-[15px]">Этот сайт создан с помощью AI — от структуры до кода</h2>
             <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
                 AI использован на каждом этапе разработки: структура, тексты, визуал и весь код.
                 Это рабочий пример того, как я применяю промт-инженерию в практических задачах.

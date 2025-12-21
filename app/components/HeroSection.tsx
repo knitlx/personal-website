@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
-import GradientBorderButton from "./GradientBorderButton";
+import BentoButton from './BentoButton';
 import ContactModal from './ContactModal';
 
 export default function HeroSection() {
@@ -10,41 +9,27 @@ export default function HeroSection() {
 
   return (
     <>
-      <section className="relative overflow-hidden mb-[50px] bg-transparent backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
-          <div className="container flex justify-between items-center gap-[40px]">
-              <div className="flex-1 max-w-[60%]">
-                  <p className="text-[18px] font-normal text-[#666] mb-[20px] max-w-[500px]">Александра</p>
-                  <h1 className="mb-[15px]">
-                      <div className="flex items-start">
-                          <span className="font-unbounded-fix text-[110px] font-semibold gradient-hero-ai bg-clip-text text-transparent leading-none">AI</span>
-                          <span className="font-unbounded-fix text-[45px] font-semibold leading-[1.1] text-[#333333] ml-4 max-w-md -translate-y-[4px]">специалист и разработчик</span>
-                      </div>
-                      <div className="font-unbounded-fix text-[45px] font-semibold leading-tight text-[#333333] relative -translate-y-[16px]">автоматизаций</div>
-                  </h1>
-                  <p className="font-unbounded-fix text-[20px] font-bold tracking-[0.09em] opacity-[0.53] gradient-hero-desc bg-clip-text text-transparent mb-[30px] max-w-[600px]">Навожу порядок в цифровых задачах и автоматизирую рабочие процессы</p>
-                  <div className="bg-white/90 border-l-[4px] border-r-[4px] border-[#6F71F0] p-5 rounded-lg shadow-highlight mb-[30px] text-[15px] leading-relaxed">
-                      <p className="text-[#555]">
-                          Я объединяю системное мышление, разработку и AI, чтобы убирать ручную работу и упрощать процессы.
-                          Проектирую и внедряю автоматизации, ботов и мини-приложения, которые помогают командам работать быстрее и спокойнее каждый день.
-                      </p>
-                  </div>
-                  <div className="flex gap-[15px] items-center mt-[-5px]">
-                    <GradientBorderButton onClick={() => setIsModalOpen(true)} useGradientText>
-                        Обсудить проект
-                    </GradientBorderButton>
-                  </div>
-              </div>
-              <div className="photo-wrapper flex justify-center items-center max-w-[400px] mx-auto relative">
-                  <Image 
-                      src="/profile.png" 
-                      alt="Ваше фото" 
-                      width={400} 
-                      height={400} 
-                      priority 
-                      className="profile-photo p-5 max-w-full h-auto block object-cover" 
-                  />
-              </div>
-          </div>
+      {/* This structure is taken from bento-landing/page.tsx */}
+      <section className="container max-w-4xl mx-auto px-6 text-center mb-20 pt-24 relative z-10">
+        <h1 className="font-unbounded-fix leading-[1.2] mb-8">
+          <span className="block text-[40px] md:text-[72px] font-bold gradient-hero-ai bg-clip-text text-transparent pb-1">
+            AI-специалист
+          </span>
+          <span className="block text-2xl font-bold text-black mt-1 uppercase tracking-widest">
+            и разработчик автоматизаций
+          </span>
+        </h1>
+        <p className="font-inter text-sm md:text-base text-gray-600 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+          Я объединяю системное мышление, разработку и AI,<br /> чтобы убирать ручную работу и упрощать процессы. 
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-3 mb-16">
+          <BentoButton variant="primary" onClick={() => setIsModalOpen(true)}>
+            Обсудить проект
+          </BentoButton>
+          <BentoButton variant="outline" href="/projects">
+            Смотреть кейсы
+          </BentoButton>
+        </div>
       </section>
       <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
