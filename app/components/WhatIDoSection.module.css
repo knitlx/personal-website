@@ -42,7 +42,7 @@
     content: '';
     width: 6px;
     height: 6px;
-    background-color: var(--accent-color);
+    background-color: #9137df;
     border-radius: 50%;
     display: block;
     position: absolute;

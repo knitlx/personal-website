@@ -93,9 +93,9 @@ export default function ServicesPage() {
 
   return (
     <>
-      <div className="bg-transparent py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center mb-24">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl font-unbounded-fix">
+      <div className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center mb-16">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-[2.75rem] font-unbounded-fix">
             Как я могу быть полезна
           </h1>
           <p className="mt-4 text-xl text-gray-600">
@@ -105,31 +105,41 @@ export default function ServicesPage() {
 
         <div className="max-w-7xl mx-auto space-y-12">
           {servicesData.map((service, index) => (
-            <div key={index} className="bg-white p-8 rounded-xl shadow-[0_0_50px_rgba(123,104,238,0.1)]">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl font-semibold font-unbounded-fix text-gray-900">
-                  <span className="text-[#AB5EED]">{`${index + 1}. `}</span>{service.title}
-                </h2>
-                <p className="mt-2 text-lg text-gray-700 italic">{service.description}</p>
+            <div key={index} className="bg-white p-8 rounded-xl shadow-[0_0_50px_rgba(123,104,238,0.1)] flex items-start gap-12">
+              {/* Левая колонка с цифрой */}
+              <div className="flex-shrink-0 w-32 h-32 p-[3px] rounded-xl bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)]">
+                <div className="w-full h-full flex items-center justify-center rounded-xl bg-white">
+                  <span className="text-7xl font-bold bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)] bg-clip-text text-transparent">{index + 1}</span>
+                </div>
+              </div>
+              {/* Правая колонка с контентом */}
+              <div className="max-w-4xl">
+                <div className="h-32 flex flex-col justify-center">
+                  <h2 className="text-3xl font-semibold font-unbounded-fix text-gray-900">
+                    {service.title}
+                  </h2>
+                  <p className="mt-2 text-lg text-gray-700 italic">{service.description}</p>
+                </div>
 
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                <div className="mt-0 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-6">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">Когда это нужно:</h3>
-                    <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <ul className="custom-list space-y-1 text-gray-600">
                       {service.when.map((item, i) => <li key={i}>{item}</li>)}
                     </ul>
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">Что я делаю:</h3>
-                    <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <ul className="custom-list space-y-1 text-gray-600">
                       {service.what.map((item, i) => <li key={i}>{item}</li>)}
                     </ul>
                   </div>
                 </div>
 
-                <div className="mt-8">
+                <div className="h-[3px] w-full bg-[linear-gradient(to_right,#9137DF_0%,#7A68EE_100%)] my-5"></div>
+                <div>
                   <h3 className="text-xl font-semibold text-gray-800">Результат:</h3>
-                  <p className="mt-2 text-gray-700 bg-green-50 border border-green-200 p-4 rounded-md shadow-sm">
+                  <p className="mt-2 text-gray-700">
                     {service.result}
                   </p>
                 </div>
@@ -138,13 +148,13 @@ export default function ServicesPage() {
           ))}
         </div>
 
-        <div className="mt-16 max-w-7xl mx-auto text-center bg-white p-10 rounded-xl shadow-[0_0_50px_rgba(123,104,238,0.1)]">
+        <div className="mt-16 max-w-7xl mx-auto text-center bg-white p-14 rounded-lg shadow-md">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold font-unbounded-fix text-gray-900">
               Не уверены, с чего начать?
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Можно просто описать ситуацию или задачу. Я помогу разобраться и предложу подходящий формат работы.
+              Можно просто описать ситуацию или задачу.<br />Я помогу разобраться и предложу подходящий формат работы.
             </p>
             <div className="mt-8">
               <GradientBorderButton onClick={() => setIsModalOpen(true)}>

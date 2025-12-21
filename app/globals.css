@@ -213,3 +213,25 @@ body {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+.custom-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.custom-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background-color: #9137df;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 8px;
+}

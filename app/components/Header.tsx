@@ -15,15 +15,15 @@ const Header = () => {
             href="/" 
             className="logo font-unbounded-fix text-[20px] font-bold bg-gradient-to-b from-[#9137DF] to-[#6F71F0] bg-clip-text text-transparent transition-colors duration-300 leading-[58px] tracking-[-0.05em] no-underline hover:text-[#7A68EE] hover:!bg-none hover:!bg-clip-content"
           >
-            AI - универсал
+            NoChaos
           </Link>
           <nav className="main-nav">
             <ul className="list-none flex items-center">
               <li className="ml-[25px]">
-                <Link href="/" className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
-                                         after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
-                                         after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  Главная
+                <Link href="/about" className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
+                                             after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
+                                             after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100">
+                  Обо мне
                 </Link>
               </li>
               <li className="ml-[25px]">
@@ -38,13 +38,6 @@ const Header = () => {
                                            after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
                                            after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100">
                   Проекты
-                </Link>
-              </li>
-              <li className="ml-[25px]">
-                <Link href="/about" className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
-                                             after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
-                                             after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  Обо мне
                 </Link>
               </li>
               <li className="ml-[25px]">

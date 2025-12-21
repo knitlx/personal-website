@@ -90,7 +90,7 @@ export default function AboutPage() {
                 <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">Как я работаю</h2>
               </div>
               <div className="text-base text-gray-700 space-y-2">
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="custom-list space-y-1">
                   <li>Вникаю в контекст. Собираю данные, уточняю вводные и нахожу главное.</li>
                   <li>Строю логику. Анализирую процессы и определяю, какие шаги можно упростить или автоматизировать, чтобы убрать ручную работу.</li>
                   <li>Предлагаю варианты. От быстрых автоматизаций до более глубоких решений — в зависимости от задачи и ресурсов.</li>
@@ -109,24 +109,34 @@ export default function AboutPage() {
             </div>
             <div className="text-base text-gray-700">
               <p className="mb-4">Я сочетаю системное мышление, технологии и AI, чтобы проектировать и внедрять автоматизации под задачи бизнеса.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6">
               {(() => {
                 const skills = {
                   "AI и автоматизации": [
                     "проектирование и разработка автоматизаций под рабочие процессы",
-                    "n8n (сценарии, логика, интеграции)",
-                    "API и webhooks, работа с внешними сервисами",
+                    "n8n: сценарии, логика, интеграции, обработка данных",
+                    "API и webhooks, связка внешних сервисов",
                     "генеративные AI-модели и промт-инжиниринг",
-                    "лёгкая веб-разработка для интерфейсов и вспомогательных инструментов"
+                    "лёгкие веб-интерфейсы для автоматизаций и внутренних инструментов"
                   ],
-                  "Структура и данные": ["систематизация информации", "анализ и синтез данных", "документация", "базы знаний"],
-                  "AI-контент и медиа": ["генерация изображений и видео", "базовая работа с графикой и монтажом", "подготовка текстов"],
-                  "Рабочие процессы": ["уточнение размытых задач", "ресёрч", "формирование требований", "приоритизация", "взаимодействие с командами и подрядчиками"],
+                  "Структура и данные": [
+                    "систематизация информации и процессов",
+                    "анализ и синтез данных для принятия решений",
+                    "документация и описание процессов",
+                    "базы знаний для команд"
+                  ],
+                  "Рабочие процессы": [
+                    "уточнение размытых задач",
+                    "ресёрч и анализ",
+                    "формирование требований",
+                    "приоритизация задач",
+                    "взаимодействие с командами и подрядчиками"
+                  ]
                 };
                 return Object.entries(skills).map(([category, items]) => (
                   <div key={category}>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">{category}:</h3>
-                    <ul className="list-disc list-inside space-y-1">
+                    <ul className="custom-list space-y-1">
                       {items.map((skill) => (
                         <li key={skill} className="text-base text-gray-700">
                           {skill}
@@ -168,10 +178,16 @@ export default function AboutPage() {
           </div>
 
           {/* Reusing the CTA structure */}
-          <section className="text-center py-16 bg-blue-500 text-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold mb-6">Хотите узнать, как я могу помочь вашему бизнесу?</h3>
-            <p className="text-base mb-8">Свяжитесь со мной для бесплатной консультации.</p>
-            <GradientBorderButton onClick={() => setIsModalOpen(true)}>Написать мне</GradientBorderButton>
+          <section className="bg-transparent py-8 text-center backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
+            <div className="container">
+                <h2 className="font-unbounded-fix text-[38px] font-medium text-[#333333] mb-[15px]">Есть задача или идея?</h2>
+                <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">Давайте разберёмся вместе и найдём рабочее решение.</p>
+                <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
+                    <GradientBorderButton onClick={() => setIsModalOpen(true)}>
+                        Написать мне
+                    </GradientBorderButton>
+                </div>
+            </div>
           </section>
 
         </div>
