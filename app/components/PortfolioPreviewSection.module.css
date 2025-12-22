@@ -69,6 +69,7 @@
     top: 50%;
     transform: translateY(-50%);
     transition: transform 0.2s ease;
+    color: #7A68EE; /* Use a color from the gradient */
 }
 
 .portfolioItemLink:hover::after {

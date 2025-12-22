@@ -18,10 +18,7 @@ export default function HomePage() {
       {/* AI Section is full-width bg */}
       <AiCreatedSiteSection />
 
-      {/* This div wraps the white-background sections */}
-      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <PortfolioPreviewSection />
-      </div>
+      <PortfolioPreviewSection />
 
       {/* What I Do Section is full-width bg */}
       <WhatIDoSection />

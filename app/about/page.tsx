@@ -109,7 +109,7 @@ export default function AboutPage() {
           </section>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
-            <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
+            <section className="bg-white rounded-lg shadow-md border border-gray-200 p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <Image
                   src="/icons/philosophy.png"
@@ -145,7 +145,7 @@ export default function AboutPage() {
               </div>
             </section>
 
-            <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
+            <section className="bg-white rounded-lg shadow-md border border-gray-200 p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <Image
                   src="/icons/how-i-work.png"
@@ -198,7 +198,7 @@ export default function AboutPage() {
           </div>
 
           <section className="p-8 md:p-12 mb-16">
-            <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
+            <div className="flex justify-center items-center gap-4 mb-8">
               <Image
                 src="/icons/about-tools.png"
                 alt="Инструменты и технологии"
@@ -211,8 +211,8 @@ export default function AboutPage() {
               </h2>
             </div>
 
-            <div className="text-base text-gray-700">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="text-base text-gray-700 mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
                 <div
                   className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
                 >
@@ -230,20 +230,25 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      n8n
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        n8n
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      API
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        API
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      webhooks
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        webhooks
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Email / SMTP
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Email / SMTP
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -259,42 +264,51 @@ export default function AboutPage() {
                       height={24}
                     />
 
-                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent mt-[-1px]">
                       Веб и инфраструктура
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      React
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        React
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Next.js
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Next.js
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      HTML / CSS
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        HTML / CSS
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      JavaScript
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        JavaScript
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Tailwind CSS
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Tailwind CSS
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Vercel
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Vercel
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Railway
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Railway
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Git / GitHub
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Git / GitHub
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -316,20 +330,25 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Google Workspace
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Google Workspace
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Airtable
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Airtable
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Supabase
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Supabase
+                      </span>
                     </span>
-
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      PostgreSQL
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        PostgreSQL
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -351,17 +370,25 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Notion
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Notion
+                      </span>
                     </span>
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Jira
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Jira
+                      </span>
                     </span>
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Trello
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Trello
+                      </span>
                     </span>
-                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-                      Figma
+                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                        Figma
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -370,7 +397,7 @@ export default function AboutPage() {
           </section>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
-            <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
+            <section className="bg-white rounded-lg shadow-md border border-gray-200 p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <Image
                   src="/icons/who-i-am-for.png"
@@ -426,7 +453,7 @@ export default function AboutPage() {
               </ul>
             </section>
 
-            <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
+            <section className="bg-white rounded-lg shadow-md border border-gray-200 p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
                 <Image
                   src="/icons/personal.png"
@@ -462,18 +489,15 @@ export default function AboutPage() {
             </section>
           </div>
 
-          {/* Reusing the CTA structure */}
-
-          <section className="bg-transparent py-8 text-center backdrop-blur-sm border-b border-b-[#eee] shadow-[0_0_50px_rgba(123,104,238,0.1)]">
-            <div className="container">
+          {/* CTA Section adapted from CtaSection.tsx for design consistency */}
+          <section className="py-8">
+            <div className="mx-auto bg-transparent text-center backdrop-blur-sm border border-gray-200 shadow-[0_0_50px_rgba(123,104,238,0.1)] rounded-2xl p-8">
               <h2 className="font-unbounded-fix text-[38px] font-medium text-[#333333] mb-[15px]">
                 Есть задача или идея?
               </h2>
-
-              <p className="text-[18px] text-[#555] max-w-[650px] mx-auto mb-10 leading-normal">
+              <p className="text-[18px] text-[#555] max-w-2xl mx-auto mb-10 leading-normal">
                 Давайте разберёмся вместе и найдём рабочее решение.
               </p>
-
               <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
                 <BentoButton
                   onClick={() => setIsModalOpen(true)}

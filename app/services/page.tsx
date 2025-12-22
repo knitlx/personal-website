@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import GradientBorderButton from "../components/GradientBorderButton";
+import BentoButton from "../components/BentoButton";
 import ContactModal from "../components/ContactModal";
 
 const servicesData = [
@@ -184,9 +184,12 @@ export default function ServicesPage() {
               <br />Я помогу разобраться и предложу подходящий формат работы.
             </p>
             <div className="mt-8">
-              <GradientBorderButton onClick={() => setIsModalOpen(true)}>
+              <BentoButton
+                onClick={() => setIsModalOpen(true)}
+                variant="primary"
+              >
                 Написать мне
-              </GradientBorderButton>
+              </BentoButton>
             </div>
           </div>
         </div>
