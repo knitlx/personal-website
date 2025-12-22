@@ -8,16 +8,13 @@
 /* Refactored Utility Classes */
 /* ======================================================= */
 .gradient-hero-ai {
-  @apply bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)];
+  @apply bg-[linear-gradient(135deg,#9137DF_50%,#7B68EE_75%)];
 }
 .gradient-hero-desc {
-  @apply bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)];
+  @apply bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)];
 }
 .button-gradient {
-  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)];
-}
-.shadow-highlight {
-  @apply shadow-[0_4px_10px_rgba(0,0,0,0.04)];
+  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7B68EE_80%)];
 }
 .shadow-button-cta {
   @apply shadow-[0_4px_10px_rgba(123,104,238,0.4)];
@@ -26,7 +23,7 @@
   @apply hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)];
 }
 .tag-gradient-background {
-  @apply bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(122,104,238,0.1)_100%)];
+  @apply bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(var(--primary-color-rgb),0.1)_100%)];
 }
 
 /*
@@ -35,25 +32,9 @@
 :root {
     --primary-color: #7B68EE; /* Фиолетовый (Основной) */
     --primary-color-rgb: 123, 104, 238; /* RGB для var(--primary-color) */
-    --accent-color: #7A68EE; /* Фиолетовый (Акцентный) */
-    --accent-color-rgb: 122, 104, 238; /* RGB для var(--accent-color) */
     --background-color: #ffffff; /* Белый фон */
     --text-color: #333333; /* Темный текст */
-    
-    /* НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ЗАМЕТНОГО ГРАДИЕНТА */
-    --soft-violet: rgba(72, 61, 139, 0.1); /* ИНДИГО (#483D8B) - не розовит */
-    --soft-blue: rgba(0, 196, 255, 0.12);   /* Снизили насыщенность */
-    --soft-glow: rgba(255, 255, 255, 0.5); 
 }
-
-
-
-/* ======================================================= */
-/* 1. Обновление: Каждая карточка (.what-i-do-item) */
-/* ======================================================= */
-
-
-
 
 /* Custom CSS for Logo Hover Effect */
 .logo {
@@ -61,7 +42,7 @@
 }
 
 .logo:hover {
-    text-shadow: 0 0 1px rgba(var(--accent-color-rgb), 0.8); /* Четкий синий контур/свечение */
+    text-shadow: 0 0 1px rgba(var(--primary-color-rgb), 0.8); /* Четкий синий контур/свечение */
     transform: scale(1.02); /* Немного увеличим для анимации */
 }
 
@@ -83,9 +64,6 @@
     display: block;
     mask-image: radial-gradient(circle, black 70%, transparent 100%);
 }
-
-
-
 
 /*
   Универсальный сброс (частично уже делается Tailwind Base)
@@ -165,9 +143,6 @@ body {
     }
 }
 
-
-
-
 .font-unbounded-fix {
   font-family: var(--font-unbounded);
 }
@@ -177,10 +152,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in { animation: fadeInUp 0.7s ease-out forwards; }
-
-
-
-
 
 .block:hover .gradient-text-button {
   background-image: none;

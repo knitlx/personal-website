@@ -3,45 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import GradientBorderButton from "../components/GradientBorderButton";
+import BentoButton from "../components/BentoButton";
 import ContactModal from "../components/ContactModal";
 import whatIDoStyles from "../components/WhatIDoSection.module.css";
 
 // --- Icon Components ---
-
-const PhilosophyIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-10 h-10 text-[#AB5EED]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-    />
-  </svg>
-);
-
-const HowIWorkIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-10 h-10 text-[#619BEC]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.746 3.746 0 0 1-5.714 0m-9.386 0A3.746 3.746 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 5.714 0m-9.386 0C1.63 9.61 0 10.732 0 12s1.63 2.39 4.407 3.068"
-    />
-  </svg>
-);
 
 const SkillsIcon = () => (
   <svg
@@ -66,99 +32,6 @@ const SkillsIcon = () => (
   </svg>
 );
 
-// --- Icons for Skills Section ---
-
-const AiIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6 text-purple-600"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 5.25v-1.5m0 15v1.5m3.75-18v1.5m0 15v1.5M12 12.75a3 3 0 0 0-3 3h6a3 3 0 0 0-3-3z"
-    />
-
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3.75 12a8.25 8.25 0 1 0 16.5 0 8.25 8.25 0 0 0-16.5 0z"
-    />
-  </svg>
-);
-
-const StructureIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6 text-purple-600"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m0-3.75h.008v.008H12v-.008h-.008v.008H3.75v-.008Zm0 3.75h.008v.008H12v-.008h-.008v.008H3.75v-.008Z"
-    />
-  </svg>
-);
-
-const CodeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6 text-purple-600"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5 0-4.5 16.5"
-    />
-  </svg>
-);
-
-const ProcessIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-6 h-6 text-purple-600"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-    />
-  </svg>
-);
-
-const WhoAmIForIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-10 h-10 text-[#619BEC]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m-7.512 2.72a3 3 0 0 1-4.682-2.72 9.094 9.094 0 0 1 3.741-.479m7.512 2.72a8.97 8.97 0 0 1-7.512 0m7.512 0a8.97 8.97 0 0 0-7.512 0m-3.755-4.48a3 3 0 1 0-6 0 3 3 0 0 0 6 0Zm12 0a3 3 0 1 0-6 0 3 3 0 0 0 6 0Z"
-    />
-  </svg>
-);
-
 const CheckIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -178,23 +51,6 @@ const CheckIcon = () => (
       fillRule="evenodd"
       d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
       clipRule="evenodd"
-    />
-  </svg>
-);
-
-const PersonalIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-10 h-10 text-[#AB5EED]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"
     />
   </svg>
 );
@@ -255,7 +111,12 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
-                <PhilosophyIcon />
+                <Image
+                  src="/icons/philosophy.png"
+                  alt="Философия работы"
+                  width={40}
+                  height={40}
+                />
 
                 <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">
                   Философия работы
@@ -286,7 +147,12 @@ export default function AboutPage() {
 
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
-                <HowIWorkIcon />
+                <Image
+                  src="/icons/how-i-work.png"
+                  alt="Как я работаю"
+                  width={40}
+                  height={40}
+                />
 
                 <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">
                   Как я работаю
@@ -333,7 +199,12 @@ export default function AboutPage() {
 
           <section className="p-8 md:p-12 mb-16">
             <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
-              <SkillsIcon />
+              <Image
+                src="/icons/about-tools.png"
+                alt="Инструменты и технологии"
+                width={40}
+                height={40}
+              />
 
               <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">
                 Инструменты и технологии
@@ -342,173 +213,137 @@ export default function AboutPage() {
 
             <div className="text-base text-gray-700">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div
-                                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
-                                >
-                                  <div className="flex items-center gap-3 mb-4">
-                                    <AiIcon />
-                
-                                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
-                                      Автоматизация и интеграции
-                                    </h3>
-                                  </div>
-                
-                                                    <div className="flex flex-wrap gap-2">
-                
-                                                      <span
-                
-                                                        className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                
-                                                      >
-                
-                                                        n8n
-                
-                                                      </span>
-                
-                                  
-                
-                                                      <span
-                
-                                                        className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                
-                                                      >
-                
-                                                        API
-                
-                                                      </span>
-                
-                                  
-                
-                                                      <span
-                
-                                                        className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                
-                                                      >
-                
-                                                        webhooks
-                
-                                                      </span>
-                
-                                  
-                
-                                                      <span
-                
-                                                        className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                
-                                                      >
-                
-                                                        Email / SMTP
-                
-                                                      </span>
-                
-                                                    </div>
-                                </div>
-                
-                                <div
-                                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
-                                >
-                                  <div className="flex items-center gap-3 mb-4">
-                                    <CodeIcon />
-                
-                                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
-                                      Веб и инфраструктура
-                                    </h3>
-                                  </div>
-                
-                                  <div className="flex flex-wrap gap-2">
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      React
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Next.js
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      HTML / CSS
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      JavaScript
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Tailwind CSS
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Vercel
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Railway
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Git / GitHub
-                                    </span>
-                                  </div>
-                                </div>
-                
-                                <div
-                                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
-                                >
-                                  <div className="flex items-center gap-3 mb-4">
-                                    <StructureIcon />
-                
-                                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
-                                      Данные и рабочая среда
-                                    </h3>
-                                  </div>
-                
-                                  <div className="flex flex-wrap gap-2">
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Google Workspace
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Airtable
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      Supabase
-                                    </span>
-                
-                                    <span
-                                      className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200"
-                                    >
-                                      PostgreSQL
-                                    </span>
-                                  </div>
-                                </div>
+                <div
+                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Image
+                      src="/icons/automatisation-tools.png"
+                      alt="Автоматизация и интеграции"
+                      width={24}
+                      height={24}
+                    />
+
+                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                      Автоматизация и интеграции
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      n8n
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      API
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      webhooks
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Email / SMTP
+                    </span>
+                  </div>
+                </div>
 
                 <div
                   className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <ProcessIcon />
+                    <Image
+                      src="/icons/web-infra.png"
+                      alt="Веб и инфраструктура"
+                      width={24}
+                      height={24}
+                    />
+
+                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                      Веб и инфраструктура
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      React
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Next.js
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      HTML / CSS
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      JavaScript
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Tailwind CSS
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Vercel
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Railway
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Git / GitHub
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Image
+                      src="/icons/data-workspace.png"
+                      alt="Данные и рабочая среда"
+                      width={24}
+                      height={24}
+                    />
+
+                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                      Данные и рабочая среда
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Google Workspace
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Airtable
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      Supabase
+                    </span>
+
+                    <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+                      PostgreSQL
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Image
+                      src="/icons/management-docs.png"
+                      alt="Управление и документация"
+                      width={24}
+                      height={24}
+                    />
 
                     <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
                       Управление и документация
@@ -537,7 +372,12 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
-                <WhoAmIForIcon />
+                <Image
+                  src="/icons/who-i-am-for.png"
+                  alt="Кому я подхожу"
+                  width={40}
+                  height={40}
+                />
 
                 <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">
                   Кому я подхожу
@@ -588,7 +428,12 @@ export default function AboutPage() {
 
             <section className="bg-white rounded-lg shadow-md p-8 md:p-12">
               <div className="flex justify-center md:justify-start items-center gap-4 mb-8">
-                <PersonalIcon />
+                <Image
+                  src="/icons/personal.png"
+                  alt="Немного личного"
+                  width={40}
+                  height={40}
+                />
 
                 <h2 className="text-3xl font-medium text-gray-900 font-unbounded-fix">
                   Немного личного
@@ -630,9 +475,12 @@ export default function AboutPage() {
               </p>
 
               <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
-                <GradientBorderButton onClick={() => setIsModalOpen(true)} variant="gradient">
+                <BentoButton
+                  onClick={() => setIsModalOpen(true)}
+                  variant="primary"
+                >
                   Написать мне
-                </GradientBorderButton>
+                </BentoButton>
               </div>
             </div>
           </section>
