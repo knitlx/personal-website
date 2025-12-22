@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import BentoButton from './BentoButton';
-import ContactModal from './ContactModal';
+import { useState } from "react";
+import BentoButton from "./BentoButton";
+import ContactModal from "./ContactModal";
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +20,8 @@ export default function HeroSection() {
           </span>
         </h1>
         <p className="font-inter text-sm md:text-base text-gray-600 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-          Я объединяю системное мышление, разработку и AI,<br /> чтобы убирать ручную работу и упрощать процессы. 
+          Я объединяю системное мышление, разработку и AI,
+          <br /> чтобы убирать ручную работу и упрощать процессы.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-3 mb-16">
           <BentoButton variant="primary" onClick={() => setIsModalOpen(true)}>
@@ -31,7 +32,10 @@ export default function HeroSection() {
           </BentoButton>
         </div>
       </section>
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }

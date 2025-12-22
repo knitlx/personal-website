@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
 const PlexusCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,21 +9,21 @@ const PlexusCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = document.body.scrollHeight);
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = document.body.scrollHeight;
     });
 
     const particles: Particle[] = [];
     const numParticles = Math.floor((width * height) / 25000); // Adjust density based on screen size
-    const particleColor = 'rgba(123, 104, 238, 0.5)';
-    const lineColor = 'rgba(123, 104, 238, 0.1)';
+    const particleColor = "rgba(123, 104, 238, 0.5)";
+    const lineColor = "rgba(123, 104, 238, 0.1)";
 
     class Particle {
       x: number;
@@ -87,7 +87,7 @@ const PlexusCanvas = () => {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      particles.forEach(p => {
+      particles.forEach((p) => {
         p.update();
         p.draw();
       });
@@ -101,7 +101,7 @@ const PlexusCanvas = () => {
     animate();
 
     return () => {
-      window.removeEventListener('resize', () => {});
+      window.removeEventListener("resize", () => {});
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

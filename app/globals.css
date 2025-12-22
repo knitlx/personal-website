@@ -14,7 +14,7 @@
   @apply bg-[linear-gradient(90deg,#9137DF_0%,#7A68EE_100%)];
 }
 .button-gradient {
-  @apply bg-[linear-gradient(135deg,rgba(171,94,237,0.9)_50%,rgba(122,104,238,0.9)_80%)];
+  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)];
 }
 .shadow-highlight {
   @apply shadow-[0_4px_10px_rgba(0,0,0,0.04)];
@@ -24,6 +24,9 @@
 }
 .hover-shadow-button-strong {
   @apply hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)];
+}
+.tag-gradient-background {
+  @apply bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(122,104,238,0.1)_100%)];
 }
 
 /*
