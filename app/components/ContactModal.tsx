@@ -114,8 +114,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
       onClick={handleClose}
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
     >
       <div
         className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative transition-all duration-300"
@@ -123,7 +124,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       >
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors z-10"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors z-10 cursor-pointer"
           aria-label="Close modal"
         >
           <CloseIcon />
@@ -140,33 +141,33 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+              <button className="w-full bg-[#619BEC] text-white py-3 rounded-lg font-semibold hover:bg-[#5081E1] transition-colors cursor-pointer">
                 Написать в Telegram
               </button>
             </a>
             <a
-              href="#"
+              href="https://wa.me/79154683416"
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">
-                Написать в WhatsApp (заглушка)
+              <button className="w-full bg-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:bg-[#6c58de] transition-colors cursor-pointer">
+                Написать в WhatsApp
               </button>
             </a>
             <a
-              href="#"
+              href="https://t.me/ai_universal_assistantbot"
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-gray-700 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
-                Написать боту-ассистенту (заглушка)
+              <button className="w-full bg-[#AB5EED] text-white py-3 rounded-lg font-semibold hover:bg-[#9a4edb] transition-colors cursor-pointer">
+                Написать боту-ассистенту
               </button>
             </a>
             <button
               onClick={handleShowForm}
-              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors cursor-pointer"
             >
               Оставить заявку
             </button>
@@ -247,14 +248,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={handleShowMain}
-                  className="text-gray-600 hover:text-gray-900 font-semibold transition-colors disabled:opacity-50"
+                  className="text-gray-600 hover:text-gray-900 font-semibold transition-colors disabled:opacity-50 cursor-pointer"
                   disabled={isSubmitting}
                 >
                   &larr; Назад
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+                  className="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300 cursor-pointer"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Отправка..." : "Отправить"}
@@ -275,7 +276,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             </p>
             <button
               onClick={handleClose}
-              className="mt-6 bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors"
+              className="mt-6 bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
             >
               Закрыть
             </button>

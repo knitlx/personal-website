@@ -215,3 +215,25 @@ body {
 .main-nav a::after {
   background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
 }
+
+/* Local styles for .prose */
+.prose p {
+  margin: 1em 0;
+}
+
+.prose h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose ul {
+  margin-left: 1.2em;
+  margin-bottom: 1em;
+  list-style: disc;
+}
+
+.prose strong {
+  font-weight: 600;
+}

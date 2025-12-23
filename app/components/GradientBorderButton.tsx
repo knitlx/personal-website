@@ -11,6 +11,7 @@ type Props = {
   useGradientText?: boolean;
   variant?: "gradient" | "border";
   externalHoveredState?: boolean; // New prop for external hover control
+  size?: "small" | "default"; // New prop for button size
   onMouseEnter?: (
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
   ) => void;
@@ -25,6 +26,7 @@ const GradientBorderButton = ({
   useGradientText = false,
   variant = "border",
   externalHoveredState,
+  size = "default", // Default size is 'default'
   onMouseEnter,
   onMouseLeave,
   ...props
@@ -51,8 +53,15 @@ const GradientBorderButton = ({
   // Classes for the 'gradient' variant (solid gradient button) - now uses the predefined class
   const gradientBgClasses = "button-gradient"; // Using predefined class for better consistency and JIT handling
 
+  // Conditional classes for size
+  const sizeClasses =
+    size === "small"
+      ? "py-2 px-4 text-sm"
+      : "py-3 px-[30px] font-medium";
+
   // Classes for the inner span
-  const baseInnerSpanClasses = `block text-center py-3 px-[30px] rounded-lg transition-all duration-300 ease-in-out font-unbounded-fix font-semibold`;
+  const baseInnerSpanClasses = `block text-center ${sizeClasses} rounded-lg transition-all duration-300 ease-in-out font-unbounded-fix`;
+
 
   let innerSpanBgAndTextColor = "";
   // The 'variant' prop should control the default look.

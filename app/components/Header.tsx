@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-[1000]">
+      <header className="bg-white/80 backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] sticky top-0 z-50">
         <div className="container flex justify-between items-center">
           {" "}
           {/* Use justify-between */}
