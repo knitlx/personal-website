@@ -1,0 +1,28 @@
+.projectCard {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #e5e7eb; /* light gray border */
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.projectCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(123, 104, 238, 0.5);
+}
+
+.projectLink {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+}
+
+.projectCard:hover .projectLink {
+    color: var(--accent-color);
+}

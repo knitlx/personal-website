@@ -27,9 +27,9 @@ const Header = () => {
               <li className="ml-[25px]">
                 <Link
                   href="/services"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
+                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
                                                  after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
-                                                 after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                                                                                                  after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                 >
                   Услуги
                 </Link>
@@ -37,9 +37,9 @@ const Header = () => {
               <li className="ml-[25px]">
                 <Link
                   href="/projects"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
+                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
                                            after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
-                                           after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                                                                                            after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                 >
                   Проекты
                 </Link>
@@ -47,9 +47,9 @@ const Header = () => {
               <li className="ml-[25px]">
                 <Link
                   href="/about"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:text-[#7B68EE]
+                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
                                              after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
-                                             after:bg-[#7B68EE] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                                                                                              after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
                 >
                   Обо мне
                 </Link>

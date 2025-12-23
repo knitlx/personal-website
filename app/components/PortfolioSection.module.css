@@ -1,0 +1,85 @@
+.portfolioCard {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: left;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%; /* Make cards in a grid row equal height */
+}
+
+.portfolioCard:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2);
+}
+
+.portfolioCard::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    border-image-slice: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.portfolioCard:hover::after {
+    opacity: 1;
+}
+
+.portfolioLink {
+    display: inline-block; /* Required for pseudo-elements and transforms */
+    position: relative;
+    text-decoration: none;
+    font-weight: 500;
+    
+    /* Gradient Text */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Underline pseudo-element */
+.portfolioLink::before {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Position under the text */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color)); /* Gradient underline */
+    transform-origin: left; /* Animate from left */
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Underline animation on card hover */
+.portfolioCard:hover .portfolioLink::before {
+    transform: scaleX(1);
+}
+
+/* Arrow pseudo-element */
+.portfolioLink::after {
+    content: '→';
+    display: inline-block;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+    /* Use a solid color that overrides the parent's transparent color */
+    color: var(--primary-color);
+}
+
+/* Change arrow color on hover to match text hover */
+.portfolioCard:hover .portfolioLink::after {
+    transform: translateX(3px);
+    color: var(--accent-color);
+}

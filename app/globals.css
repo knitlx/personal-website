@@ -211,65 +211,7 @@ body {
   top: 8px;
 }
 
-/* Swiper Custom Styles */
-.portfolio-slider-container {
-  padding-top: 20px !important; /* Добавляем верхний паддинг */
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-  padding-bottom: 20px !important;
-}
-
-.swiper {
-  overflow: visible !important; /* Обеспечиваем видимость бордеров */
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  width: 44px !important;
-  height: 44px !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  color: #7A68EE !important;
-}
-
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  background-color: #ffffff;
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 18px !important;
-  font-weight: 800;
-}
-
-/* Positioning adjustments */
-.swiper-button-prev {
-  left: -50px !important; /* Более агрессивное позиционирование */
-}
-.swiper-button-next {
-  right: -50px !important; /* Более агрессивное позиционирование */
-}
-
-/* Pagination styles */
-.swiper-pagination {
-  bottom: -4px !important; /* Move it down a bit */
-}
-
-.swiper-pagination-bullet {
-  width: 8px !important;
-  height: 8px !important;
-  background-color: #ccc !important;
-  opacity: 0.7 !important;
-  transition: all 0.3s ease;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #7A68EE !important;
-  transform: scale(1.25);
-  opacity: 1 !important;
+/* Add gradient to header link underline */
+.main-nav a::after {
+  background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
 }
