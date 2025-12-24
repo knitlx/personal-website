@@ -99,7 +99,7 @@ export const projectsData = [
     description: "Превращение HTML-страниц в PDF.",
     pageDescription: "Инструмент для конвертации HTML-документов в PDF.<br>Сохраняет внешний вид страницы и позволяет посмотреть результат перед скачиванием.",
     link: "/projects/html-to-pdf-converter",
-    tryLink: "/try/html-to-pdf-converter",
+    tryLink: "/projects/document-converter?tab=pdf",
     fullDescription: `
     <p>HTML часто используется как промежуточный формат:<br>для документов, отчётов, инструкций, шаблонов для печати.</p>
     <p>Проблема в том, что при конвертации в PDF<br>часто теряется внешний вид: <strong>ломаются стили, отступы, фоны</strong>.<br>А результат видно только после скачивания файла.</p>
@@ -165,7 +165,7 @@ export const projectsData = [
     description: "Генерация презентаций из HTML-шаблонов.",
     pageDescription: "Конвертер HTML-документов в презентации PowerPoint.<br>Каждый блок страницы превращается в отдельный слайд, результат можно проверить перед выгрузкой.",
     link: "/projects/html-to-pptx-converter",
-    tryLink: "/try/html-to-pptx-converter",
+    tryLink: "/projects/document-converter?tab=pptx",
     fullDescription: `
     <p>HTML удобен как формат для генерации контента:<br>шаблоны, отчёты, презентации часто проще собирать именно в нём.</p>
     <p>Но превратить HTML в презентацию PowerPoint — <strong>нетривиальная задача</strong>.<br>Обычно это либо ручная сборка, либо <strong>потеря внешнего вида</strong>.</p>

@@ -11,7 +11,7 @@ type Props = {
   useGradientText?: boolean;
   variant?: "gradient" | "border";
   externalHoveredState?: boolean; // New prop for external hover control
-  size?: "small" | "default"; // New prop for button size
+  size?: "xsmall" | "small" | "default"; // New prop for button size
   onMouseEnter?: (
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
   ) => void;
@@ -55,12 +55,14 @@ const GradientBorderButton = ({
 
   // Conditional classes for size
   const sizeClasses =
-    size === "small"
+    size === "xsmall"
+      ? "py-1.5 px-3 text-xs font-semibold"
+      : size === "small"
       ? "py-2 px-4 text-sm"
       : "py-3 px-[30px] font-medium";
 
   // Classes for the inner span
-  const baseInnerSpanClasses = `block text-center ${sizeClasses} rounded-lg transition-all duration-300 ease-in-out font-unbounded-fix`;
+  const baseInnerSpanClasses = `block ${sizeClasses} rounded-lg transition-all duration-300 ease-in-out font-unbounded-fix`;
 
 
   let innerSpanBgAndTextColor = "";
@@ -82,7 +84,7 @@ const GradientBorderButton = ({
     }
   }
 
-  const finalInnerSpanClasses = `${baseInnerSpanClasses} ${innerSpanBgAndTextColor}`;
+  const finalInnerSpanClasses = `flex items-center justify-center ${baseInnerSpanClasses} ${innerSpanBgAndTextColor}`;
 
   // Determine final classes based on variant
   // Explicitly manage padding based on variant
