@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, contact, message } = await request.json();
+    const { name, contact, message, projectTitle } = await request.json();
 
     // Basic validation
     if (!name || !contact || !message) {
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
       subject: `Новая заявка с сайта от ${name}`,
       html: `
         <h2>Новая заявка с вашего сайта-портфолио</h2>
+        ${projectTitle ? `<h3>Заявка по проекту: ${projectTitle}</h3>` : ''}
         <p><strong>Имя:</strong> ${name}</p>
         <p><strong>Контакт:</strong> ${contact}</p>
         <p><strong>Сообщение:</strong></p>

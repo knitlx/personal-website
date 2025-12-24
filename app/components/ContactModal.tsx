@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from "react";
+import BentoButton from "./BentoButton"; // Import BentoButton
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
+  projectTitle?: string | null;
 }
 
 // Simple X icon for closing
@@ -25,7 +27,7 @@ const CloseIcon = () => (
   </svg>
 );
 
-const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
+const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTitle }) => {
   const [view, setView] = useState<"main" | "form" | "success">("main");
   const [formData, setFormData] = useState({
     name: "",
@@ -84,13 +86,18 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     setStatusMessage("");
 
+    const payload = {
+      ...formData,
+      projectTitle: projectTitle, // Add the project title to the payload
+    };
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload), // Send the new payload
       });
 
       const result = await response.json();
@@ -179,10 +186,13 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             <h2 className="text-2xl font-bold text-center mb-4 font-unbounded-fix">
               Оставить заявку
             </h2>
-            <p className="text-center text-gray-600 mb-6">
-              Я свяжусь с вами в ближайшее время.
-            </p>
+            {projectTitle && (
+              <p className="text-center text-gray-600 mb-6">
+                Запрос по проекту: <span className="font-semibold">{projectTitle}</span>
+              </p>
+            )}
             <form onSubmit={handleSubmit}>
+              <input type="hidden" name="projectTitle" value={projectTitle || ''} />
               <div className="mb-4">
                 <label
                   htmlFor="name"
@@ -253,13 +263,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 >
                   &larr; Назад
                 </button>
-                <button
+                <BentoButton
                   type="submit"
-                  className="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300 cursor-pointer"
+                  variant="primary"
+                  size="default"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Отправка..." : "Отправить"}
-                </button>
+                </BentoButton>
               </div>
             </form>
           </div>
@@ -267,19 +278,16 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
         {view === "success" && (
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-center mb-4 font-unbounded-fix text-green-600">
+            <h2 className="text-2xl font-bold text-center mb-4 font-unbounded-fix bg-gradient-to-b from-[var(--accent-color)] to-[var(--primary-color)] bg-clip-text text-transparent">
               Спасибо!
             </h2>
             <p className="text-gray-700">{statusMessage}</p>
             <p className="mt-4 text-gray-600">
               Ваша заявка принята. Я скоро с вами свяжусь.
             </p>
-            <button
-              onClick={handleClose}
-              className="mt-6 bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
-            >
+            <BentoButton onClick={handleClose} variant="primary" size="default" className="mt-6">
               Закрыть
-            </button>
+            </BentoButton>
           </div>
         )}
       </div>
