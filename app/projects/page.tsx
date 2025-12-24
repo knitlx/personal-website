@@ -12,8 +12,8 @@ export default function ProjectsPage() {
         <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix">
           Проекты
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 ml-0 mr-auto">
-          {projectsData.map((project: { title: string; icon: string; description: string; link: string; tryLink?: string }) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-0 mr-auto">
+          {projectsData.map((project: { title: string; icon: string; description: string; link: string; tryLink?: string, pageDescription?: string }) => (
             <div key={project.title} className={`${styles.projectCard} flex flex-col`}>
               <div className="flex items-center mb-4">
                 <Image
@@ -25,7 +25,7 @@ export default function ProjectsPage() {
                 />
                 <h2 className="text-2xl font-semibold">{project.title}</h2>
               </div>
-              <p className="text-gray-600 mb-6 flex-grow">{project.description}</p>
+              <p className="text-gray-600 mb-6 flex-grow" dangerouslySetInnerHTML={{ __html: project.pageDescription || project.description }}></p>
               <div className="flex justify-between items-baseline mt-auto">
                 <Link href={project.link} className={`${styles.projectLink} py-2 text-base`}>
                   Подробнее →

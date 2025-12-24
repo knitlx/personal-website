@@ -219,6 +219,7 @@ body {
 /* Local styles for .prose */
 .prose p {
   margin: 1em 0;
+  line-height: 1;
 }
 
 .prose h3 {

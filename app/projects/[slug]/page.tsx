@@ -59,10 +59,10 @@ export default function ProjectDetailPage() {
             {project.title}
           </h1>
         </div>
-        <div 
+        <div
           ref={contentRef}
-          className="prose lg:prose-xl max-w-none" 
-          dangerouslySetInnerHTML={{ __html: project.fullDescription || '' }} 
+          className="prose lg:prose-xl max-w-none"
+          dangerouslySetInnerHTML={{ __html: project.fullDescription || '' }}
         />
       </div>
       {modalImageUrl && (
