@@ -60,7 +60,7 @@ export default function ProjectDetailPage() {
           </div>
           <div
             ref={contentRef}
-            className="prose lg:prose-xl prose-constrained-width"
+            className="prose lg:prose-xl max-w-4xl"
           >
             {/* Render the intro description from the new data structure */}
             <div dangerouslySetInnerHTML={{ __html: project.introDescription || '' }} />

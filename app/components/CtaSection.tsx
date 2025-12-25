@@ -18,7 +18,7 @@ export default function CtaSection() {
             <BentoButton href="/contact" variant="primary">
               Написать мне
             </BentoButton>
-            <BentoButton href="/lab" variant="outline">
+            <BentoButton href="/projects" variant="outline">
               Смотреть кейсы
             </BentoButton>
           </div>

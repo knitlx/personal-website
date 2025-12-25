@@ -12,7 +12,7 @@ export default function HeroSection() {
       {/* This structure is taken from bento-landing/page.tsx */}
       <section className="container max-w-4xl mx-auto px-6 text-center mb-20 pt-24 relative z-10">
         <h1 className="font-unbounded-fix leading-[1.2] mb-8">
-          <span className="block text-[40px] md:text-[72px] font-bold gradient-hero-ai bg-clip-text text-transparent pb-1">
+          <span className="block text-[40px] md:text-[72px] font-bold bg-[linear-gradient(135deg,#9137DF_50%,#7B68EE_75%)] bg-clip-text text-transparent pb-1">
             AI-специалист
           </span>
           <span className="block text-2xl font-bold text-black mt-1 uppercase tracking-widest">

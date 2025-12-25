@@ -17,7 +17,7 @@ export default function ProjectsPage() {
 
   return (
     <>
-      <main className="bg-white py-12">
+      <main className="py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix">
             Проекты
@@ -33,7 +33,7 @@ export default function ProjectsPage() {
                     height={40}
                     className="rounded-lg mr-4"
                   />
-                  <h2 className="text-2xl font-semibold group-hover:text-primary-color transition-colors">{project.title}</h2>
+                  <h2 className="text-2xl font-semibold group-hover:bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] group-hover:bg-clip-text group-hover:text-transparent transition-colors">{project.title}</h2>
                 </Link>
                 <p className="text-gray-600 mb-6 flex-grow" dangerouslySetInnerHTML={{ __html: project.pageDescription || project.description }}></p>
                 <div className="flex justify-start items-baseline mt-auto">

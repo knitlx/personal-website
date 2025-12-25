@@ -4,27 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ======================================================= */
-/* Refactored Utility Classes */
-/* ======================================================= */
-.gradient-hero-ai {
-  @apply bg-[linear-gradient(135deg,#9137DF_50%,#7B68EE_75%)];
-}
-.gradient-hero-desc {
-  @apply bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)];
-}
-.button-gradient {
-  @apply bg-[linear-gradient(135deg,#AB5EED_50%,#7B68EE_80%)];
-}
-.shadow-button-cta {
-  @apply shadow-[0_4px_10px_rgba(123,104,238,0.4)];
-}
-.hover-shadow-button-strong {
-  @apply hover:shadow-[0_6px_20px_rgba(123,104,238,0.6)];
-}
-.tag-gradient-background {
-  @apply bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(var(--primary-color-rgb),0.1)_100%)];
-}
 
 /*
   Базовые переменные
@@ -240,7 +219,3 @@ body {
 }
 
 /* Custom classes added by Gemini */
-
-.prose-constrained-width {
-  max-width: 56rem; /* max-w-4xl (900px) */
-}

@@ -54,6 +54,16 @@ const Header = () => {
                   Обо мне
                 </Link>
               </li>
+              <li className="ml-[25px]">
+                <Link
+                  href="/blog"
+                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
+                                             after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] 
+                                                                                              after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                >
+                  Блог
+                </Link>
+              </li>
             </ul>
           </nav>
           {/* Button moved outside nav and pushed to right */}

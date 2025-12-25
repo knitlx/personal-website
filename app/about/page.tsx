@@ -60,7 +60,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <div className="relative min-h-[calc(100vh-120px)] flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="relative min-h-[calc(100vh-120px)] flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
         {/* Subtle Background Shapes */}
 
         <div className="absolute top-10 left-0 w-80 h-80 bg-gradient-to-r from-purple-200 to-blue-200 rounded-full opacity-20 filter blur-3xl z-0 animate-blob mix-blend-multiply"></div>
@@ -214,7 +214,7 @@ export default function AboutPage() {
             <div className="text-base text-gray-700 mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
                 <div
-                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                  className={whatIDoStyles.whatIDoItem}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Image
@@ -224,29 +224,29 @@ export default function AboutPage() {
                       height={24}
                     />
 
-                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
                       Автоматизация и интеграции
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         n8n
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         API
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         webhooks
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Email / SMTP
                       </span>
                     </span>
@@ -254,7 +254,7 @@ export default function AboutPage() {
                 </div>
 
                 <div
-                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                  className={whatIDoStyles.whatIDoItem}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Image
@@ -264,49 +264,49 @@ export default function AboutPage() {
                       height={24}
                     />
 
-                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent mt-[-1px]">
+                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent mt-[-1px]">
                       Веб и инфраструктура
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         React
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Next.js
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         HTML / CSS
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         JavaScript
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Tailwind CSS
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Vercel
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Railway
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Git / GitHub
                       </span>
                     </span>
@@ -314,7 +314,7 @@ export default function AboutPage() {
                 </div>
 
                 <div
-                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                  className={whatIDoStyles.whatIDoItem}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Image
@@ -324,29 +324,29 @@ export default function AboutPage() {
                       height={24}
                     />
 
-                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
                       Данные и рабочая среда
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Google Workspace
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Airtable
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Supabase
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         PostgreSQL
                       </span>
                     </span>
@@ -354,7 +354,7 @@ export default function AboutPage() {
                 </div>
 
                 <div
-                  className={`${whatIDoStyles.whatIDoItem} bg-[#f7f9fc] rounded-xl p-[25px] text-left transition-all duration-300 ease-in-out flex flex-col relative overflow-hidden`}
+                  className={whatIDoStyles.whatIDoItem}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Image
@@ -364,29 +364,29 @@ export default function AboutPage() {
                       height={24}
                     />
 
-                    <h3 className="text-xl font-semibold gradient-hero-desc bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
                       Управление и документация
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Notion
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Jira
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Trello
                       </span>
                     </span>
-                    <span className="tag-gradient-background inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="gradient-hero-desc bg-clip-text text-transparent text-sm font-medium">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Figma
                       </span>
                     </span>
