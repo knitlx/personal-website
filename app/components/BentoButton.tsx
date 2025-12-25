@@ -33,7 +33,7 @@ export default function BentoButton({
   // Стили для вариантов
   const variants = {
     primary:
-      "bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white hover:opacity-90",
+      "bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white",
     outline: "bg-white border border-gray-200 text-[#1a1a1a] hover:bg-gray-50",
   };
 

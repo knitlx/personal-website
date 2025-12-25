@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import BentoButton from "./BentoButton"; // Import BentoButton
 
 interface ContactModalProps {
@@ -27,6 +27,13 @@ const CloseIcon = () => (
   </svg>
 );
 
+const ALLOWED_EXTENSIONS = [
+  '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.heic', '.bmp', // Images
+  '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.rtf', // Documents
+  '.pages', '.numbers', '.key', // Apple iWork
+  '.zip', '.rar', '.7z' // Archives
+];
+
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTitle }) => {
   const [view, setView] = useState<"main" | "form" | "success">("main");
   const [formData, setFormData] = useState({
@@ -34,16 +41,20 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
     contact: "",
     message: "",
   });
+  const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null); // New state for file error
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  // Reset view when the modal is closed
+  // Reset view and states when the modal is closed
   useEffect(() => {
     if (!isOpen) {
       setTimeout(() => {
         setView("main");
         setStatusMessage("");
         setFormData({ name: "", contact: "", message: "" });
+        setFile(null);
+        setFileError(null); // Reset file error
       }, 300); // Reset after closing animation
     }
   }, [isOpen]);
@@ -75,10 +86,30 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files && e.target.files[0];
+    if (selectedFile) {
+      const fileName = selectedFile.name;
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+
+      if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
+        setFileError(`Недопустимый тип файла: ${fileExtension}. Разрешены: ${ALLOWED_EXTENSIONS.join(', ')}`);
+        setFile(null);
+        e.target.value = ''; // Clear file input
+        return;
+      }
+      setFile(selectedFile);
+      setFileError(null);
+    } else {
+      setFile(null);
+      setFileError(null);
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -86,18 +117,26 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
     setIsSubmitting(true);
     setStatusMessage("");
 
-    const payload = {
-      ...formData,
-      projectTitle: projectTitle, // Add the project title to the payload
-    };
+    if (fileError) { // Prevent submission if there's a file error
+      setIsSubmitting(false);
+      return;
+    }
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("contact", formData.contact);
+    data.append("message", formData.message);
+    if (projectTitle) {
+      data.append("projectTitle", projectTitle);
+    }
+    if (file) {
+      data.append("attachment", file);
+    }
 
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload), // Send the new payload
+        body: data, // No 'Content-Type' header, browser sets it for FormData
       });
 
       const result = await response.json();
@@ -216,7 +255,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
                   htmlFor="contact"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Email или Telegram
+                  Telegram или WhatsApp
                 </label>
                 <input
                   type="text"
@@ -225,11 +264,11 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
                   value={formData.contact}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="example@mail.com или @username"
+                  placeholder="@username или +79991234567"
                   required
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label
                   htmlFor="message"
                   className="block text-gray-700 font-semibold mb-2"
@@ -246,6 +285,29 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
                   placeholder="Кратко опишите вашу задачу..."
                   required
                 ></textarea>
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="attachment"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Приложить файл
+                </label>
+                <input
+                  type="file"
+                  id="attachment"
+                  name="attachment"
+                  onChange={handleFileChange}
+                  accept={ALLOWED_EXTENSIONS.join(',')} // Added accept attribute
+                  className="w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-lg file:border file:border-gray-200
+                    file:text-sm file:font-semibold file:bg-white file:text-[#1a1a1a]
+                    hover:file:bg-gray-50 file:cursor-pointer"
+                />
+                {fileError && (
+                  <p className="text-red-500 text-xs mt-1">{fileError}</p>
+                )}
               </div>
               {statusMessage && (
                 <p

@@ -155,12 +155,12 @@ body {
 }
 .animate-fade-in { animation: fadeInUp 0.7s ease-out forwards; }
 
-.block:hover .gradient-text-button {
+/* .block:hover .gradient-text-button {
   background-image: none;
   -webkit-background-clip: initial;
   background-clip: initial;
   color: white;
-}
+} */
 
 @keyframes blob {
   0% {
@@ -219,7 +219,7 @@ body {
 /* Local styles for .prose */
 .prose p {
   margin: 1em 0;
-  line-height: 1;
+  line-height: 1.5;
 }
 
 .prose h3 {
@@ -237,4 +237,10 @@ body {
 
 .prose strong {
   font-weight: 600;
+}
+
+/* Custom classes added by Gemini */
+
+.prose-constrained-width {
+  max-width: 56rem; /* max-w-4xl (900px) */
 }
