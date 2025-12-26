@@ -1,12 +1,19 @@
 ---
-title: HTML → PDF конвертер
 slug: html-to-pdf-converter
+title: HTML → PDF конвертер
 shortDescriptionHomepage: Превращение HTML-страниц в PDF.
 shortDescriptionProjectsPage: >-
   Инструмент для конвертации HTML-документов в PDF. Сохраняет внешний вид
   страницы и позволяет посмотреть результат перед скачиванием.
 projectIcon: /icons/pdf-new.png
 trylink: /projects/document-converter?tab=pdf
+creationDate: ''
+updateDate: '2025-12-26T12:34:05.670Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
+canonicalUrl: 'http://localhost:3000/projects/html-to-pdf-converter'
+openGraphImage: ''
 introDescription: |2-
 
       <p>HTML часто используется как промежуточный формат: для документов, отчётов, инструкций, шаблонов для печати.</p>
@@ -61,11 +68,5 @@ introDescription: |2-
       <p>Инструмент решает <strong>конкретную задачу</strong> и подходит для рабочих сценариев, а не демо.</p>
       
 fullDescription: ''
-creationDate: ''
-updateDate: ''
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: ''
-openGraphImage: ''
 ---
+
