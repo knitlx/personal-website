@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
 
@@ -41,7 +41,7 @@ const generateSlug = (title: string) => {
     'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'Ъ': '', 'ы': 'y', 'ь': '',
     'э': 'e', 'ю': 'yu', 'я': 'ya',
     'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z', 'И': 'I',
-    'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'С', 'Т': 'Т',
+    'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'Н', 'О': 'О', 'П': 'П', 'Р': 'Р', 'С': 'С', 'Т': 'Т',
     'У': 'У', 'Ф': 'Ф', 'Х': 'Х', 'Ц': 'Ц', 'Ч': 'Ч', 'Ш': 'Ш', 'Щ': 'Щ', 'Ъ': '', 'Ы': 'Ы', 'Ь': '',
     'Э': 'Э', 'Ю': 'Ю', 'Я': 'Я',
   };
@@ -53,8 +53,8 @@ const generateSlug = (title: string) => {
 
   return processedTitle
     .trim()
-    .replace(/[\s]+/g, "-") // Replaces spaces with hyphens
-    .replace(/[^\w\-]+/g, ""); // Removes non-word characters
+    .replace(/[\\s]+/g, "-") // Replaces spaces with hyphens
+    .replace(/[^\\w\-]+/g, ""); // Removes non-word characters
 };
 
 export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) {
@@ -85,6 +85,24 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
     introDescription: initialData?.introDescription || "",
     fullDescription: initialData?.fullDescription || ""
   });
+
+  // States for image upload
+  const [selectedFiles, setSelectedFiles] = useState<{ projectIcon: File | null; openGraphImage: File | null }>({
+    projectIcon: null,
+    openGraphImage: null,
+  });
+  const [uploading, setUploading] = useState<{ projectIcon: boolean; openGraphImage: boolean }> ({
+    projectIcon: false,
+    openGraphImage: false,
+  });
+  const [uploadError, setUploadError] = useState<{ projectIcon: string | null; openGraphImage: string | null }> ({
+    projectIcon: null,
+    openGraphImage: null,
+  });
+
+  // Рефы для скрытых инпутов файлов для MDEditor
+  const fileInputIntroRef = useRef<HTMLInputElement>(null);
+  const fileInputFullRef = useRef<HTMLInputElement>(null);
 
 
   useEffect(() => {
@@ -139,6 +157,90 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
 
   const handleRichTextChange = (field: "introDescription" | "fullDescription", value: string | undefined) => {
     setRichTextContent(prev => ({ ...prev, [field]: value || "" }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'projectIcon' | 'openGraphImage') => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFiles(prev => ({ ...prev, [field]: e.target.files![0] }));
+      setUploadError(prev => ({ ...prev, [field]: null }));
+    } else {
+      setSelectedFiles(prev => ({ ...prev, [field]: null }));
+    }
+  };
+
+  const handleUpload = async (field: 'projectIcon' | 'openGraphImage') => {
+    if (!selectedFiles[field]) {
+      setUploadError(prev => ({ ...prev, [field]: "Пожалуйста, выберите файл для загрузки." }));
+      return;
+    }
+
+    setUploading(prev => ({ ...prev, [field]: true }));
+    setUploadError(prev => ({ ...prev, [field]: null }));
+
+    const formDataToUpload = new FormData();
+    formDataToUpload.append("file", selectedFiles[field]!);
+
+    try {
+      const response = await fetch("/api/admin/upload-image", {
+        method: "POST",
+        body: formDataToUpload,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ошибка загрузки файла.");
+      }
+
+      const result = await response.json();
+      setFormData(prev => ({ ...prev, [field]: result.url }));
+      setSelectedFiles(prev => ({ ...prev, [field]: null })); // Clear selected file after successful upload
+    } catch (err: any) {
+      setUploadError(prev => ({ ...prev, [field]: err.message }));
+    } finally {
+      setUploading(prev => ({ ...prev, [field]: false }));
+    }
+  };
+
+  const handleMDEditorImageUpload = async (file: File): Promise<string> => {
+    const formDataToUpload = new FormData();
+    formDataToUpload.append("file", file);
+
+    try {
+      const response = await fetch("/api/admin/upload-image", {
+        method: "POST",
+        body: formDataToUpload,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Ошибка загрузки файла.");
+      }
+
+      const result = await response.json();
+      return result.url; // MDEditor expects the URL back
+    } catch (err: any) {
+      console.error("MDEditor image upload error:", err);
+      alert(`Ошибка загрузки изображения: ${err.message}`);
+      throw err; // Re-throw to indicate upload failure to MDEditor
+    }
+  };
+
+  // Обработчик для выбора файла из скрытого инпута и вставки в MDEditor
+  const handleImageSelected = async (event: React.ChangeEvent<HTMLInputElement>, field: "introDescription" | "fullDescription") => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      try {
+        const imageUrl = await handleMDEditorImageUpload(file);
+        // Вставляем Markdown-синтаксис в текущее значение MDEditor
+        setRichTextContent(prev => ({
+          ...prev,
+          [field]: `${prev[field]}\n![image](${imageUrl})\n`
+        }));
+        event.target.value = ''; // Очищаем input, чтобы можно было загрузить тот же файл снова
+      } catch (uploadErr) {
+        // Ошибка уже обработана в handleMDEditorImageUpload
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -222,126 +324,189 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
 
       <div>
         <label htmlFor="projectIcon" className="block text-sm font-medium text-gray-700">Иконка проекта (путь)</label>
-        <input
-          type="text"
-          id="projectIcon"
-          name="projectIcon"
-          value={formData.projectIcon}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="trylink" className="block text-sm font-medium text-gray-700">Ссылка для кнопки 'Попробовать'</label>
-        <input
-          type="text"
-          id="trylink"
-          name="trylink"
-          value={formData.trylink}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="shortDescriptionHomepage" className="block text-sm font-medium text-gray-700">Краткое описание для главной страницы</label>
-        <textarea
-          id="shortDescriptionHomepage"
-          name="shortDescriptionHomepage"
-          value={formData.shortDescriptionHomepage}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="shortDescriptionProjectsPage" className="block text-sm font-medium text-gray-700">Краткое описание для страницы проектов</label>
-        <textarea
-          id="shortDescriptionProjectsPage"
-          name="shortDescriptionProjectsPage"
-          value={formData.shortDescriptionProjectsPage}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      {/* Rich Text Editor for Intro Description */}
-      <div data-color-mode="light"> {/* MDEditor requires a color mode context */}
-        <label htmlFor="introDescription" className="block text-sm font-medium text-gray-700 mb-1">Вводный абзац для подробной страницы проекта (Markdown)</label>
-        <MDEditor
-          value={richTextContent.introDescription}
-          onChange={(val) => handleRichTextChange("introDescription", val)}
-          height={200}
-        />
-      </div>
-
-      {/* Rich Text Editor for Full Description */}
-      <div data-color-mode="light"> {/* MDEditor requires a color mode context */}
-        <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1 mt-4">Подробное описание проекта (Markdown)</label>
-        <MDEditor
-          value={richTextContent.fullDescription}
-          onChange={(val) => handleRichTextChange("fullDescription", val)}
-          height={400}
-        />
-      </div>
-      
-      {/* SEO Fields */}
-      <h2 className="text-xl font-semibold mt-8 mb-4">SEO</h2>
-      <div>
-        <label htmlFor="seoTitle" className="block text-sm font-medium text-gray-700">SEO Заголовок</label>
-        <input
-          type="text"
-          id="seoTitle"
-          name="seoTitle"
-          value={formData.seoTitle}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label htmlFor="seoDescription" className="block text-sm font-medium text-gray-700">SEO Описание</label>
-        <textarea
-          id="seoDescription"
-          name="seoDescription"
-          value={formData.seoDescription}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label htmlFor="seoTags" className="block text-sm font-medium text-gray-700">SEO Теги (через запятую)</label>
-        <input
-          type="text"
-          id="seoTags"
-          name="seoTags"
-          value={formData.seoTags}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label htmlFor="openGraphImage" className="block text-sm font-medium text-gray-700">Open Graph Изображение</label>
-        <input
-          type="text"
-          id="openGraphImage"
-          name="openGraphImage"
-          value={formData.openGraphImage}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-      >
-        {loading ? "Сохранение..." : "Сохранить проект"}
-      </button>
-    </form>
-  );
-}
+                  <input
+                    type="text"
+                    id="projectIcon"
+                    name="projectIcon"
+                    value={formData.projectIcon}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                  <input
+                    type="file"
+                    id="uploadProjectIcon"
+                    name="uploadProjectIcon"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, 'projectIcon')}
+                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleUpload('projectIcon')}
+                    disabled={uploading.projectIcon || !selectedFiles.projectIcon}
+                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                  >
+                    {uploading.projectIcon ? "Загрузка..." : "Загрузить иконку"}
+                  </button>
+                  {uploadError.projectIcon && <p className="text-red-500 text-sm mt-1">{uploadError.projectIcon}</p>}
+                </div>
+        
+                <div>
+                  <label htmlFor="trylink" className="block text-sm font-medium text-gray-700">Ссылка для кнопки 'Попробовать'</label>
+                  <input
+                    type="text"
+                    id="trylink"
+                    name="trylink"
+                    value={formData.trylink}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+        
+                <div>
+                  <label htmlFor="shortDescriptionHomepage" className="block text-sm font-medium text-gray-700">Краткое описание для главной страницы</label>
+                  <textarea
+                    id="shortDescriptionHomepage"
+                    name="shortDescriptionHomepage"
+                    value={formData.shortDescriptionHomepage}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+        
+                <div>
+                  <label htmlFor="shortDescriptionProjectsPage" className="block text-sm font-medium text-gray-700">Краткое описание для страницы проектов</label>
+                  <textarea
+                    id="shortDescriptionProjectsPage"
+                    name="shortDescriptionProjectsPage"
+                    value={formData.shortDescriptionProjectsPage}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+        
+                {/* Rich Text Editor for Intro Description */}
+                <div data-color-mode="light"> {/* MDEditor requires a color mode context */}
+                  <label htmlFor="introDescription" className="block text-sm font-medium text-gray-700 mb-1">Вводный абзац для подробной страницы проекта (Markdown)</label>
+                  <MDEditor
+                    value={richTextContent.introDescription}
+                    onChange={(val) => handleRichTextChange("introDescription", val)}
+                    height={200}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputIntroRef}
+                    style={{ display: 'none' }}
+                    onChange={(e) => handleImageSelected(e, "introDescription")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputIntroRef.current?.click()}
+                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Загрузить изображение в описание
+                  </button>
+                </div>
+        
+                {/* Rich Text Editor for Full Description */}
+                <div data-color-mode="light"> {/* MDEditor requires a color mode context */}
+                  <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1 mt-4">Подробное описание проекта (Markdown)</label>
+                  <MDEditor
+                    value={richTextContent.fullDescription}
+                    onChange={(val) => handleRichTextChange("fullDescription", val)}
+                    height={400}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputFullRef}
+                    style={{ display: 'none' }}
+                    onChange={(e) => handleImageSelected(e, "fullDescription")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputFullRef.current?.click()}
+                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Загрузить изображение в полное описание
+                  </button>
+                </div>
+                
+                {/* SEO Fields */}
+                <h2 className="text-xl font-semibold mt-8 mb-4">SEO</h2>
+                <div>
+                  <label htmlFor="seoTitle" className="block text-sm font-medium text-gray-700">SEO Заголовок</label>
+                  <input
+                    type="text"
+                    id="seoTitle"
+                    name="seoTitle"
+                    value={formData.seoTitle}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="seoDescription" className="block text-sm font-medium text-gray-700">SEO Описание</label>
+                  <textarea
+                    id="seoDescription"
+                    name="seoDescription"
+                    value={formData.seoDescription}
+                    onChange={handleChange}
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="seoTags" className="block text-sm font-medium text-gray-700">SEO Теги (через запятую)</label>
+                  <input
+                    type="text"
+                    id="seoTags"
+                    name="seoTags"
+                    value={formData.seoTags}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="openGraphImage" className="block text-sm font-medium text-gray-700">Open Graph Изображение</label>
+                  <input
+                    type="text"
+                    id="openGraphImage"
+                    name="openGraphImage"
+                    value={formData.openGraphImage}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                  <input
+                    type="file"
+                    id="uploadOpenGraphImage"
+                    name="uploadOpenGraphImage"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, 'openGraphImage')}
+                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleUpload('openGraphImage')}
+                    disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
+                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                  >
+                    {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
+                  </button>
+                  {uploadError.openGraphImage && <p className="text-red-500 text-sm mt-1">{uploadError.openGraphImage}</p>}
+                </div>
+        
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                >
+                  {loading ? "Сохранение..." : "Сохранить проект"}
+                </button>
+              </form>
+            );
+          }
+          

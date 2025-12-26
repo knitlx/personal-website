@@ -11,7 +11,7 @@ import { promisify } from "util"
 const execAsync = promisify(exec)
 
 const projectRoot = process.cwd() // Assumes process.cwd() is already the project root
-const contentDirectory = path.join(projectRoot, "content", "projects")
+const contentDirectory = path.join(projectRoot, "content", "blog") // Target blog content directory
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -21,20 +21,21 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const projectData = await req.json()
+    const blogPostData = await req.json()
 
-    if (!projectData.slug || !projectData.title) {
+    if (!blogPostData.slug || !blogPostData.title) {
       return NextResponse.json({ message: "Slug and Title are required" }, { status: 400 })
     }
 
-    const { slug, introDescription, fullDescription, ...frontmatterData } = projectData
+    const { slug, description, articleBody, ...frontmatterData } = blogPostData
 
-    const markdownContent = ""; // Content is now stored in frontmatter fields introDescription and fullDescription
+    // Map description and articleBody to the content as required
+    const markdownContent = ""; // Content is now stored in frontmatter fields
     const fullMarkdown = matter.stringify(markdownContent, {
       slug: slug, // Explicitly add slug to frontmatter
       ...frontmatterData,
-      introDescription: introDescription,
-      fullDescription: fullDescription,
+      description: description,
+      articleBody: articleBody,
     })
     
     const filePath = path.join(contentDirectory, `${slug}.md`)
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     if (!githubPat) {
       console.error("GITHUB_PAT environment variable is not set. Git push will not work.")
-      return NextResponse.json({ message: "Project saved, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
+      return NextResponse.json({ message: "Blog post saved, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
     }
 
     const repoOwner = process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPO_OWNER;
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     if (!repoOwner || !repoSlug) {
       console.error("Repository owner or slug environment variables are not set. Git push will not work.");
-      return NextResponse.json({ message: "Project saved, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
+      return NextResponse.json({ message: "Blog post saved, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
     }
 
     // Set Git config for the current command execution
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
     await execAsync(`git add "${path.relative(projectRoot, filePath)}"`, { cwd: projectRoot })
 
     // Commit the change
-    const commitMessage = `feat: Update project: ${projectData.title}`
+    const commitMessage = `feat: Update blog post: ${blogPostData.title}`
     await execAsync(`git commit -m "${commitMessage}"`, { cwd: projectRoot })
 
     // Push to remote using PAT
@@ -82,13 +83,13 @@ export async function POST(req: NextRequest) {
     await execAsync(pushCommand, { cwd: projectRoot });
 
     // Revalidate the dashboard path to show new/updated content
-    console.log("revalidatePath('/admin/dashboard') called");
+    console.log("revalidatePath('/admin/dashboard') called for blog post");
     revalidatePath('/admin/dashboard');
 
-    return NextResponse.json({ message: "Project saved and committed successfully!", slug }, { status: 200 })
+    return NextResponse.json({ message: "Blog post saved and committed successfully!", slug }, { status: 200 })
   } catch (error: any) {
-    console.error("Error saving or committing project:", error)
-    return NextResponse.json({ message: "Failed to save project or commit to Git", error: error.message }, { status: 500 })
+    console.error("Error saving or committing blog post:", error)
+    return NextResponse.json({ message: "Failed to save blog post or commit to Git", error: error.message }, { status: 500 })
   }
 }
 
@@ -109,7 +110,7 @@ export async function DELETE(req: NextRequest) {
     const filePath = path.join(contentDirectory, `${slug}.md`)
 
     if (!fs.existsSync(filePath)) {
-      return NextResponse.json({ message: "Project not found" }, { status: 404 })
+      return NextResponse.json({ message: "Blog post not found" }, { status: 404 })
     }
 
     // Delete file from file system
@@ -122,7 +123,7 @@ export async function DELETE(req: NextRequest) {
 
     if (!githubPat) {
       console.error("GITHUB_PAT environment variable is not set. Git push will not work.")
-      return NextResponse.json({ message: "Project deleted, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
+      return NextResponse.json({ message: "Blog post deleted, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
     }
 
     const repoOwner = process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPO_OWNER;
@@ -130,7 +131,7 @@ export async function DELETE(req: NextRequest) {
 
     if (!repoOwner || !repoSlug) {
       console.error("Repository owner or slug environment variables are not set. Git push will not work.");
-      return NextResponse.json({ message: "Project deleted, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
+      return NextResponse.json({ message: "Blog post deleted, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
     }
 
     // Set Git config for the current command execution
@@ -141,7 +142,7 @@ export async function DELETE(req: NextRequest) {
     await execAsync(`git rm "${path.relative(projectRoot, filePath)}"`, { cwd: projectRoot })
 
     // Commit the deletion
-    const commitMessage = `feat: Delete project: ${slug}`
+    const commitMessage = `feat: Delete blog post: ${slug}`
     await execAsync(`git commit -m "${commitMessage}"`, { cwd: projectRoot })
 
     // Push to remote using PAT
@@ -153,12 +154,12 @@ export async function DELETE(req: NextRequest) {
 
     // Revalidate relevant paths
     revalidatePath('/admin/dashboard')
-    revalidatePath('/projects')
-    revalidatePath(`/projects/${slug}`) // Revalidate the specific project page
+    revalidatePath('/blog')
+    revalidatePath(`/blog/${slug}`) // Revalidate the specific blog post page
 
-    return NextResponse.json({ message: "Project deleted and committed successfully!" }, { status: 200 })
+    return NextResponse.json({ message: "Blog post deleted and committed successfully!" }, { status: 200 })
   } catch (error: any) {
-    console.error("Error deleting or committing project:", error)
-    return NextResponse.json({ message: "Failed to delete project or commit to Git", error: error.message }, { status: 500 })
+    console.error("Error deleting or committing blog post:", error)
+    return NextResponse.json({ message: "Failed to delete blog post or commit to Git", error: error.message }, { status: 500 })
   }
 }

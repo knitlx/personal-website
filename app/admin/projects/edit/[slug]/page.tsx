@@ -21,7 +21,7 @@ export default async function ProjectEditPage({ params }: ProjectEditPageProps) 
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">{slug === "new" ? "Создать новый проект" : `Редактировать проект: ${project?.data.title}`}</h1>
       <ProjectForm
-        initialData={project ? { ...project.data, content: project.content } : null}
+        initialData={project ? { ...project.data, content: project.content, slug: project.slug } : null}
         baseUrl={baseUrl}
       />
     </div>

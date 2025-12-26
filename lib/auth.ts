@@ -10,4 +10,20 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      const allowedGithubEmails = (process.env.ALLOWED_GITHUB_EMAILS || "")
+        .split(',')
+        .map(email => email.trim().toLowerCase()) // Приводим к нижнему регистру для сравнения
+        .filter(Boolean);
+
+      if (profile?.email && allowedGithubEmails.includes(profile.email.toLowerCase())) {
+        console.log(`Авторизация разрешена для GitHub email: ${profile.email}`);
+        return true; // Разрешить вход
+      } else {
+        console.warn(`Авторизация отклонена для GitHub email: ${profile?.email}. Несанкционированная попытка входа.`);
+        return false; // Отклонить вход
+      }
+    },
+  },
 }

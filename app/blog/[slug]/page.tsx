@@ -1,17 +1,27 @@
-"use client";
+import { getMarkdownFile } from "@/lib/content";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown"; // Импорт ReactMarkdown
+import remarkGfm from "remark-gfm"; // Импорт remarkGfm
 
-import { projectsData } from "../../data/projectsData"; // This should be blogData
-import { blogData } from "../../data/blogData";
-import { useParams } from "next/navigation";
+interface PostPageProps {
+  params: {
+    slug: string;
+  };
+}
 
-export default function PostPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const post = blogData.find((p) => p.slug === slug);
+export default async function PostPage({ params }: PostPageProps) {
+  const { slug } = params;
+  const postFile = getMarkdownFile("blog", slug);
 
-  if (!post) {
-    return <div>Post not found</div>;
+  if (!postFile) {
+    notFound();
   }
+
+  const post = {
+    ...postFile.data,
+    slug: postFile.slug,
+    articleBody: postFile.data.articleBody || "" // Ensure articleBody is available
+  };
 
   return (
     <>
@@ -22,10 +32,11 @@ export default function PostPage() {
             </h1>
             <p className="text-gray-500 mb-8">{post.date}</p>
           
-          <div
-            className="prose lg:prose-xl max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <article className="prose lg:prose-xl max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {post.articleBody}
+            </ReactMarkdown>
+          </article>
 
         </div>
       </main>

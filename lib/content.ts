@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
+import { unstable_noStore as noStore } from 'next/cache' // Use unstable_noStore
 
 const contentDirectory = path.join(process.cwd(), "content")
 
@@ -25,6 +26,8 @@ export function getMarkdownFile(collection: string, slug: string) {
 }
 
 export function getAllContent(collection: string) {
+  noStore() // Ensure this function always runs dynamically with unstable_noStore
+
   const slugs = getSlugs(collection)
   const allContent = slugs.map((slug) => {
     const file = getMarkdownFile(collection, slug)
@@ -36,4 +39,3 @@ export function getAllContent(collection: string) {
 
   return allContent
 }
-
