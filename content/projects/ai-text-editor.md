@@ -11,9 +11,11 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/management-docs.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T14:01:19.008Z'
-seoTitle: ''
-seoDescription: ''
+updateDate: '2025-12-26T17:26:45.268Z'
+seoTitle: AI-редактор текстов
+seoDescription: >-
+  AI-редактор текстов с контролем качества. Анализирует, редактирует текст и
+  сохраняет результат в Google Docs.
 seoTags: ''
 canonicalUrl: 'http://localhost:3000/projects/ai-text-editor'
 openGraphImage: ''
