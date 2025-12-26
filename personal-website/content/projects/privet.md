@@ -5,7 +5,7 @@ shortDescriptionProjectsPage: Портвейн
 projectIcon: ''
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T11:16:57.713Z'
+updateDate: '2025-12-26T11:17:05.730Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
