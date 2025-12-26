@@ -11,13 +11,13 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/management-docs.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T12:33:46.119Z'
+updateDate: '2025-12-26T13:51:09.476Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
 canonicalUrl: 'http://localhost:3000/projects/ai-text-editor'
 openGraphImage: ''
-introDescription: |2-
+introDescription: |2
 
         <p>В рабочих процессах тексты появляются постоянно.</p>
         <p>Это посты, описания услуг, страницы сайта, документация, заметки и черновики.</p>
@@ -35,6 +35,7 @@ introDescription: |2-
         
         <p>В этом проекте реализован <strong>AI-агент</strong>, который работает как редактор и улучшает текст по заданным правилам.</p>
         
+  ![image](/uploads/unnamed.jpg)
 fullDescription: |2-
 
         <h3>Как работает решение</h3>
