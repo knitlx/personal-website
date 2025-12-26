@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/management-docs.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T13:58:52.539Z'
+updateDate: '2025-12-26T14:00:52.825Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
@@ -41,7 +41,7 @@ introDescription: >-
         
   В этом проекте реализован AI-агент, который работает как редактор и улучшает
   текст по заданным правилам.
-fullDescription: >-
+fullDescription: >
   ### Как работает решение
 
   В систему передаётся готовый текст
@@ -96,7 +96,8 @@ fullDescription: >-
         
   Архитектура не привязана к конкретной модели и рассчитана на постоянное
   использование.
-        <img src="/projects/ai-redactor.png" alt="AI-редактор текстов" class="max-w-lg mb-4 rounded-lg shadow-md" />
+
+  ![image](/uploads/ai-redactor.png)
         
   ### Что это даёт
 
