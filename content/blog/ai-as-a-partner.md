@@ -3,7 +3,7 @@ slug: ai-as-a-partner
 title: 'AI как партнер, а не замена'
 date: '2025-12-26'
 creationDate: '2024-07-15'
-updateDate: '2025-12-26T17:27:47.634Z'
+updateDate: '2025-12-26T18:48:02.333Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
