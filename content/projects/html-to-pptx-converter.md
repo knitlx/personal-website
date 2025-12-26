@@ -1,12 +1,19 @@
 ---
-title: HTML → PPTX конвертер
 slug: html-to-pptx-converter
+title: HTML → PPTX конвертер
 shortDescriptionHomepage: Генерация презентаций из HTML-шаблонов.
 shortDescriptionProjectsPage: >-
   Конвертер HTML-документов в презентации PowerPoint. Каждый блок страницы
   превращается в отдельный слайд, результат можно проверить перед выгрузкой.
 projectIcon: /icons/pptx.png
 trylink: /projects/document-converter?tab=pptx
+creationDate: ''
+updateDate: '2025-12-26T12:33:16.735Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
+canonicalUrl: 'http://localhost:3000/projects/html-to-pptx-converter'
+openGraphImage: ''
 introDescription: |2-
 
       <p>HTML удобен как формат для генерации контента: шаблоны, отчёты, презентации часто проще собирать именно в нём.</p>
@@ -60,11 +67,5 @@ introDescription: |2-
       <p>Инструмент подходит для сценариев, где HTML используется как <strong>универсальный формат для генерации контента</strong>.</p>
       
 fullDescription: ''
-creationDate: ''
-updateDate: ''
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: ''
-openGraphImage: ''
 ---
+
