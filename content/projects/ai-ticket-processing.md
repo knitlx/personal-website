@@ -9,7 +9,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/sistem.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T16:28:15.559Z'
+updateDate: '2025-12-26T16:28:55.328Z'
 seoTitle: AI-обработка обращений
 seoDescription: ''
 seoTags: ''
@@ -89,6 +89,7 @@ fullDescription: >-
 
 
   ![AI-обработка в Jira](/projects/Ai-ticket-jira.png)
+
 
   ![AI-обработка в Google Sheets](/projects/Ai-ticket-sheets.png)
 
