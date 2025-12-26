@@ -1,6 +1,6 @@
 ---
-title: AI-редактор текстов
 slug: ai-text-editor
+title: AI-редактор текстов
 shortDescriptionHomepage: >-
   AI-редактор текстов с контролем качества. Анализирует, редактирует текст и
   сохраняет результат в Google Docs.
@@ -10,6 +10,13 @@ shortDescriptionProjectsPage: >-
   оценивается по критериям качества и сохраняется в Google Docs.
 projectIcon: /icons/management-docs.png
 trylink: ''
+creationDate: ''
+updateDate: '2025-12-26T12:33:46.119Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
+canonicalUrl: 'http://localhost:3000/projects/ai-text-editor'
+openGraphImage: ''
 introDescription: |2-
 
         <p>В рабочих процессах тексты появляются постоянно.</p>
@@ -80,12 +87,5 @@ fullDescription: |2-
         </ul>
         
         <p>AI здесь используется как <strong>инструмент редактирования</strong>, а не как источник готового текста.</p>
-      
-creationDate: ''
-updateDate: ''
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: ''
-openGraphImage: ''
 ---
+
