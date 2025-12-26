@@ -47,6 +47,8 @@ export const metadata: Metadata = {
   },
 };
 
+import Providers from "./components/Providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,15 +90,17 @@ export default function RootLayout({
       <body
         className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}
       >
-        <div className="relative flex-grow">
-          {/* <TracerCanvas /> */}
-          {/* <PlexusCanvas /> */}
-          <div className="site-content relative z-10 flex flex-col flex-grow">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
+        <Providers>
+          <div className="relative flex-grow">
+            {/* <TracerCanvas /> */}
+            {/* <PlexusCanvas /> */}
+            <div className="site-content relative z-10 flex flex-col flex-grow">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </div>
           </div>
-        </div>
+        </Providers>
       </body>
     </html>
   );
