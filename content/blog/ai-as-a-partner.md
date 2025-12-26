@@ -3,19 +3,17 @@ slug: ai-as-a-partner
 title: 'AI как партнер, а не замена'
 date: '2025-12-26'
 creationDate: '2024-07-15'
-updateDate: '2025-12-26T13:44:48.622Z'
+updateDate: '2025-12-26T17:27:47.634Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
-canonicalUrl: ''
+canonicalUrl: 'http://localhost:3000/blog/ai-as-a-partner'
 openGraphImage: ''
-description: ''
-articleBody: >
-
+description: >-
   В последнее время много говорят о том, как AI заменит специалистов. Я смотрю
   на это иначе. Для меня AI — это не замена, а партнер, который помогает
   работать лучше, быстрее и глубже.
-        
+articleBody: >
   ### Сильные стороны AI
 
   AI великолепен в задачах, которые требуют обработки огромного количества
