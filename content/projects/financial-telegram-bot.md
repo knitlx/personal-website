@@ -1,6 +1,6 @@
 ---
-title: Финансовый Telegram-бот
 slug: financial-telegram-bot
+title: Финансовый Telegram-бот
 shortDescriptionHomepage: >-
   Учёт личных финансов в Telegram. Доходы и расходы добавляются через чат и
   сразу видны в дашборде.
@@ -11,6 +11,13 @@ shortDescriptionProjectsPage: >-
   разбора.
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
+creationDate: ''
+updateDate: '2025-12-26T12:33:58.052Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
+canonicalUrl: 'http://localhost:3000/projects/financial-telegram-bot'
+openGraphImage: ''
 introDescription: |2-
 
       <p>Личные финансы часто усложняются из-за лишних шагов. Чтобы записать расход или доход, нужно открыть приложение, выбрать категорию, указать сумму и дату. Со временем такие действия начинают мешать регулярным записям.</p>
@@ -89,11 +96,5 @@ introDescription: |2-
       <p>AI используется как инструмент <strong>упрощения работы с данными</strong>, а не как самостоятельный финансовый помощник.</p>
       
 fullDescription: ''
-creationDate: ''
-updateDate: ''
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: ''
-openGraphImage: ''
 ---
+
