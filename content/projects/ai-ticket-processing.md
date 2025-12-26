@@ -1,6 +1,6 @@
 ---
-title: AI-обработка обращений
 slug: ai-ticket-processing
+title: AI-обработка обращений
 shortDescriptionHomepage: 'AI анализирует обращения, структурирует данные и создаёт тикеты.'
 shortDescriptionProjectsPage: >-
   Для команд, где обращения приходят из разных источников. AI разбирает текст,
@@ -8,6 +8,13 @@ shortDescriptionProjectsPage: >-
   результат вызывает сомнения, помечаются для ручной проверки.
 projectIcon: /icons/sistem.png
 trylink: ''
+creationDate: ''
+updateDate: '2025-12-26T16:25:49.346Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
+canonicalUrl: ''
+openGraphImage: ''
 introDescription: |2-
 
       <p>В небольших командах обращения часто приходят из разных источников: формы, чаты, внутренние сервисы, сообщения в свободной форме.</p>
@@ -55,12 +62,5 @@ fullDescription: |2-
         <li>решение можно расширять без переделки логики</li>
       </ul>
       <p>AI здесь используется как инструмент обработки текста, а не как самостоятельный источник решений.</p>
-      
-creationDate: ''
-updateDate: ''
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: ''
-openGraphImage: ''
 ---
+
