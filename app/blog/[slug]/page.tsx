@@ -1,7 +1,9 @@
 import { getMarkdownFile } from "@/lib/content";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown"; // Импорт ReactMarkdown
-import remarkGfm from "remark-gfm"; // Импорт remarkGfm
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw"; // Import rehypeRaw
+import MarkdownImage from "../../components/MarkdownImage"; // Import MarkdownImage
 
 interface PostPageProps {
   params: {
@@ -33,7 +35,16 @@ export default async function PostPage({ params }: PostPageProps) {
             <p className="text-gray-500 mb-8">{post.date}</p>
           
           <article className="prose lg:prose-xl max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]} // Add rehypeRaw to handle raw HTML
+              components={{
+                img: ({ node, ...props }) => (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <MarkdownImage {...props} />
+                ),
+              }}
+            >
               {post.articleBody}
             </ReactMarkdown>
           </article>

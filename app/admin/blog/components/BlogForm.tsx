@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
+import toast from "react-hot-toast";
+import Image from "next/image";
+import ImageGalleryModal from "../../components/ImageGalleryModal";
+import SeoPreview from "../../../components/SeoPreview"; // Import SeoPreview
 
 // Dynamically import MDEditor to ensure it's client-side rendered
 const MDEditor = dynamic(
@@ -50,7 +54,7 @@ const generateSlug = (title: string) => {
 
   return processedTitle
     .trim()
-    .replace(/[\\s\\W_]+/g, "-") // Replace spaces, non-word chars (except -) with a single hyphen
+    .replace(/[\s\W_]+/g, "-") // Replace spaces, non-word chars (except -) with a single hyphen
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
 };
 
@@ -74,13 +78,76 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSlugTouched, setIsSlugTouched] = useState(false);
 
+  // Новое состояние для ошибок валидации
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+
   // States for image upload
   const [selectedFiles, setSelectedFiles] = useState<{ openGraphImage: File | null }>({ openGraphImage: null });
   const [uploading, setUploading] = useState<{ openGraphImage: boolean }>({ openGraphImage: false });
   const [uploadError, setUploadError] = useState<{ openGraphImage: string | null }>({ openGraphImage: null });
 
+  // Состояния для управления галереей изображений
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentImageField, setCurrentImageField] = useState<'openGraphImage' | null>(null);
+
   // Реф для скрытого инпута файла для MDEditor
   const fileInputArticleBodyRef = useRef<HTMLInputElement>(null);
+
+  // Функция для валидации URL
+  const isValidUrl = (url: string) => {
+    // Allow relative paths starting with /
+    if (url.startsWith('/')) {
+      return true;
+    }
+    // For absolute URLs, try to parse
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // Функция валидации формы
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    // Обязательные поля
+    if (!formData.title.trim()) errors.title = "Заголовок обязателен.";
+    if (!formData.slug.trim()) errors.slug = "ЧПУ обязательно.";
+    if (!formData.date.trim()) errors.date = "Дата публикации обязательна.";
+    if (!formData.description.trim()) errors.description = "Краткое описание обязательно.";
+    if (!formData.articleBody.trim()) errors.articleBody = "Тело статьи обязательно.";
+
+    // Минимальная длина
+    if (formData.description.length > 0 && formData.description.length < 10) {
+      errors.description = "Краткое описание должно быть не менее 10 символов.";
+    }
+
+    // Валидация URL
+    // Canonical URL не всегда должен быть валидным URL, если он относительный (например, /blog/my-post)
+    // if (formData.canonicalUrl && !isValidUrl(formData.canonicalUrl)) errors.canonicalUrl = "Неверный формат URL для Canonical URL.";
+    // Валидация URL для openGraphImage
+    if (formData.openGraphImage) {
+        // Если это не относительный путь, и не валидный URL
+        if (!formData.openGraphImage.startsWith('/') && !isValidUrl(formData.openGraphImage)) {
+            errors.openGraphImage = "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
+        }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSelectImageFromGallery = (imageUrl: string) => {
+    if (currentImageField) {
+      setFormData(prev => ({ ...prev, [currentImageField]: imageUrl }));
+      setValidationErrors(prev => ({ ...prev, [currentImageField]: '' })); // Очистить ошибку валидации
+    }
+    setIsGalleryOpen(false);
+    setCurrentImageField(null);
+  };
+
 
   useEffect(() => {
     if (initialData) {
@@ -101,9 +168,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         }));
     }
     // Initialize isSlugTouched if a slug already exists (meaning it's an existing post)
-    if (initialData?.slug) {
-        setIsSlugTouched(true);
-    }
+
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -163,8 +228,9 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       const result = await response.json();
       setFormData(prev => ({ ...prev, [field]: result.url }));
       setSelectedFiles(prev => ({ ...prev, [field]: null })); // Clear selected file after successful upload
+      toast.success("Изображение Open Graph успешно загружено!"); // Добавляем успешное уведомление
     } catch (err: any) {
-      setUploadError(prev => ({ ...prev, [field]: err.message }));
+      toast.error(`Ошибка загрузки: ${err.message}`); // Заменяем setUploadError на toast.error
     } finally {
       setUploading(prev => ({ ...prev, [field]: false }));
     }
@@ -189,7 +255,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       return result.url; // MDEditor expects the URL back
     } catch (err: any) {
       console.error("MDEditor image upload error:", err);
-      alert(`Ошибка загрузки изображения: ${err.message}`);
+      toast.error(`Ошибка загрузки изображения: ${err.message}`);
       throw err; // Re-throw to indicate upload failure to MDEditor
     }
   };
@@ -214,8 +280,14 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+        toast.error("Пожалуйста, исправьте ошибки в форме.");
+        return;
+    }
+
     setLoading(true);
-    setError(null);
+    // setError(null);
 
     const dataToSubmit = {
         ...formData,
@@ -236,10 +308,11 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         throw new Error(errorData.message || "Failed to save blog post.");
       }
 
+      toast.success("Статья успешно сохранена!"); // Добавить
       router.push("/admin/dashboard");
       router.refresh(); // Refresh the dashboard to show updated list
     } catch (err: any) {
-      setError(err.message);
+      toast.error(`Ошибка сохранения статьи: ${err.message}`); // Заменить setError
     } finally {
       setLoading(false);
     }
@@ -247,7 +320,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && <div className="p-4 bg-red-100 text-red-700 rounded-md">{error}</div>}
+
 
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">Заголовок</label>
@@ -260,6 +333,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.title && <p className="text-red-500 text-sm mt-1">{validationErrors.title}</p>}
       </div>
 
       <div>
@@ -273,6 +347,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.slug && <p className="text-red-500 text-sm mt-1">{validationErrors.slug}</p>}
       </div>
 
       <div>
@@ -285,6 +360,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           onChange={handleChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.canonicalUrl && <p className="text-red-500 text-sm mt-1">{validationErrors.canonicalUrl}</p>}
       </div>
 
       <div>
@@ -298,6 +374,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.date && <p className="text-red-500 text-sm mt-1">{validationErrors.date}</p>}
       </div>
 
       <div>
@@ -310,6 +387,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           rows={3}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.description && <p className="text-red-500 text-sm mt-1">{validationErrors.description}</p>}
       </div>
 
       {/* Rich Text Editor for Article Body */}
@@ -320,6 +398,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           onChange={(val) => handleRichTextChange("articleBody", val)}
           height={400}
         />
+        {validationErrors.articleBody && <p className="text-red-500 text-sm mt-1">{validationErrors.articleBody}</p>}
         <input
           type="file"
           accept="image/*"
@@ -381,24 +460,59 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <input
-                    type="file"
-                    id="uploadOpenGraphImage"
-                    name="uploadOpenGraphImage"
-                    accept="image/*"
-                    onChange={(e) => handleFileChange(e, 'openGraphImage')}
-                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleUpload('openGraphImage')}
-                    disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
-                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                  >
-                    {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
-                  </button>
+                  <div className="flex space-x-2 mt-2"> {/* Обернуть кнопки для стилизации */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCurrentImageField('openGraphImage');
+                        setIsGalleryOpen(true);
+                      }}
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      Выбрать из галереи
+                    </button>
+                    <input
+                      type="file"
+                      id="uploadOpenGraphImage"
+                      name="uploadOpenGraphImage"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e, 'openGraphImage')}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpload('openGraphImage')}
+                      disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
+                      className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                    >
+                      {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
+                    </button>
+                  </div>
                   {uploadError.openGraphImage && <p className="text-red-500 text-sm mt-1">{uploadError.openGraphImage}</p>}
+                  {validationErrors.openGraphImage && <p className="text-red-500 text-sm mt-1">{validationErrors.openGraphImage}</p>}
+                  {/* Добавляем предпросмотр Open Graph изображения */}
+                  {formData.openGraphImage && (
+                    <div className="mt-2">
+                      <p className="text-sm font-medium text-gray-700">Предпросмотр Open Graph изображения:</p>
+                      <Image
+                        src={formData.openGraphImage}
+                        alt="Open Graph Image Preview"
+                        width={120}
+                        height={63}
+                        className="rounded-md object-cover border border-gray-200"
+                      />
+                    </div>
+                  )}
                 </div>
+        
+                {/* Add SeoPreview component */}
+                <SeoPreview
+                  title={formData.seoTitle || formData.title}
+                  description={formData.seoDescription || formData.description}
+                  imageUrl={formData.openGraphImage}
+                  url={`${baseUrl}/blog/${formData.slug}`}
+                  type="article"
+                />
         
               <button
                 type="submit"
@@ -407,6 +521,11 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
               >
                 {loading ? "Сохранение..." : "Сохранить статью"}
               </button>
-            </form>
-          );
-        }
+              <ImageGalleryModal
+                isOpen={isGalleryOpen}
+                onClose={() => setIsGalleryOpen(false)}
+                onSelectImage={handleSelectImageFromGallery}
+              />
+                          </form>
+                        );
+                      }

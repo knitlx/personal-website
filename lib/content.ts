@@ -3,6 +3,26 @@ import path from "path"
 import matter from "gray-matter"
 import { unstable_noStore as noStore } from 'next/cache' // Use unstable_noStore
 
+// Define a more comprehensive ContentItem interface
+interface ContentItem {
+  slug: string;
+  title: string;
+  description?: string; // Optional description
+  articleBody?: string; // Optional for blog posts
+  creationDate?: string; // Explicitly add creationDate
+  updateDate?: string;   // Explicitly add updateDate
+  [key: string]: any; // Allow other properties from gray-matter
+}
+
+// Define options interface for getAllContent
+interface GetAllContentOptions {
+  page?: number;
+  limit?: number;
+  search?: string;
+  filterBy?: string; // e.g., "title", "description", "category"
+  filterValue?: string; // value to filter by
+}
+
 const contentDirectory = path.join(process.cwd(), "content")
 
 export function getSlugs(collection: string) {
@@ -25,17 +45,64 @@ export function getMarkdownFile(collection: string, slug: string) {
   return { data, content, slug }
 }
 
-export function getAllContent(collection: string) {
-  noStore() // Ensure this function always runs dynamically with unstable_noStore
+// Define the shape of the return object for getAllContent
+export interface GetAllContentResult {
+  data: ContentItem[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  limit: number;
+}
 
-  const slugs = getSlugs(collection)
-  const allContent = slugs.map((slug) => {
-    const file = getMarkdownFile(collection, slug)
+export function getAllContent(
+  collection: string,
+  options?: GetAllContentOptions
+) {
+  noStore();
+
+  const slugs = getSlugs(collection);
+  let allContent: ContentItem[] = slugs.map((slug) => {
+    const file = getMarkdownFile(collection, slug);
     if (file) {
-      return { ...file.data, slug, content: file.content }
+      // Ensure content and description are included for searching
+      return { ...file.data, slug, content: file.content, description: file.data.description };
     }
-    return null
-  }).filter(Boolean) // Filter out any nulls if getMarkdownFile returned null
+    return null;
+  }).filter(Boolean) as ContentItem[]; // Filter out any nulls and assert type
 
-  return allContent
+  // Apply search
+  if (options?.search && options.search.trim() !== '') {
+    const searchTerm = options.search.toLowerCase();
+    allContent = allContent.filter(item =>
+      (item.title && item.title.toLowerCase().includes(searchTerm)) ||
+      (item.description && item.description.toLowerCase().includes(searchTerm)) ||
+      (item.content && item.content.toLowerCase().includes(searchTerm)) // Search in full content
+    );
+  }
+
+  // Apply filtering (more generic, could be extended)
+  if (options?.filterBy && options.filterValue) {
+    const filterBy = options.filterBy as keyof ContentItem;
+    const filterValue = options.filterValue.toLowerCase();
+    allContent = allContent.filter(item => {
+      const itemValue = String(item[filterBy]).toLowerCase();
+      return itemValue.includes(filterValue);
+    });
+  }
+
+  // Apply pagination
+  const page = options?.page ? Number(options.page) : 1;
+  const limit = options?.limit ? Number(options.limit) : 10; // Default limit
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const paginatedContent = allContent.slice(startIndex, endIndex);
+
+  return {
+    data: paginatedContent,
+    totalItems: allContent.length,
+    totalPages: Math.ceil(allContent.length / limit),
+    currentPage: page,
+    limit: limit,
+  };
 }

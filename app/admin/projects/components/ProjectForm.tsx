@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
+import toast from "react-hot-toast";
+import Image from "next/image";
+import ImageGalleryModal from "../../components/ImageGalleryModal";
+import SeoPreview from "../../../components/SeoPreview"; // Import SeoPreview
 
 // Dynamically import MDEditor to ensure it's client-side rendered
 const MDEditor = dynamic(
@@ -41,7 +45,7 @@ const generateSlug = (title: string) => {
     'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'Ъ': '', 'ы': 'y', 'ь': '',
     'э': 'e', 'ю': 'yu', 'я': 'ya',
     'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh', 'З': 'Z', 'И': 'I',
-    'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'Н', 'О': 'О', 'П': 'П', 'Р': 'Р', 'С': 'С', 'Т': 'Т',
+    'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'М', 'Н': 'Н', 'О': 'О', 'П': 'П', 'Р': 'Р', 'С': 'С', 'Т': 'Т',
     'У': 'У', 'Ф': 'Ф', 'Х': 'Х', 'Ц': 'Ц', 'Ч': 'Ч', 'Ш': 'Ш', 'Щ': 'Щ', 'Ъ': '', 'Ы': 'Ы', 'Ь': '',
     'Э': 'Э', 'Ю': 'Ю', 'Я': 'Я',
   };
@@ -53,8 +57,8 @@ const generateSlug = (title: string) => {
 
   return processedTitle
     .trim()
-    .replace(/[\\s]+/g, "-") // Replaces spaces with hyphens
-    .replace(/[^\\w\-]+/g, ""); // Removes non-word characters
+    .replace(/[\u0000-\u001f\u007f-\u009f\u2000-\u206f\u2190-\u21ff\u2500-\u25ff\u2600-\u26ff\u2700-\u27bf\u2900-\u297f\u2e80-\u2eff\u3000-\u303f\u3300-\u33ff\ufe00-\ufe0f\ufe70-\ufeff]/g, "-") // Replace non-alphanumeric characters (excluding hyphen) with a hyphen
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
 };
 
 export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) {
@@ -80,6 +84,14 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
   const [error, setError] = useState<string | null>(null);
   const [isSlugTouched, setIsSlugTouched] = useState(false); // New state
 
+  // Состояния для управления галереей изображений
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentImageField, setCurrentImageField] = useState<'projectIcon' | 'openGraphImage' | null>(null);
+
+
+  // Новое состояние для ошибок валидации
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+
   // Separate state for rich-text content to handle its parsing from initialData.content
   const [richTextContent, setRichTextContent] = useState({
     introDescription: initialData?.introDescription || "",
@@ -87,7 +99,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
   });
 
   // States for image upload
-  const [selectedFiles, setSelectedFiles] = useState<{ projectIcon: File | null; openGraphImage: File | null }>({
+  const [selectedFiles, setSelectedFiles] = useState<{ projectIcon: File | null; openGraphImage: File | null }> ({
     projectIcon: null,
     openGraphImage: null,
   });
@@ -103,6 +115,70 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
   // Рефы для скрытых инпутов файлов для MDEditor
   const fileInputIntroRef = useRef<HTMLInputElement>(null);
   const fileInputFullRef = useRef<HTMLInputElement>(null);
+
+  // Функция для валидации URL
+  const isValidUrl = (url: string) => {
+    // Allow relative paths starting with /
+    if (url.startsWith('/')) {
+      return true;
+    }
+    // For absolute URLs, try to parse
+    try {
+      new URL(url);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // Функция валидации формы
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    // Обязательные поля
+    if (!formData.title.trim()) errors.title = "Название обязательно.";
+    if (!formData.slug.trim()) errors.slug = "ЧПУ обязательно.";
+    if (!richTextContent.introDescription.trim()) errors.introDescription = "Вводный абзац обязателен.";
+    if (!richTextContent.fullDescription.trim()) errors.fullDescription = "Полное описание обязательно.";
+
+    // Минимальная длина
+    if (formData.shortDescriptionHomepage.length > 0 && formData.shortDescriptionHomepage.length < 10) {
+      errors.shortDescriptionHomepage = "Краткое описание для главной страницы должно быть не менее 10 символов.";
+    }
+    if (formData.shortDescriptionProjectsPage.length > 0 && formData.shortDescriptionProjectsPage.length < 10) {
+      errors.shortDescriptionProjectsPage = "Краткое описание для страницы проектов должно быть не менее 10 символов.";
+    }
+
+    // Валидация URL для projectIcon
+    if (formData.projectIcon) {
+        // Если это не относительный путь, и не валидный URL
+        if (!formData.projectIcon.startsWith('/') && !isValidUrl(formData.projectIcon)) {
+            errors.projectIcon = "Неверный формат URL для иконки проекта. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
+        }
+    }
+    if (formData.trylink && !isValidUrl(formData.trylink)) errors.trylink = "Неверный формат URL для кнопки 'Попробовать'.";
+    // Canonical URL не всегда должен быть валидным URL, если он относительный (например, /projects/my-project)
+    // if (formData.canonicalUrl && !isValidUrl(formData.canonicalUrl)) errors.canonicalUrl = "Неверный формат URL для Canonical URL.";
+    // Валидация URL для openGraphImage
+    if (formData.openGraphImage) {
+        // Если это не относительный путь, и не валидный URL
+        if (!formData.openGraphImage.startsWith('/') && !isValidUrl(formData.openGraphImage)) {
+            errors.openGraphImage = "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
+        }
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSelectImageFromGallery = (imageUrl: string) => {
+    if (currentImageField) {
+      setFormData(prev => ({ ...prev, [currentImageField]: imageUrl }));
+      setValidationErrors(prev => ({ ...prev, [currentImageField]: '' })); // Очистить ошибку валидации
+    }
+    setIsGalleryOpen(false);
+    setCurrentImageField(null);
+  };
 
 
   useEffect(() => {
@@ -129,9 +205,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
         });
     }
     // Initialize isSlugTouched if a slug already exists (meaning it's an existing project)
-    if (initialData?.slug) {
-        setIsSlugTouched(true);
-    }
+
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -194,8 +268,9 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
       const result = await response.json();
       setFormData(prev => ({ ...prev, [field]: result.url }));
       setSelectedFiles(prev => ({ ...prev, [field]: null })); // Clear selected file after successful upload
+      toast.success("Изображение успешно загружено!"); // Добавляем успешное уведомление
     } catch (err: any) {
-      setUploadError(prev => ({ ...prev, [field]: err.message }));
+      toast.error(`Ошибка загрузки: ${err.message}`); // Заменяем setUploadError на toast.error
     } finally {
       setUploading(prev => ({ ...prev, [field]: false }));
     }
@@ -220,7 +295,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
       return result.url; // MDEditor expects the URL back
     } catch (err: any) {
       console.error("MDEditor image upload error:", err);
-      alert(`Ошибка загрузки изображения: ${err.message}`);
+      toast.error(`Ошибка загрузки изображения: ${err.message}`);
       throw err; // Re-throw to indicate upload failure to MDEditor
     }
   };
@@ -245,8 +320,14 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+        toast.error("Пожалуйста, исправьте ошибки в форме.");
+        return;
+    }
+
     setLoading(true);
-    setError(null);
+    // setError(null); // Больше не нужен, так как ошибки обрабатываются через toast
 
     // Combine richTextContent back into formData for submission
     const dataToSubmit = {
@@ -271,10 +352,11 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
         throw new Error(errorData.message || "Failed to save project.");
       }
 
+      toast.success("Проект успешно сохранен!"); // Уведомление об успехе
       router.push("/admin/dashboard");
       router.refresh(); // Refresh the dashboard to show updated list
     } catch (err: any) {
-      setError(err.message);
+      toast.error(`Ошибка сохранения проекта: ${err.message}`); // Заменяем setError на toast.error
     } finally {
       setLoading(false);
     }
@@ -282,7 +364,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && <div className="p-4 bg-red-100 text-red-700 rounded-md">{error}</div>}
+
 
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">Название</label>
@@ -295,6 +377,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.title && <p className="text-red-500 text-sm mt-1">{validationErrors.title}</p>}
       </div>
 
       <div>
@@ -308,6 +391,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.slug && <p className="text-red-500 text-sm mt-1">{validationErrors.slug}</p>}
       </div>
 
       <div>
@@ -320,6 +404,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
           onChange={handleChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
+        {validationErrors.canonicalUrl && <p className="text-red-500 text-sm mt-1">{validationErrors.canonicalUrl}</p>}
       </div>
 
       <div>
@@ -332,23 +417,49 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <input
-                    type="file"
-                    id="uploadProjectIcon"
-                    name="uploadProjectIcon"
-                    accept="image/*"
-                    onChange={(e) => handleFileChange(e, 'projectIcon')}
-                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleUpload('projectIcon')}
-                    disabled={uploading.projectIcon || !selectedFiles.projectIcon}
-                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                  >
-                    {uploading.projectIcon ? "Загрузка..." : "Загрузить иконку"}
-                  </button>
+                  <div className="flex space-x-2 mt-2"> {/* Обернуть кнопки для стилизации */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCurrentImageField('projectIcon');
+                        setIsGalleryOpen(true);
+                      }}
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      Выбрать из галереи
+                    </button>
+                    <input
+                      type="file"
+                      id="uploadProjectIcon"
+                      name="uploadProjectIcon"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e, 'projectIcon')}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpload('projectIcon')}
+                      disabled={uploading.projectIcon || !selectedFiles.projectIcon}
+                      className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                    >
+                      {uploading.projectIcon ? "Загрузка..." : "Загрузить иконку"}
+                    </button>
+                  </div>
                   {uploadError.projectIcon && <p className="text-red-500 text-sm mt-1">{uploadError.projectIcon}</p>}
+                  {validationErrors.projectIcon && <p className="text-red-500 text-sm mt-1">{validationErrors.projectIcon}</p>}
+                  {/* Добавляем предпросмотр иконки проекта */}
+                  {formData.projectIcon && (
+                    <div className="mt-2">
+                      <p className="text-sm font-medium text-gray-700">Предпросмотр иконки:</p>
+                      <Image
+                        src={formData.projectIcon}
+                        alt="Project Icon Preview"
+                        width={64}
+                        height={64}
+                        className="rounded-md object-cover border border-gray-200"
+                      />
+                    </div>
+                  )}
                 </div>
         
                 <div>
@@ -361,6 +472,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                  {validationErrors.trylink && <p className="text-red-500 text-sm mt-1">{validationErrors.trylink}</p>}
                 </div>
         
                 <div>
@@ -373,6 +485,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     rows={3}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                  {validationErrors.shortDescriptionHomepage && <p className="text-red-500 text-sm mt-1">{validationErrors.shortDescriptionHomepage}</p>}
                 </div>
         
                 <div>
@@ -385,6 +498,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     rows={3}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                  {validationErrors.shortDescriptionProjectsPage && <p className="text-red-500 text-sm mt-1">{validationErrors.shortDescriptionProjectsPage}</p>}
                 </div>
         
                 {/* Rich Text Editor for Intro Description */}
@@ -395,6 +509,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onChange={(val) => handleRichTextChange("introDescription", val)}
                     height={200}
                   />
+                  {validationErrors.introDescription && <p className="text-red-500 text-sm mt-1">{validationErrors.introDescription}</p>}
                   <input
                     type="file"
                     accept="image/*"
@@ -407,7 +522,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onClick={() => fileInputIntroRef.current?.click()}
                     className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
-                    Загрузить изображение в описание
+                    Загрузить изображение
                   </button>
                 </div>
         
@@ -419,6 +534,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onChange={(val) => handleRichTextChange("fullDescription", val)}
                     height={400}
                   />
+                  {validationErrors.fullDescription && <p className="text-red-500 text-sm mt-1">{validationErrors.fullDescription}</p>}
                   <input
                     type="file"
                     accept="image/*"
@@ -431,7 +547,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onClick={() => fileInputFullRef.current?.click()}
                     className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
-                    Загрузить изображение в полное описание
+                    Загрузить изображение
                   </button>
                 </div>
                 
@@ -480,25 +596,60 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
-                  <input
-                    type="file"
-                    id="uploadOpenGraphImage"
-                    name="uploadOpenGraphImage"
-                    accept="image/*"
-                    onChange={(e) => handleFileChange(e, 'openGraphImage')}
-                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleUpload('openGraphImage')}
-                    disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
-                    className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                  >
-                    {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
-                  </button>
+                  <div className="flex space-x-2 mt-2"> {/* Обернуть кнопки для стилизации */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCurrentImageField('openGraphImage');
+                        setIsGalleryOpen(true);
+                      }}
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      Выбрать из галереи
+                    </button>
+                    <input
+                      type="file"
+                      id="uploadOpenGraphImage"
+                      name="uploadOpenGraphImage"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e, 'openGraphImage')}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleUpload('openGraphImage')}
+                      disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
+                      className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                    >
+                      {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
+                    </button>
+                  </div>
                   {uploadError.openGraphImage && <p className="text-red-500 text-sm mt-1">{uploadError.openGraphImage}</p>}
+                  {validationErrors.openGraphImage && <p className="text-red-500 text-sm mt-1">{validationErrors.openGraphImage}</p>}
+                  {/* Добавляем предпросмотр Open Graph изображения */}
+                  {formData.openGraphImage && (
+                    <div className="mt-2">
+                      <p className="text-sm font-medium text-gray-700">Предпросмотр Open Graph изображения:</p>
+                      <Image
+                        src={formData.openGraphImage}
+                        alt="Open Graph Image Preview"
+                        width={120}
+                        height={63}
+                        className="rounded-md object-cover border border-gray-200"
+                      />
+                    </div>
+                  )}
                 </div>
         
+                {/* Add SeoPreview component */}
+                <SeoPreview
+                  title={formData.seoTitle || formData.title}
+                  description={formData.seoDescription || formData.shortDescriptionProjectsPage || formData.introDescription}
+                  imageUrl={formData.openGraphImage}
+                  url={`${baseUrl}/projects/${formData.slug}`}
+                  type="article"
+                />
+
                 <button
                   type="submit"
                   disabled={loading}
@@ -506,7 +657,11 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
                 >
                   {loading ? "Сохранение..." : "Сохранить проект"}
                 </button>
+                <ImageGalleryModal
+                  isOpen={isGalleryOpen}
+                  onClose={() => setIsGalleryOpen(false)}
+                  onSelectImage={handleSelectImageFromGallery}
+                />
               </form>
             );
           }
-          

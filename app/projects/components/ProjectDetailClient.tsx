@@ -5,8 +5,10 @@ import Image from "next/image";
 import ImageModal from '../../components/ImageModal';
 import ContactModal from '../../components/ContactModal';
 import BentoButton from '../../components/BentoButton';
-import ReactMarkdown from "react-markdown"; // Импорт ReactMarkdown
-import remarkGfm from "remark-gfm"; // Импорт remarkGfm
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw"; // Import rehypeRaw
+import MarkdownImage from "../../components/MarkdownImage"; // Import MarkdownImage
 
 interface ProjectDetailClientProps {
   project: {
@@ -30,19 +32,19 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
   });
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // This effect runs on the parent `prose` container and will find all images within it.
-    if (contentRef.current) {
-      const images = contentRef.current.getElementsByTagName('img');
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i];
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', () => {
-          setModalImageUrl(img.src);
-        });
-      }
-    }
-  }, [project, modalImageUrl]); // Added project to dependency array
+  // No longer needed after switching to MarkdownImage component
+  // useEffect(() => {
+  //   if (contentRef.current) {
+  //     const images = contentRef.current.getElementsByTagName('img');
+  //     for (let i = 0; i < images.length; i++) {
+  //       const img = images[i];
+  //       img.style.cursor = 'pointer';
+  //       img.addEventListener('click', () => {
+  //         setModalImageUrl(img.src);
+  //       });
+  //     }
+  //   }
+  // }, [project, modalImageUrl]);
 
   const closeModal = () => {
     setModalImageUrl(null);
@@ -65,11 +67,20 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             </h1>
           </div>
           <div
-            ref={contentRef}
+            // ref={contentRef} // No longer needed
             className="prose lg:prose-xl max-w-4xl"
           >
             {/* Render the intro description using ReactMarkdown */}
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                img: ({ node, ...props }) => (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <MarkdownImage {...props} onImageClick={setModalImageUrl} />
+                ),
+              }}
+            >
               {project.introDescription || ''}
             </ReactMarkdown>
 
@@ -86,7 +97,16 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             )}
 
             {/* Render the rest of the description using ReactMarkdown */}
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                img: ({ node, ...props }) => (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <MarkdownImage {...props} onImageClick={setModalImageUrl} />
+                ),
+              }}
+            >
               {project.fullDescription || ''}
             </ReactMarkdown>
           </div>
