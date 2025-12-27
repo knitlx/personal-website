@@ -8,7 +8,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/pdf-new.png
 trylink: /projects/document-converter?tab=pdf
 creationDate: ''
-updateDate: '2025-12-26T12:34:05.670Z'
+updateDate: '2025-12-27T08:26:20.940Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
@@ -19,7 +19,8 @@ introDescription: |2-
       <p>HTML часто используется как промежуточный формат: для документов, отчётов, инструкций, шаблонов для печати.</p>
       <p>Проблема в том, что при конвертации в PDF часто теряется внешний вид: <strong>ломаются стили, отступы, фоны</strong>. А результат видно только после скачивания файла.</p>
       <p>В этом проекте реализован инструмент, который позволяет конвертировать HTML в PDF с сохранением внешнего вида и <strong>предварительным просмотром</strong> результата.</p>
-      <h3>Контекст и задача</h3>
+fullDescription: |-
+  <h3>Контекст и задача</h3>
       <p>Задача была прикладной:</p>
       <p>взять <strong>готовый HTML</strong></p>
       <p>сохранить <strong>верстку и стили</strong></p>
@@ -66,7 +67,5 @@ introDescription: |2-
         <li>PDF готов к печати и распространению</li>
       </ul>
       <p>Инструмент решает <strong>конкретную задачу</strong> и подходит для рабочих сценариев, а не демо.</p>
-      
-fullDescription: ''
 ---
 
