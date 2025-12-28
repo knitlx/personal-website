@@ -11,12 +11,16 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/management-docs.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-28T22:05:36.626Z'
-seoTitle: AI-редактор текстов
+updateDate: '2025-12-28T22:08:19.592Z'
+seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
-  AI-редактор текстов с контролем качества. Анализирует, редактирует текст и
-  сохраняет результат в Google Docs.
-seoTags: ''
+  AI-редактор для работы с черновиками и рабочими текстами. Анализирует
+  структуру и тон, аккуратно редактирует и проверяет результат по заданным
+  критериям.
+seoTags: >-
+  ai редактор текстов, ai редактирование текстов, контроль качества текста,
+  редактура с ai, улучшение текстов ai, tone of voice ai, автоматизация
+  редактуры, n8n ai
 canonicalUrl: 'http://localhost:3000/projects/ai-text-editor'
 openGraphImage: ''
 introDescription: >-
