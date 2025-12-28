@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/management-docs.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-26T17:26:45.268Z'
+updateDate: '2025-12-28T22:05:36.626Z'
 seoTitle: AI-редактор текстов
 seoDescription: >-
   AI-редактор текстов с контролем качества. Анализирует, редактирует текст и
@@ -83,7 +83,7 @@ fullDescription: >
   Документ остаётся обычным рабочим файлом, с которым можно продолжать работу
   без изменения процесса.
         
-  ### Техническая реализация
+  ### Техническая основа и логика работы
 
 
   - текст принимается через webhook
