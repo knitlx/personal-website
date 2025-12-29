@@ -83,6 +83,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   // States for image upload
   const [selectedFiles, setSelectedFiles] = useState<{ openGraphImage: File | null }>({ openGraphImage: null });
+  const [previewUrls, setPreviewUrls] = useState<{ openGraphImage: string | null }>({ openGraphImage: null });
   const [uploading, setUploading] = useState<{ openGraphImage: boolean }>({ openGraphImage: false });
   const [uploadError, setUploadError] = useState<{ openGraphImage: string | null }>({ openGraphImage: null });
 
@@ -124,12 +125,8 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       errors.description = "Краткое описание должно быть не менее 10 символов.";
     }
 
-    // Валидация URL
-    // Canonical URL не всегда должен быть валидным URL, если он относительный (например, /blog/my-post)
-    // if (formData.canonicalUrl && !isValidUrl(formData.canonicalUrl)) errors.canonicalUrl = "Неверный формат URL для Canonical URL.";
-    // Валидация URL для openGraphImage
-    if (formData.openGraphImage) {
-        // Если это не относительный путь, и не валидный URL
+    // Валидация URL для openGraphImage - только если не выбран новый файл
+    if (formData.openGraphImage && !selectedFiles.openGraphImage) {
         if (!formData.openGraphImage.startsWith('/') && !isValidUrl(formData.openGraphImage)) {
             errors.openGraphImage = "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
         }
@@ -141,8 +138,14 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   const handleSelectImageFromGallery = (imageUrl: string) => {
     if (currentImageField) {
+      // Clean up previous preview if it was a blob URL
+      if (previewUrls[currentImageField]) {
+        URL.revokeObjectURL(previewUrls[currentImageField]!);
+        setPreviewUrls(prev => ({ ...prev, [currentImageField]: null }));
+      }
+      setSelectedFiles(prev => ({ ...prev, [currentImageField]: null }));
       setFormData(prev => ({ ...prev, [currentImageField]: imageUrl }));
-      setValidationErrors(prev => ({ ...prev, [currentImageField]: '' })); // Очистить ошибку валидации
+      setValidationErrors(prev => ({ ...prev, [currentImageField]: '' }));
     }
     setIsGalleryOpen(false);
     setCurrentImageField(null);
@@ -167,8 +170,11 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
             openGraphImage: initialData.openGraphImage || "",
         }));
     }
-    // Initialize isSlugTouched if a slug already exists (meaning it's an existing post)
-
+    
+    // Clean up object URLs to avoid memory leaks when component unmounts
+    return () => {
+      if (previewUrls.openGraphImage) URL.revokeObjectURL(previewUrls.openGraphImage);
+    };
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -194,11 +200,26 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: 'openGraphImage') => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFiles(prev => ({ ...prev, [field]: e.target.files![0] }));
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      // Revoke previous object URL to prevent memory leaks
+      if (previewUrls[field]) {
+        URL.revokeObjectURL(previewUrls[field]!);
+      }
+
+      const newPreviewUrl = URL.createObjectURL(file);
+      setPreviewUrls(prev => ({ ...prev, [field]: newPreviewUrl }));
+      setSelectedFiles(prev => ({ ...prev, [field]: file }));
+      setFormData(prev => ({ ...prev, [field]: file.name })); // Set file name in the input
       setUploadError(prev => ({ ...prev, [field]: null }));
     } else {
+      // If no file is selected, clear the related states
+      if (previewUrls[field]) {
+        URL.revokeObjectURL(previewUrls[field]!);
+      }
+      setPreviewUrls(prev => ({ ...prev, [field]: null }));
       setSelectedFiles(prev => ({ ...prev, [field]: null }));
+      // Do not clear the formData field, user might want to keep the existing URL
     }
   };
 
@@ -227,10 +248,15 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
       const result = await response.json();
       setFormData(prev => ({ ...prev, [field]: result.url }));
-      setSelectedFiles(prev => ({ ...prev, [field]: null })); // Clear selected file after successful upload
-      toast.success("Изображение Open Graph успешно загружено!"); // Добавляем успешное уведомление
+      setSelectedFiles(prev => ({ ...prev, [field]: null })); 
+      // Clean up preview URL after successful upload
+      if (previewUrls[field]) {
+        URL.revokeObjectURL(previewUrls[field]!);
+        setPreviewUrls(prev => ({ ...prev, [field]: null }));
+      }
+      toast.success("Изображение успешно загружено!");
     } catch (err: any) {
-      toast.error(`Ошибка загрузки: ${err.message}`); // Заменяем setUploadError на toast.error
+      toast.error(`Ошибка загрузки: ${err.message}`);
     } finally {
       setUploading(prev => ({ ...prev, [field]: false }));
     }
@@ -317,6 +343,8 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       setLoading(false);
     }
   };
+  
+  const openGraphImagePreviewUrl = previewUrls.openGraphImage || formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -452,64 +480,68 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       </div>
       <div>
         <label htmlFor="openGraphImage" className="block text-sm font-medium text-gray-700">Open Graph Изображение</label>
-                  <input
-                    type="text"
-                    id="openGraphImage"
-                    name="openGraphImage"
-                    value={formData.openGraphImage}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
-                  <div className="flex space-x-2 mt-2"> {/* Обернуть кнопки для стилизации */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCurrentImageField('openGraphImage');
-                        setIsGalleryOpen(true);
-                      }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Выбрать из галереи
-                    </button>
+          <input
+            type="text"
+            id="openGraphImage"
+            name="openGraphImage"
+            value={formData.openGraphImage}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+          <div className="flex flex-col space-y-2 mt-2 w-fit">
+            <div className="flex items-center space-x-2">
+                <label htmlFor="uploadOpenGraphImage" className="inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer w-auto">
+                    Выбрать файл
                     <input
-                      type="file"
-                      id="uploadOpenGraphImage"
-                      name="uploadOpenGraphImage"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e, 'openGraphImage')}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        type="file"
+                        id="uploadOpenGraphImage"
+                        name="uploadOpenGraphImage"
+                        accept="image/*"
+                        onChange={(e) => handleFileChange(e, 'openGraphImage')}
+                        className="hidden"
                     />
-                    <button
-                      type="button"
-                      onClick={() => handleUpload('openGraphImage')}
-                      disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
-                      className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-                    >
-                      {uploading.openGraphImage ? "Загрузка..." : "Загрузить Open Graph изображение"}
-                    </button>
-                  </div>
-                  {uploadError.openGraphImage && <p className="text-red-500 text-sm mt-1">{uploadError.openGraphImage}</p>}
-                  {validationErrors.openGraphImage && <p className="text-red-500 text-sm mt-1">{validationErrors.openGraphImage}</p>}
-                  {/* Добавляем предпросмотр Open Graph изображения */}
-                  {formData.openGraphImage && (
-                    <div className="mt-2">
-                      <p className="text-sm font-medium text-gray-700">Предпросмотр Open Graph изображения:</p>
-                      <Image
-                        src={formData.openGraphImage}
-                        alt="Open Graph Image Preview"
-                        width={120}
-                        height={63}
-                        className="rounded-md object-cover border border-gray-200"
-                      />
-                    </div>
-                  )}
-                </div>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => handleUpload('openGraphImage')}
+                  disabled={uploading.openGraphImage || !selectedFiles.openGraphImage}
+                  className={`inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 ${ (uploading.openGraphImage || !selectedFiles.openGraphImage) ? 'disabled:cursor-not-allowed' : 'cursor-pointer'}`}
+                >
+                  {uploading.openGraphImage ? "Загрузка..." : "Загрузить"}
+                </button>
+            </div>
+            <button
+                type="button"
+                onClick={() => {
+                    setCurrentImageField('openGraphImage');
+                    setIsGalleryOpen(true);
+                }}
+                className="inline-flex justify-start py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-auto cursor-pointer"
+            >
+                Выбрать из галереи
+            </button>
+          </div>
+          {uploadError.openGraphImage && <p className="text-red-500 text-sm mt-1">{uploadError.openGraphImage}</p>}
+          {validationErrors.openGraphImage && <p className="text-red-500 text-sm mt-1">{validationErrors.openGraphImage}</p>}
+          {openGraphImagePreviewUrl && (
+            <div className="mt-2">
+              <p className="text-sm font-medium text-gray-700">Предпросмотр Open Graph изображения:</p>
+              <Image
+                src={openGraphImagePreviewUrl}
+                alt="Open Graph Image Preview"
+                width={120}
+                height={63}
+                className="rounded-md object-cover border border-gray-200"
+              />
+            </div>
+          )}
+        </div>
         
                 {/* Add SeoPreview component */}
                 <SeoPreview
                   title={formData.seoTitle || formData.title}
                   description={formData.seoDescription || formData.description}
-                  imageUrl={formData.openGraphImage}
+                  imageUrl={openGraphImagePreviewUrl}
                   url={`${baseUrl}/blog/${formData.slug}`}
                   type="article"
                 />
