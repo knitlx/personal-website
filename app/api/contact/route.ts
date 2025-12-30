@@ -1,11 +1,42 @@
 import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+interface MailOptions {
+  from: string;
+  to: string | undefined;
+  subject: string;
+  html: string;
+  attachments: Array<{
+    filename: string;
+    content: Buffer;
+    contentType: string;
+  }>;
+}
+
 const ALLOWED_EXTENSIONS = [
-  '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.heic', '.bmp',
-  '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.rtf',
-  '.pages', '.numbers', '.key',
-  '.zip', '.rar', '.7z'
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".webp",
+  ".svg",
+  ".heic",
+  ".bmp",
+  ".pdf",
+  ".doc",
+  ".docx",
+  ".xls",
+  ".xlsx",
+  ".ppt",
+  ".pptx",
+  ".txt",
+  ".rtf",
+  ".pages",
+  ".numbers",
+  ".key",
+  ".zip",
+  ".rar",
+  ".7z",
 ];
 
 export async function POST(request: NextRequest) {
@@ -19,7 +50,9 @@ export async function POST(request: NextRequest) {
 
     if (attachment) {
       const fileName = attachment.name;
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+      const fileExtension = fileName
+        .substring(fileName.lastIndexOf("."))
+        .toLowerCase();
       if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
         return NextResponse.json(
           { message: "Недопустимый тип файла." },
@@ -46,13 +79,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const mailOptions: any = {
+    const mailOptions: MailOptions = {
       from: `"Сайт-портфолио" <${process.env.EMAIL_SERVER_USER}>`,
       to: process.env.EMAIL_TO,
       subject: `Новая заявка с сайта от ${name}`,
       html: `
         <h2>Новая заявка с вашего сайта-портфолио</h2>
-        ${projectTitle ? `<h3>Заявка по проекту: ${projectTitle}</h3>` : ''}
+        ${projectTitle ? `<h3>Заявка по проекту: ${projectTitle}</h3>` : ""}
         <p><strong>Имя:</strong> ${name}</p>
         <p><strong>Контакт:</strong> ${contact}</p>
         <p><strong>Сообщение:</strong></p>

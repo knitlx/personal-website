@@ -1,6 +1,10 @@
-import { Toaster } from 'react-hot-toast'; // Импортируем Toaster
+import { Toaster } from "react-hot-toast"; // Импортируем Toaster
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   // This layout will apply to all routes under /admin
   // It provides a clean, neutral background.
   return (

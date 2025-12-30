@@ -1,10 +1,9 @@
-
-import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { NextResponse } from "next/server";
+import fs from "fs/promises";
+import path from "path";
 
 export async function GET() {
-  const downloadsDir = path.join(process.cwd(), 'public', 'downloads');
+  const downloadsDir = path.join(process.cwd(), "public", "downloads");
 
   try {
     const filenames = await fs.readdir(downloadsDir);
@@ -17,16 +16,19 @@ export async function GET() {
           url: `/downloads/${name}`,
           size: stats.size,
         };
-      })
+      }),
     );
 
     return NextResponse.json(files);
   } catch (error) {
     // If the directory doesn't exist, return an empty array.
-    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       return NextResponse.json([]);
     }
-    console.error('Failed to read download files:', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    console.error("Failed to read download files:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

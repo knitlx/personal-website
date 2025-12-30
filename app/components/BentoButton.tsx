@@ -10,6 +10,7 @@ type ButtonProps = {
   onClick?: () => void;
   href?: string;
   className?: string;
+  disabled?: boolean;
 };
 
 export default function BentoButton({
@@ -19,10 +20,12 @@ export default function BentoButton({
   onClick,
   href,
   className: extraClassName,
+  disabled = false,
 }: ButtonProps) {
   // Общие базовые стили
-  const baseClass =
-    "inline-flex items-center justify-center rounded-lg font-unbounded-fix font-medium transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer";
+  const baseClass = disabled
+    ? "inline-flex items-center justify-center rounded-lg font-unbounded-fix font-medium transition-all duration-300 cursor-not-allowed opacity-50"
+    : "inline-flex items-center justify-center rounded-lg font-unbounded-fix font-medium transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer";
 
   // Стили для размеров
   const sizes = {
@@ -32,8 +35,7 @@ export default function BentoButton({
 
   // Стили для вариантов
   const variants = {
-    primary:
-      "bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white",
+    primary: "bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white",
     outline: "bg-white border border-gray-200 text-[#1a1a1a] hover:bg-gray-50",
   };
 
@@ -41,7 +43,7 @@ export default function BentoButton({
 
   if (onClick) {
     return (
-      <button onClick={onClick} className={className}>
+      <button onClick={onClick} disabled={disabled} className={className}>
         {children}
       </button>
     );
@@ -55,5 +57,9 @@ export default function BentoButton({
     );
   }
 
-  return <button className={className}>{children}</button>;
+  return (
+    <button disabled={disabled} className={className}>
+      {children}
+    </button>
+  );
 }

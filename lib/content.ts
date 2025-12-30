@@ -1,17 +1,36 @@
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
-import { unstable_noStore as noStore } from 'next/cache' // Use unstable_noStore
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { unstable_noStore as noStore } from "next/cache"; // Use unstable_noStore
 
 // Define a more comprehensive ContentItem interface
-interface ContentItem {
+export interface ContentItem {
   slug: string;
-  title: string;
+  title?: string;
   description?: string; // Optional description
   articleBody?: string; // Optional for blog posts
+  content?: string; // Content field (for some pages)
   creationDate?: string; // Explicitly add creationDate
-  updateDate?: string;   // Explicitly add updateDate
-  [key: string]: any; // Allow other properties from gray-matter
+  updateDate?: string; // Explicitly add updateDate
+  // Common project fields
+  projectIcon?: string;
+  icon?: string;
+  shortDescriptionHomepage?: string;
+  shortDescriptionProjectsPage?: string;
+  pageDescription?: string; // Legacy field name
+  trylink?: string;
+  introDescription?: string;
+  fullDescription?: string;
+  // Common blog fields
+  date?: string;
+  shortDescription?: string;
+  // SEO fields
+  seoTitle?: string;
+  seoDescription?: string;
+  seoTags?: string;
+  canonicalUrl?: string;
+  openGraphImage?: string;
+  [key: string]: unknown; // Allow additional properties from frontmatter
 }
 
 // Define options interface for getAllContent
@@ -23,26 +42,26 @@ interface GetAllContentOptions {
   filterValue?: string; // value to filter by
 }
 
-const contentDirectory = path.join(process.cwd(), "content")
+const contentDirectory = path.join(process.cwd(), "content");
 
 export function getSlugs(collection: string) {
-  const collectionPath = path.join(contentDirectory, collection)
+  const collectionPath = path.join(contentDirectory, collection);
   // Check if the directory exists
   if (!fs.existsSync(collectionPath)) {
-    return []
+    return [];
   }
-  const files = fs.readdirSync(collectionPath)
-  return files.map((file) => file.replace(/\.md$/, ""))
+  const files = fs.readdirSync(collectionPath);
+  return files.map((file) => file.replace(/\.md$/, ""));
 }
 
 export function getMarkdownFile(collection: string, slug: string) {
-  const fullPath = path.join(contentDirectory, collection, `${slug}.md`)
+  const fullPath = path.join(contentDirectory, collection, `${slug}.md`);
   if (!fs.existsSync(fullPath)) {
-    return null
+    return null;
   }
-  const fileContents = fs.readFileSync(fullPath, "utf8")
-  const { data, content } = matter(fileContents)
-  return { data, content, slug }
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+  return { data, content, slug };
 }
 
 // Define the shape of the return object for getAllContent
@@ -56,27 +75,36 @@ export interface GetAllContentResult {
 
 export function getAllContent(
   collection: string,
-  options?: GetAllContentOptions
+  options?: GetAllContentOptions,
 ) {
   noStore();
 
   const slugs = getSlugs(collection);
-  let allContent: ContentItem[] = slugs.map((slug) => {
-    const file = getMarkdownFile(collection, slug);
-    if (file) {
-      // Ensure content and description are included for searching
-      return { ...file.data, slug, content: file.content, description: file.data.description };
-    }
-    return null;
-  }).filter(Boolean) as ContentItem[]; // Filter out any nulls and assert type
+  let allContent: ContentItem[] = slugs
+    .map((slug) => {
+      const file = getMarkdownFile(collection, slug);
+      if (file) {
+        // Ensure content and description are included for searching
+        return {
+          ...file.data,
+          slug,
+          content: file.content,
+          description: file.data.description,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean) as ContentItem[]; // Filter out any nulls and assert type
 
   // Apply search
-  if (options?.search && options.search.trim() !== '') {
+  if (options?.search && options.search.trim() !== "") {
     const searchTerm = options.search.toLowerCase();
-    allContent = allContent.filter(item =>
-      (item.title && item.title.toLowerCase().includes(searchTerm)) ||
-      (item.description && item.description.toLowerCase().includes(searchTerm)) ||
-      (item.content && item.content.toLowerCase().includes(searchTerm)) // Search in full content
+    allContent = allContent.filter(
+      (item) =>
+        (item.title && item.title.toLowerCase().includes(searchTerm)) ||
+        (item.description &&
+          item.description.toLowerCase().includes(searchTerm)) ||
+        (item.content && item.content.toLowerCase().includes(searchTerm)), // Search in full content
     );
   }
 
@@ -84,7 +112,7 @@ export function getAllContent(
   if (options?.filterBy && options.filterValue) {
     const filterBy = options.filterBy as keyof ContentItem;
     const filterValue = options.filterValue.toLowerCase();
-    allContent = allContent.filter(item => {
+    allContent = allContent.filter((item) => {
       const itemValue = String(item[filterBy]).toLowerCase();
       return itemValue.includes(filterValue);
     });

@@ -1,6 +1,6 @@
 "use client";
 
-import BentoButton from './BentoButton';
+import BentoButton from "./BentoButton";
 
 interface StickyCtaButtonProps {
   href?: string;
@@ -8,12 +8,16 @@ interface StickyCtaButtonProps {
   text: string;
 }
 
-const StickyCtaButton: React.FC<StickyCtaButtonProps> = ({ href, onClick, text }) => {
+const StickyCtaButton: React.FC<StickyCtaButtonProps> = ({
+  href,
+  onClick,
+  text,
+}) => {
   return (
     <div className="">
-      <BentoButton 
-        variant="primary" 
-        size="default" 
+      <BentoButton
+        variant="primary"
+        size="default"
         onClick={onClick}
         href={href}
       >

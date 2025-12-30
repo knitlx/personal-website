@@ -1,4 +1,4 @@
-import { getMarkdownFile } from "@/lib/content";
+import { getMarkdownFile, ContentItem } from "@/lib/content";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "../components/ProjectDetailClient"; // Import the new Client Component
 
@@ -8,7 +8,9 @@ interface ProjectDetailPageProps {
   };
 }
 
-export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
+export default async function ProjectDetailPage({
+  params,
+}: ProjectDetailPageProps) {
   const { slug } = params;
 
   const projectFile = getMarkdownFile("projects", slug);
@@ -18,20 +20,20 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   }
 
   // Combine frontmatter data with content
-  const project = {
+  let project: ContentItem = {
     ...projectFile.data,
-    introDescription: projectFile.data.introDescription || "",
-    fullDescription: projectFile.data.fullDescription || "",
+    introDescription: (projectFile.data.introDescription as string) || "",
+    fullDescription: (projectFile.data.fullDescription as string) || "",
     slug: projectFile.slug,
   };
   // Ensure the projectIcon field matches the expected name in ProjectDetailClient
-  if (project.icon) { // Check if 'icon' property exists from old data structure
-    project.projectIcon = project.icon; // Map 'icon' to 'projectIcon'
-    delete project.icon; // Remove 'icon' if it exists to avoid redundancy
+  if ("icon" in projectFile.data && projectFile.data.icon) {
+    // Check if 'icon' property exists from old data structure
+    project = {
+      ...project,
+      projectIcon: projectFile.data.icon as string,
+    };
   }
 
-
-  return (
-    <ProjectDetailClient project={project} />
-  );
+  return <ProjectDetailClient project={project} />;
 }

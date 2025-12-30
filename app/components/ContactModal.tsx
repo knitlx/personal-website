@@ -28,13 +28,36 @@ const CloseIcon = () => (
 );
 
 const ALLOWED_EXTENSIONS = [
-  '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.heic', '.bmp', // Images
-  '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.rtf', // Documents
-  '.pages', '.numbers', '.key', // Apple iWork
-  '.zip', '.rar', '.7z' // Archives
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".webp",
+  ".svg",
+  ".heic",
+  ".bmp", // Images
+  ".pdf",
+  ".doc",
+  ".docx",
+  ".xls",
+  ".xlsx",
+  ".ppt",
+  ".pptx",
+  ".txt",
+  ".rtf", // Documents
+  ".pages",
+  ".numbers",
+  ".key", // Apple iWork
+  ".zip",
+  ".rar",
+  ".7z", // Archives
 ];
 
-const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTitle }) => {
+const ContactModal: React.FC<ContactModalProps> = ({
+  isOpen,
+  onClose,
+  projectTitle,
+}) => {
   const [view, setView] = useState<"main" | "form" | "success">("main");
   const [formData, setFormData] = useState({
     name: "",
@@ -91,17 +114,21 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
     if (selectedFile) {
       const fileName = selectedFile.name;
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+      const fileExtension = fileName
+        .substring(fileName.lastIndexOf("."))
+        .toLowerCase();
 
       if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
-        setFileError(`Недопустимый тип файла: ${fileExtension}. Разрешены: ${ALLOWED_EXTENSIONS.join(', ')}`);
+        setFileError(
+          `Недопустимый тип файла: ${fileExtension}. Разрешены: ${ALLOWED_EXTENSIONS.join(", ")}`,
+        );
         setFile(null);
-        e.target.value = ''; // Clear file input
+        e.target.value = ""; // Clear file input
         return;
       }
       setFile(selectedFile);
@@ -117,7 +144,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
     setIsSubmitting(true);
     setStatusMessage("");
 
-    if (fileError) { // Prevent submission if there's a file error
+    if (fileError) {
+      // Prevent submission if there's a file error
       setIsSubmitting(false);
       return;
     }
@@ -147,7 +175,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
       } else {
         setStatusMessage(result.message || "Произошла ошибка.");
       }
-    } catch (error) {
+    } catch {
       setStatusMessage("Ошибка сети. Попробуйте снова.");
     } finally {
       setIsSubmitting(false);
@@ -162,7 +190,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
     <div
       className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
       onClick={handleClose}
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
     >
       <div
         className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative transition-all duration-300"
@@ -227,11 +255,16 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
             </h2>
             {projectTitle && (
               <p className="text-center text-gray-600 mb-6">
-                Запрос по проекту: <span className="font-semibold">{projectTitle}</span>
+                Запрос по проекту:{" "}
+                <span className="font-semibold">{projectTitle}</span>
               </p>
             )}
             <form onSubmit={handleSubmit}>
-              <input type="hidden" name="projectTitle" value={projectTitle || ''} />
+              <input
+                type="hidden"
+                name="projectTitle"
+                value={projectTitle || ""}
+              />
               <div className="mb-4">
                 <label
                   htmlFor="name"
@@ -298,7 +331,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
                   id="attachment"
                   name="attachment"
                   onChange={handleFileChange}
-                  accept={ALLOWED_EXTENSIONS.join(',')} // Added accept attribute
+                  accept={ALLOWED_EXTENSIONS.join(",")} // Added accept attribute
                   className="w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-lg file:border file:border-gray-200
@@ -326,7 +359,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
                   &larr; Назад
                 </button>
                 <BentoButton
-                  type="submit"
                   variant="primary"
                   size="default"
                   disabled={isSubmitting}
@@ -347,7 +379,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTit
             <p className="mt-4 text-gray-600">
               Ваша заявка принята. Я скоро с вами свяжусь.
             </p>
-            <BentoButton onClick={handleClose} variant="primary" size="default" className="mt-6">
+            <BentoButton
+              onClick={handleClose}
+              variant="primary"
+              size="default"
+              className="mt-6"
+            >
               Закрыть
             </BentoButton>
           </div>

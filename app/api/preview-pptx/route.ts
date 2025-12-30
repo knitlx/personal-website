@@ -1,26 +1,31 @@
-import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer'; // Use full puppeteer package
-import { load } from 'cheerio'; // Import cheerio
+import { NextResponse } from "next/server";
+import puppeteer from "puppeteer"; // Use full puppeteer package
+import { load } from "cheerio"; // Import cheerio
 
 export async function POST(request: Request) {
   try {
     const { htmlContent } = await request.json();
 
     if (!htmlContent) {
-      return NextResponse.json({ error: 'HTML content is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "HTML content is required" },
+        { status: 400 },
+      );
     }
 
     const browser = await puppeteer.launch({
       headless: true, // Always headless for server-side operations
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process'
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--no-zygote",
+        "--single-process",
       ],
-      ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}),
+      ...(process.env.CHROMIUM_EXECUTABLE_PATH
+        ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH }
+        : {}),
     });
 
     const page = await browser.newPage();
@@ -28,15 +33,21 @@ export async function POST(request: Request) {
     // 1. Load HTML and extract slides and styles using cheerio
     const $ = load(htmlContent);
     const slidesHtml: string[] = [];
-    $('div.slide').each((i, slide) => {
+    $("div.slide").each((i, slide) => {
       slidesHtml.push($.html(slide));
     });
 
     // Extract original style tags from the head
-    const styleTags = $('head').html();
+    const styleTags = $("head").html();
 
     if (slidesHtml.length === 0) {
-        return NextResponse.json({ error: 'No slides found. Make sure to wrap your slides in <div class="slide">.' }, { status: 400 });
+      return NextResponse.json(
+        {
+          error:
+            'No slides found. Make sure to wrap your slides in <div class="slide">.',
+        },
+        { status: 400 },
+      );
     }
 
     await page.setViewport({ width: 960, height: 540, deviceScaleFactor: 2 });
@@ -81,19 +92,25 @@ export async function POST(request: Request) {
         </html>
       `;
 
-      await page.setContent(tempHtml, { waitUntil: 'load' });
-      await new Promise(r => setTimeout(r, 100)); // Give client-side scripts/styles time to apply
+      await page.setContent(tempHtml, { waitUntil: "load" });
+      await new Promise((r) => setTimeout(r, 100)); // Give client-side scripts/styles time to apply
 
-      const screenshotBuffer = await page.screenshot({ type: 'png' });
-      images.push(`data:image/png;base64,${Buffer.from(screenshotBuffer).toString('base64')}`);
+      const screenshotBuffer = await page.screenshot({ type: "png" });
+      images.push(
+        `data:image/png;base64,${Buffer.from(screenshotBuffer).toString("base64")}`,
+      );
     }
 
     await browser.close();
 
     return NextResponse.json({ images });
-
-  } catch (error: any) {
-    console.error('Error generating PPTX preview:', error);
-    return NextResponse.json({ error: `Failed to generate preview: ${error.message}` }, { status: 500 });
+  } catch (error) {
+    console.error("Error generating PPTX preview:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      { error: `Failed to generate preview: ${errorMessage}` },
+      { status: 500 },
+    );
   }
 }

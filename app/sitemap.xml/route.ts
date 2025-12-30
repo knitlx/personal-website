@@ -33,7 +33,7 @@ export async function GET() {
       return `
     <url>
       <loc>${baseUrl}/projects/${project.slug}</loc>
-      <lastmod>${new Date(project.updateDate || project.creationDate).toISOString()}</lastmod>
+      <lastmod>${new Date(project.updateDate || project.creationDate || Date.now()).toISOString()}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
     </url>
@@ -45,7 +45,7 @@ export async function GET() {
       return `
     <url>
       <loc>${baseUrl}/blog/${post.slug}</loc>
-      <lastmod>${new Date(post.updateDate || post.creationDate).toISOString()}</lastmod>
+      <lastmod>${new Date(post.updateDate || post.creationDate || Date.now()).toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>

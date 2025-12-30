@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import puppeteer from 'puppeteer'; // Use full puppeteer package
+import { NextRequest, NextResponse } from "next/server";
+import puppeteer from "puppeteer"; // Use full puppeteer package
 
 interface ConversionOptions {
   margin?: {
@@ -12,27 +12,31 @@ interface ConversionOptions {
 
 export async function POST(req: NextRequest) {
   try {
-    const { htmlContent, options }: { htmlContent: string; options?: ConversionOptions } =
-      await req.json();
+    const {
+      htmlContent,
+      options,
+    }: { htmlContent: string; options?: ConversionOptions } = await req.json();
 
     if (!htmlContent) {
       return NextResponse.json(
-        { error: 'HTML content is required' },
-        { status: 400 }
+        { error: "HTML content is required" },
+        { status: 400 },
       );
     }
 
     const browser = await puppeteer.launch({
       headless: true, // Always headless for server-side operations
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process'
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--no-zygote",
+        "--single-process",
       ],
-      ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}),
+      ...(process.env.CHROMIUM_EXECUTABLE_PATH
+        ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH }
+        : {}),
     });
 
     const page = await browser.newPage();
@@ -44,16 +48,16 @@ export async function POST(req: NextRequest) {
       deviceScaleFactor: 1,
     });
 
-    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+      format: "A4",
       printBackground: true,
       margin: options?.margin ?? {
-        top: '1cm',
-        bottom: '1cm',
-        left: '1cm',
-        right: '1cm',
+        top: "1cm",
+        bottom: "1cm",
+        left: "1cm",
+        right: "1cm",
       },
     });
 
@@ -62,16 +66,16 @@ export async function POST(req: NextRequest) {
     return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=converted.pdf',
-        'Content-Length': pdfBuffer.length.toString(),
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=converted.pdf",
+        "Content-Length": pdfBuffer.length.toString(),
       },
     });
   } catch (e) {
-    console.error('PDF conversion error:', e);
+    console.error("PDF conversion error:", e);
     return NextResponse.json(
-      { error: 'PDF conversion failed' },
-      { status: 500 }
+      { error: "PDF conversion failed" },
+      { status: 500 },
     );
   }
 }

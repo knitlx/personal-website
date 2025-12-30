@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -7,10 +7,10 @@ import { useState } from "react";
 
 interface ProjectData {
   slug: string;
-  title: string;
-  projectIcon: string;
-  shortDescriptionHomepage: string;
-  link: string; // The full path like /projects/slug
+  title?: string;
+  projectIcon?: string;
+  shortDescriptionHomepage?: string;
+  link?: string; // The full path like /projects/slug
 }
 
 interface PortfolioClientProps {
@@ -32,29 +32,46 @@ export default function PortfolioClient({ projects }: PortfolioClientProps) {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
         {visibleProjects.map((project) => (
-          <div key={project.slug} className={`${styles.portfolioCard} flex flex-col`}>
+          <div
+            key={project.slug}
+            className={`${styles.portfolioCard} flex flex-col`}
+          >
             <div className="flex-grow">
-              <Link href={project.link}>
-                <Image
-                  src={project.projectIcon}
-                  alt={project.title}
-                  width={50}
-                  height={50}
-                  className="rounded-lg mb-[15px]"
-                />
+              <Link href={project.link || `/projects/${project.slug}`}>
+                {project.projectIcon && (
+                  <Image
+                    src={project.projectIcon}
+                    alt={project.title || "Project icon"}
+                    width={50}
+                    height={50}
+                    className="rounded-lg mb-[15px]"
+                  />
+                )}
               </Link>
-              <h3 className="text-xl font-semibold text-[#333333] mb-2 text-left">{project.title}</h3>
-              <p className="text-[15px] text-[#555] mb-4 text-left">{project.shortDescriptionHomepage}</p>
+              <h3 className="text-xl font-semibold text-[#333333] mb-2 text-left">
+                {project.title || "Без названия"}
+              </h3>
+              {project.shortDescriptionHomepage && (
+                <p className="text-[15px] text-[#555] mb-4 text-left">
+                  {project.shortDescriptionHomepage}
+                </p>
+              )}
             </div>
             <div className="flex justify-start items-baseline mt-auto">
-              <Link href={project.link} className={styles.portfolioLink}>
+              <Link
+                href={project.link || `/projects/${project.slug}`}
+                className={styles.portfolioLink}
+              >
                 Подробнее
               </Link>
             </div>
           </div>
         ))}
       </div>
-      <div className="container text-center flex justify-center items-center gap-4" style={{ marginTop: '80px' }}>
+      <div
+        className="container text-center flex justify-center items-center gap-4"
+        style={{ marginTop: "80px" }}
+      >
         {visibleCount < projects.length && (
           <button
             onClick={handleLoadMore}

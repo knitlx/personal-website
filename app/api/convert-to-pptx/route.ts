@@ -8,20 +8,25 @@ export async function POST(request: Request) {
     const { htmlContent } = await request.json();
 
     if (!htmlContent) {
-      return NextResponse.json({ error: "HTML content is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "HTML content is required" },
+        { status: 400 },
+      );
     }
 
     const browser = await puppeteer.launch({
       headless: true, // Always headless for server-side operations
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process'
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--no-zygote",
+        "--single-process",
       ],
-      ...(process.env.CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH } : {}),
+      ...(process.env.CHROMIUM_EXECUTABLE_PATH
+        ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH }
+        : {}),
     });
 
     const page = await browser.newPage();
@@ -30,14 +35,14 @@ export async function POST(request: Request) {
     // 1. Load HTML and extract slides and styles
     const $ = load(htmlContent);
     const slidesHtml: string[] = [];
-    $('div.slide').each((i, slide) => {
+    $("div.slide").each((i, slide) => {
       slidesHtml.push($.html(slide));
     });
 
-    const styleTags = $('head').html(); // Extract original style tags from the head
-                                                                                
-    const screenshotBuffers: Uint8Array[] = [];                                     
-                                                                                
+    const styleTags = $("head").html(); // Extract original style tags from the head
+
+    const screenshotBuffers: Uint8Array[] = [];
+
     for (const slideHtml of slidesHtml) {
       const tempHtml = `
         <!DOCTYPE html>
@@ -72,44 +77,48 @@ export async function POST(request: Request) {
           </body>
         </html>
       `;
-                                                                                
-      await page.setContent(tempHtml, { waitUntil: 'load' });                   
+
+      await page.setContent(tempHtml, { waitUntil: "load" });
       await page.setViewport({ width: 960, height: 540, deviceScaleFactor: 2 });
-                                                                                
-      // Screenshot the entire viewport, which is staged by the #wrapper        
-      const screenshot = await page.screenshot();                               
-      screenshotBuffers.push(screenshot);                                       
+
+      // Screenshot the entire viewport, which is staged by the #wrapper
+      const screenshot = await page.screenshot();
+      screenshotBuffers.push(screenshot);
     }
-    await browser.close();                                                      
-                                                                                
-    // 3. Generate PPTX                                                         
-    const pptx = new PptxGenJS();                                               
-    pptx.layout = 'LAYOUT_WIDE';                                                
-                                                                                
+    await browser.close();
+
+    // 3. Generate PPTX
+    const pptx = new PptxGenJS();
+    pptx.layout = "LAYOUT_WIDE";
+
     for (const buffer of screenshotBuffers) {
       const slide = pptx.addSlide();
       slide.addImage({
-        data: `data:image/png;base64,${Buffer.from(buffer).toString('base64')}`,
+        data: `data:image/png;base64,${Buffer.from(buffer).toString("base64")}`,
         x: 0,
         y: 0,
-        w: '100%',
-        h: '100%',
+        w: "100%",
+        h: "100%",
       });
     }
-                                                                                
-    // 4. Send the PPTX file to the client                                      
-    const pptxBuffer = await pptx.write({ outputType: 'arraybuffer' }) as ArrayBuffer;                         
+
+    // 4. Send the PPTX file to the client
+    const pptxBuffer = (await pptx.write({
+      outputType: "arraybuffer",
+    })) as ArrayBuffer;
 
     return new NextResponse(new Uint8Array(pptxBuffer), {
       status: 200,
       headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        "Content-Disposition": "attachment; filename=\"converted.pptx\"",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "Content-Disposition": 'attachment; filename="converted.pptx"',
       },
     });
-                                                                                
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error converting HTML to PPTX:", error);
-    return NextResponse.json({ error: error.message || "An unknown error occurred" }, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

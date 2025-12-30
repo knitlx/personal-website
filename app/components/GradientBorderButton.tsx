@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useState } from "react"; // Re-introduce useState
+import { useState } from "react";
 
 type Props = {
   children: ReactNode;
@@ -58,12 +58,11 @@ const GradientBorderButton = ({
     size === "xsmall"
       ? "py-1.5 px-3 text-xs font-semibold"
       : size === "small"
-      ? "py-2 px-4 text-sm"
-      : "py-3 px-[30px] font-medium";
+        ? "py-2 px-4 text-sm"
+        : "py-3 px-[30px] font-medium";
 
   // Classes for the inner span
   const baseInnerSpanClasses = `block ${sizeClasses} rounded-lg transition-all duration-300 ease-in-out font-unbounded-fix`;
-
 
   let innerSpanBgAndTextColor = "";
   // The 'variant' prop should control the default look.
@@ -110,14 +109,14 @@ const GradientBorderButton = ({
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     setInternalHovered(true);
-    onMouseEnter && onMouseEnter(e);
+    if (onMouseEnter) onMouseEnter(e);
   };
 
   const handleMouseLeave = (
     e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     setInternalHovered(false);
-    onMouseLeave && onMouseLeave(e);
+    if (onMouseLeave) onMouseLeave(e);
   };
 
   if ("onClick" in props) {

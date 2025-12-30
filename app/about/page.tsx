@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import BentoButton from "../components/BentoButton";
 import ContactModal from "../components/ContactModal";
@@ -9,7 +8,7 @@ import whatIDoStyles from "../components/WhatIDoSection.module.css";
 
 // --- Icon Components ---
 
-const SkillsIcon = () => (
+const _SkillsIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -213,9 +212,7 @@ export default function AboutPage() {
 
             <div className="text-base text-gray-700 mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
-                <div
-                  className={whatIDoStyles.whatIDoItem}
-                >
+                <div className={whatIDoStyles.whatIDoItem}>
                   <div className="flex items-center gap-3 mb-4">
                     <Image
                       src="/icons/automatisation-tools.png"
@@ -253,9 +250,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div
-                  className={whatIDoStyles.whatIDoItem}
-                >
+                <div className={whatIDoStyles.whatIDoItem}>
                   <div className="flex items-center gap-3 mb-4">
                     <Image
                       src="/icons/web-infra.png"
@@ -313,9 +308,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div
-                  className={whatIDoStyles.whatIDoItem}
-                >
+                <div className={whatIDoStyles.whatIDoItem}>
                   <div className="flex items-center gap-3 mb-4">
                     <Image
                       src="/icons/data-workspace.png"
@@ -353,9 +346,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div
-                  className={whatIDoStyles.whatIDoItem}
-                >
+                <div className={whatIDoStyles.whatIDoItem}>
                   <div className="flex items-center gap-3 mb-4">
                     <Image
                       src="/icons/management-docs.png"

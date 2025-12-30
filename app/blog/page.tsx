@@ -2,7 +2,7 @@ import { getAllContent } from "@/lib/content";
 import BlogClientPage from "./components/BlogClientPage";
 
 export default async function BlogPage() {
-  const posts = (getAllContent("blog")).data.map(post => ({
+  const posts = getAllContent("blog").data.map((post) => ({
     ...post,
     creationDate: post.creationDate || post.date, // Ensure creationDate is available
     shortDescription: post.shortDescription || post.description,

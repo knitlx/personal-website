@@ -1,33 +1,34 @@
-import { revalidatePath } from "next/cache"
-import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/lib/auth"
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
-import { exec } from "child_process"
-import { promisify } from "util"
+import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { commitAndPush } from "@/lib/git";
 
-const execAsync = promisify(exec)
-
-const projectRoot = process.cwd() // Assumes process.cwd() is already the project root
-const contentDirectory = path.join(projectRoot, "content", "projects")
+const projectRoot = process.cwd(); // Assumes process.cwd() is already the project root
+const contentDirectory = path.join(projectRoot, "content", "projects");
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const projectData = await req.json()
+    const projectData = await req.json();
 
     if (!projectData.slug || !projectData.title) {
-      return NextResponse.json({ message: "Slug and Title are required" }, { status: 400 })
+      return NextResponse.json(
+        { message: "Slug and Title are required" },
+        { status: 400 },
+      );
     }
 
-    const { slug, introDescription, fullDescription, ...frontmatterData } = projectData
+    const { slug, introDescription, fullDescription, ...frontmatterData } =
+      projectData;
 
     const markdownContent = ""; // Content is now stored in frontmatter fields introDescription and fullDescription
     const fullMarkdown = matter.stringify(markdownContent, {
@@ -35,130 +36,120 @@ export async function POST(req: NextRequest) {
       ...frontmatterData,
       introDescription: introDescription,
       fullDescription: fullDescription,
-    })
-    
-    const filePath = path.join(contentDirectory, `${slug}.md`)
+    });
+
+    const filePath = path.join(contentDirectory, `${slug}.md`);
 
     if (!fs.existsSync(contentDirectory)) {
-      fs.mkdirSync(contentDirectory, { recursive: true })
+      fs.mkdirSync(contentDirectory, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, fullMarkdown, "utf8")
+    fs.writeFileSync(filePath, fullMarkdown, "utf8");
 
     // --- Git Operations ---
-    const gitUserName = process.env.GIT_USER_NAME || "Admin Panel"
-    const gitUserEmail = process.env.GIT_USER_EMAIL || "admin@example.com"
-    const githubPat = process.env.GITHUB_PAT
+    const relativeFilePath = path.relative(projectRoot, filePath);
+    const gitResult = await commitAndPush({
+      filePath: relativeFilePath,
+      commitMessage: `feat: Update project: ${projectData.title}`,
+      operation: "add",
+    });
 
-    if (!githubPat) {
-      console.error("GITHUB_PAT environment variable is not set. Git push will not work.")
-      return NextResponse.json({ message: "Project saved, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
+    if (!gitResult.success) {
+      return NextResponse.json(
+        {
+          message: `Project saved, but Git push failed: ${gitResult.error}`,
+        },
+        { status: 500 },
+      );
     }
-
-    const repoOwner = process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPO_OWNER;
-    const repoSlug = process.env.VERCEL_GIT_REPO_SLUG || process.env.GITHUB_REPO_SLUG;
-
-    if (!repoOwner || !repoSlug) {
-      console.error("Repository owner or slug environment variables are not set. Git push will not work.");
-      return NextResponse.json({ message: "Project saved, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
-    }
-
-    // Set Git config for the current command execution
-    await execAsync(`git config user.name "${gitUserName}"`, { cwd: projectRoot })
-    await execAsync(`git config user.email "${gitUserEmail}"`, { cwd: projectRoot })
-
-    // Add the file
-    await execAsync(`git add "${path.relative(projectRoot, filePath)}"`, { cwd: projectRoot })
-
-    // Commit the change
-    const commitMessage = `feat: Update project: ${projectData.title}`
-    await execAsync(`git commit -m "${commitMessage}"`, { cwd: projectRoot })
-
-    // Push to remote using PAT
-    const remoteUrl = `https://${githubPat}@github.com/${repoOwner}/${repoSlug}.git`;
-    const pushCommand = `git push ${remoteUrl} main`; // Assuming 'main' branch
-
-    // Attempt to push
-    await execAsync(pushCommand, { cwd: projectRoot });
 
     // Revalidate the dashboard path to show new/updated content
     console.log("revalidatePath('/admin/dashboard') called");
-    revalidatePath('/admin/dashboard');
+    revalidatePath("/admin/dashboard");
 
-    return NextResponse.json({ message: "Project saved and committed successfully!", slug }, { status: 200 })
-  } catch (error: any) {
-    console.error("Error saving or committing project:", error)
-    return NextResponse.json({ message: "Failed to save project or commit to Git", error: error.message }, { status: 500 })
+    return NextResponse.json(
+      { message: "Project saved and committed successfully!", slug },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error saving or committing project:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        message: "Failed to save project or commit to Git",
+        error: errorMessage,
+      },
+      { status: 500 },
+    );
   }
 }
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { slug } = await req.json()
+    const { slug } = await req.json();
 
     if (!slug) {
-      return NextResponse.json({ message: "Slug is required" }, { status: 400 })
+      return NextResponse.json(
+        { message: "Slug is required" },
+        { status: 400 },
+      );
     }
 
-    const filePath = path.join(contentDirectory, `${slug}.md`)
+    const filePath = path.join(contentDirectory, `${slug}.md`);
 
     if (!fs.existsSync(filePath)) {
-      return NextResponse.json({ message: "Project not found" }, { status: 404 })
+      return NextResponse.json(
+        { message: "Project not found" },
+        { status: 404 },
+      );
     }
 
     // Delete file from file system
-    fs.unlinkSync(filePath)
+    fs.unlinkSync(filePath);
 
     // --- Git Operations for deletion ---
-    const gitUserName = process.env.GIT_USER_NAME || "Admin Panel"
-    const gitUserEmail = process.env.GIT_USER_EMAIL || "admin@example.com"
-    const githubPat = process.env.GITHUB_PAT
+    const relativeFilePath = path.relative(projectRoot, filePath);
+    const gitResult = await commitAndPush({
+      filePath: relativeFilePath,
+      commitMessage: `feat: Delete project: ${slug}`,
+      operation: "rm",
+    });
 
-    if (!githubPat) {
-      console.error("GITHUB_PAT environment variable is not set. Git push will not work.")
-      return NextResponse.json({ message: "Project deleted, but Git push failed: GITHUB_PAT is not set." }, { status: 500 })
+    if (!gitResult.success) {
+      return NextResponse.json(
+        {
+          message: `Project deleted, but Git push failed: ${gitResult.error}`,
+        },
+        { status: 500 },
+      );
     }
-
-    const repoOwner = process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPO_OWNER;
-    const repoSlug = process.env.VERCEL_GIT_REPO_SLUG || process.env.GITHUB_REPO_SLUG;
-
-    if (!repoOwner || !repoSlug) {
-      console.error("Repository owner or slug environment variables are not set. Git push will not work.");
-      return NextResponse.json({ message: "Project deleted, but Git push failed: Repository owner/slug is not set." }, { status: 500 });
-    }
-
-    // Set Git config for the current command execution
-    await execAsync(`git config user.name "${gitUserName}"`, { cwd: projectRoot })
-    await execAsync(`git config user.email "${gitUserEmail}"`, { cwd: projectRoot })
-
-    // Remove the file from Git index
-    await execAsync(`git rm "${path.relative(projectRoot, filePath)}"`, { cwd: projectRoot })
-
-    // Commit the deletion
-    const commitMessage = `feat: Delete project: ${slug}`
-    await execAsync(`git commit -m "${commitMessage}"`, { cwd: projectRoot })
-
-    // Push to remote using PAT
-    const remoteUrl = `https://${githubPat}@github.com/${repoOwner}/${repoSlug}.git`;
-    const pushCommand = `git push ${remoteUrl} main`; // Assuming 'main' branch
-
-    // Attempt to push
-    await execAsync(pushCommand, { cwd: projectRoot });
 
     // Revalidate relevant paths
-    revalidatePath('/admin/dashboard')
-    revalidatePath('/projects')
-    revalidatePath(`/projects/${slug}`) // Revalidate the specific project page
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${slug}`); // Revalidate the specific project page
 
-    return NextResponse.json({ message: "Project deleted and committed successfully!" }, { status: 200 })
-  } catch (error: any) {
-    console.error("Error deleting or committing project:", error)
-    return NextResponse.json({ message: "Failed to delete project or commit to Git", error: error.message }, { status: 500 })
+    return NextResponse.json(
+      { message: "Project deleted and committed successfully!" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error deleting or committing project:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        message: "Failed to delete project or commit to Git",
+        error: errorMessage,
+      },
+      { status: 500 },
+    );
   }
 }

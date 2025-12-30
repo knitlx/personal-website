@@ -22,33 +22,29 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = {
     ...postFile.data,
     slug: postFile.slug,
-    articleBody: postFile.data.articleBody || "" // Ensure articleBody is available
+    articleBody: postFile.data.articleBody || "", // Ensure articleBody is available
   };
 
   return (
     <>
       <main className="bg-white py-16">
         <div className="container mx-auto max-w-3xl px-4">
-            <h1 className="text-4xl md:text-5xl font-bold font-unbounded-fix mb-4">
-              {post.title}
-            </h1>
-            <p className="text-gray-500 mb-8">{post.date}</p>
-          
+          <h1 className="text-4xl md:text-5xl font-bold font-unbounded-fix mb-4">
+            {postFile.data.title}
+          </h1>
+          <p className="text-gray-500 mb-8">{postFile.data.date}</p>
+
           <article className="prose lg:prose-xl max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]} // Add rehypeRaw to handle raw HTML
               components={{
-                img: ({ node, ...props }) => (
-                  // eslint-disable-next-line jsx-a11y/alt-text
-                  <MarkdownImage {...props} />
-                ),
+                img: ({ ...props }) => <MarkdownImage {...props} />,
               }}
             >
               {post.articleBody}
             </ReactMarkdown>
           </article>
-
         </div>
       </main>
     </>

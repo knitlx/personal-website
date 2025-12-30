@@ -21,23 +21,26 @@ const fontUnbounded = FontUnbounded({
   weight: ["400", "500", "600", "700"],
 });
 
-import PlexusCanvas from "./components/PlexusCanvas";
-import TracerCanvas from "./components/TracerCanvas";
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://your-future-domain.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
   title: "Александра | AI-универсал и промт-инженер",
   description:
     "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса. Разработка ботов, мини-приложений и другие кейсы.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Александра | AI-универсал и промт-инженер",
     description:
       "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
-    url: "https://your-future-domain.com", // <-- ЗАГЛУШКА, замените на ваш домен
+    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
     siteName: "Портфолио Александры",
     images: [
       {
-        url: "/profile.png", // Путь к вашему фото
+        url: "/profile.png",
         width: 400,
         height: 400,
       },
@@ -54,36 +57,40 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name: "Александра",
+        url: siteUrl,
+        image: `${siteUrl}/profile.png`,
+        jobTitle: "AI-универсал и промт-инженер",
+        sameAs: ["https://github.com/knitlx"],
+      },
+      {
+        "@type": "WebSite",
+        url: siteUrl,
+        name: "Портфолио Александры",
+        author: {
+          "@type": "Person",
+          name: "Александра",
+        },
+        description:
+          "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
+      },
+    ],
+  };
+
   return (
     <html lang="ru" suppressHydrationWarning={true}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Person",
-                  name: "Александра",
-                  url: "https://your-future-domain.com",
-                  image: "https://your-future-domain.com/profile.png",
-                  jobTitle: "AI-универсал и промт-инженер",
-                  sameAs: ["https://github.com/knitlx"],
-                },
-                {
-                  "@type": "WebSite",
-                  url: "https://your-future-domain.com",
-                  name: "Портфолио Александры",
-                  author: {
-                    "@type": "Person",
-                    name: "Александра",
-                  },
-                  description:
-                    "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
-                },
-              ],
-            }),
+            __html: JSON.stringify(jsonLd),
           }}
         />
       </head>

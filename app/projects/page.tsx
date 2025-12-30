@@ -2,11 +2,13 @@ import { getAllContent } from "@/lib/content";
 import ProjectsClientPage from "./components/ProjectsClientPage";
 
 export default async function ProjectsPage() {
-  const projects = (getAllContent("projects")).data.map(project => ({
+  const projects = getAllContent("projects").data.map((project) => ({
     ...project,
     projectIcon: project.projectIcon || project.icon, // Ensure projectIcon is available
-    shortDescriptionHomepage: project.shortDescriptionHomepage || project.description,
-    shortDescriptionProjectsPage: project.shortDescriptionProjectsPage || project.pageDescription,
+    shortDescriptionHomepage:
+      project.shortDescriptionHomepage || project.description,
+    shortDescriptionProjectsPage:
+      project.shortDescriptionProjectsPage || project.pageDescription,
     // Ensure slug is a string
     slug: String(project.slug),
   }));
@@ -22,4 +24,3 @@ export default async function ProjectsPage() {
     </main>
   );
 }
-
