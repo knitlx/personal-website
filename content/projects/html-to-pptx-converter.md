@@ -8,14 +8,14 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/html-pptx.png
 trylink: /projects/document-converter?tab=pptx
 creationDate: ''
-updateDate: '2025-12-31T22:18:50.686Z'
+updateDate: '2025-12-31T22:23:21.252Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
 canonicalUrl: /projects/html-to-pptx-converter
 openGraphImage: ''
 schemaType: SoftwareApplication
-sortOrder: 3
+sortOrder: 4
 introDescription: >-
   HTML удобен как формат для генерации контента: шаблоны, отчёты, презентации
   часто проще собирать именно в нём.
