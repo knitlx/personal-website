@@ -10,14 +10,15 @@ shortDescriptionProjectsPage: >-
   дашборде с графиками и фильтрами. Никаких отдельных приложений и ручного
   разбора.
 projectIcon: /icons/finance.png
-trylink: "https://t.me/check_finance_bot"
-creationDate: ""
-updateDate: "2025-12-31T13:06:20.406Z"
-seoTitle: ""
-seoDescription: ""
-seoTags: ""
+trylink: 'https://t.me/check_finance_bot'
+creationDate: ''
+updateDate: '2025-12-31T17:30:39.229Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
 canonicalUrl: /projects/financial-telegram-bot
-openGraphImage: ""
+openGraphImage: ''
+schemaType: SoftwareApplication
 introDescription: >-
   Личные финансы часто усложняются из-за лишних шагов. Чтобы записать расход или
   доход, нужно открыть приложение, выбрать категорию, указать сумму и дату. Со
@@ -28,7 +29,6 @@ introDescription: >-
   доходы и расходы прямо в чате и смотреть сводную информацию в отдельном
   интерфейсе.
 ---
-
 ### Контекст и задача
 
 Задача проекта — упростить работу с личными финансами без потери структуры данных.
