@@ -8,10 +8,10 @@ shortDescriptionProjectsPage: >-
   Решение для работы с черновиками и рабочими текстами. AI анализирует текст,
   проверяет соответствие тону и редактирует его по заданным правилам. Результат
   оценивается по критериям качества и сохраняется в Google Docs.
-projectIcon: 'http://localhost:3000/uploads/ai-redactor.png'
+projectIcon: /uploads/ai-redactor.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T12:19:14.195Z'
+updateDate: '2025-12-31T12:22:12.327Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
   AI-редактор для работы с черновиками и рабочими текстами. Анализирует
@@ -21,7 +21,7 @@ seoTags: >-
   ai редактор текстов, ai редактирование текстов, контроль качества текста,
   редактура с ai, улучшение текстов ai, tone of voice ai, автоматизация
   редактуры, n8n ai
-canonicalUrl: 'http://localhost:3000/projects/ai-text-editor'
+canonicalUrl: /projects/ai-text-editor
 openGraphImage: ''
 introDescription: >-
   В рабочих процессах тексты появляются постоянно.
