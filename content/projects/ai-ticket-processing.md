@@ -9,7 +9,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/ai-ticket.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T17:30:19.813Z'
+updateDate: '2025-12-31T22:19:21.585Z'
 seoTitle: 'AI-обработка обращений: автоматическое создание тикетов'
 seoDescription: >-
   Автоматизация обработки входящих обращений: AI разбирает текст, определяет
@@ -22,6 +22,7 @@ seoTags: >-
 canonicalUrl: /projects/ai-ticket-processing
 openGraphImage: ''
 schemaType: Service
+sortOrder: 5
 introDescription: >-
   В небольших командах обращения часто приходят из разных источников: формы,
   чаты, внутренние сервисы, сообщения в свободной форме.
