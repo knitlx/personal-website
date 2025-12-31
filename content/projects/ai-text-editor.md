@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/ai-redactor.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T17:30:10.314Z'
+updateDate: '2025-12-31T22:18:33.370Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
   AI-редактор для работы с черновиками и рабочими текстами. Анализирует
@@ -24,6 +24,7 @@ seoTags: >-
 canonicalUrl: /projects/ai-text-editor
 openGraphImage: ''
 schemaType: SoftwareApplication
+sortOrder: 2
 introDescription: >-
   В рабочих процессах тексты появляются постоянно.
 
