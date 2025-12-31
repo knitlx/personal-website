@@ -7,13 +7,14 @@ shortDescriptionProjectsPage: >-
   превращается в отдельный слайд, результат можно проверить перед выгрузкой.
 projectIcon: /uploads/html-pptx.png
 trylink: /projects/document-converter?tab=pptx
-creationDate: ""
-updateDate: "2025-12-31T13:22:45.638Z"
-seoTitle: ""
-seoDescription: ""
-seoTags: ""
+creationDate: ''
+updateDate: '2025-12-31T17:30:56.062Z'
+seoTitle: ''
+seoDescription: ''
+seoTags: ''
 canonicalUrl: /projects/html-to-pptx-converter
-openGraphImage: ""
+openGraphImage: ''
+schemaType: SoftwareApplication
 introDescription: >-
   HTML удобен как формат для генерации контента: шаблоны, отчёты, презентации
   часто проще собирать именно в нём.
@@ -25,7 +26,6 @@ introDescription: >-
 
   В проекте HTML используется как исходный формат для презентаций.
 ---
-
 ### Контекст и задача
 
 Задача проекта:
