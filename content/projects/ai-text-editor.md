@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: 'http://localhost:3000/uploads/ai-ticket.png'
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T12:15:39.977Z'
+updateDate: '2025-12-31T12:16:21.511Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
   AI-редактор для работы с черновиками и рабочими текстами. Анализирует
