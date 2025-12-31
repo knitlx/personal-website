@@ -12,13 +12,14 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
 creationDate: ''
-updateDate: '2025-12-31T17:30:39.229Z'
+updateDate: '2025-12-31T22:15:13.307Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
 canonicalUrl: /projects/financial-telegram-bot
 openGraphImage: ''
 schemaType: SoftwareApplication
+sortOrder: 1
 introDescription: >-
   Личные финансы часто усложняются из-за лишних шагов. Чтобы записать расход или
   доход, нужно открыть приложение, выбрать категорию, указать сумму и дату. Со
