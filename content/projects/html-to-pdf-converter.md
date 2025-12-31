@@ -8,7 +8,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/html-pdf.png
 trylink: /projects/document-converter?tab=pdf
 creationDate: ''
-updateDate: '2025-12-31T13:26:01.955Z'
+updateDate: '2025-12-31T13:29:53.424Z'
 seoTitle: HTML to PDF конвертер
 seoDescription: >-
   Инструмент для конвертации HTML-документов в PDF. Сохраняет внешний вид
