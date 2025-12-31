@@ -1,14 +1,14 @@
 ---
 slug: ai-as-a-partner
-title: 'AI как партнер, а не замена'
-date: '2025-12-26'
-creationDate: '2024-07-15'
-updateDate: '2025-12-26T18:48:02.333Z'
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
-canonicalUrl: 'http://localhost:3000/blog/ai-as-a-partner'
-openGraphImage: ''
+title: "AI как партнер, а не замена"
+date: "2025-12-26"
+creationDate: "2024-07-15"
+updateDate: "2025-12-26T18:48:02.333Z"
+seoTitle: ""
+seoDescription: ""
+seoTags: ""
+canonicalUrl: "http://localhost:3000/blog/ai-as-a-partner"
+openGraphImage: ""
 description: >-
   В последнее время много говорят о том, как AI заменит специалистов. Я смотрю
   на это иначе. Для меня AI — это не замена, а партнер, который помогает
@@ -42,4 +42,3 @@ articleBody: >
         </ol>
         <p>Такой подход позволяет добиваться результатов быстрее, не теряя в качестве и сохраняя человеческий контроль над процессом. AI не заменяет меня, а делает мою работу более осмысленной и эффективной.</p>
 ---
-

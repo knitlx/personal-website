@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer"; // Use full puppeteer package
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 
 interface ConversionOptions {
   margin?: {
@@ -10,7 +11,27 @@ interface ConversionOptions {
   };
 }
 
+// Cache browser instance for serverless optimization
+let browserInstance: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
+
+async function getBrowser() {
+  if (browserInstance) {
+    return browserInstance;
+  }
+
+  browserInstance = await puppeteer.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: true,
+  });
+
+  return browserInstance;
+}
+
 export async function POST(req: NextRequest) {
+  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
+  let page: any = null;
+
   try {
     const {
       htmlContent,
@@ -24,22 +45,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const browser = await puppeteer.launch({
-      headless: true, // Always headless for server-side operations
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--no-zygote",
-        "--single-process",
-      ],
-      ...(process.env.CHROMIUM_EXECUTABLE_PATH
-        ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH }
-        : {}),
-    });
-
-    const page = await browser.newPage();
+    browser = await getBrowser();
+    page = await browser.newPage();
 
     // A4 (794x1123) — корректный CSS пиксельный размер под PDF
     await page.setViewport({
@@ -61,7 +68,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    await browser.close();
+    // Close page but keep browser instance cached
+    await page.close();
 
     return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
@@ -73,6 +81,16 @@ export async function POST(req: NextRequest) {
     });
   } catch (e) {
     console.error("PDF conversion error:", e);
+
+    // Close page on error
+    if (page) {
+      try {
+        await page.close();
+      } catch (closeError) {
+        console.error("Error closing page:", closeError);
+      }
+    }
+
     return NextResponse.json(
       { error: "PDF conversion failed" },
       { status: 500 },

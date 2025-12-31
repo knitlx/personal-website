@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { SignOutButton } from "./SignOutButton";
+import { API_ROUTES } from "@/lib/routes";
 
 import { GetAllContentResult } from "@/lib/content";
 
@@ -169,7 +170,9 @@ export default function DashboardClient({
 
     setDeleting(true);
     try {
-      const response = await fetch(`/api/admin/${type}`, {
+      const apiUrl =
+        type === "projects" ? API_ROUTES.ADMIN_PROJECTS : API_ROUTES.ADMIN_BLOG;
+      const response = await fetch(apiUrl, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

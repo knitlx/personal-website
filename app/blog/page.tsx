@@ -1,13 +1,18 @@
 import { getAllContent } from "@/lib/content";
-import BlogClientPage from "./components/BlogClientPage";
+import InfiniteScrollBlog from "./components/InfiniteScrollBlog";
 
 export default async function BlogPage() {
-  const posts = getAllContent("blog").data.map((post) => ({
+  const { data: allPosts, totalItems } = getAllContent("blog");
+
+  const posts = allPosts.map((post) => ({
     ...post,
-    creationDate: post.creationDate || post.date, // Ensure creationDate is available
+    creationDate: post.creationDate || post.date,
     shortDescription: post.shortDescription || post.description,
     slug: String(post.slug),
   }));
+
+  // Показываем первые 5 статей изначально
+  const initialPosts = posts.slice(0, 5);
 
   return (
     <main className="py-12">
@@ -15,7 +20,10 @@ export default async function BlogPage() {
         <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix bg-[linear-gradient(135deg,#9137DF_50%,#7B68EE_75%)] bg-clip-text text-transparent">
           Блог
         </h1>
-        <BlogClientPage posts={posts} />
+        <InfiniteScrollBlog
+          initialPosts={initialPosts}
+          totalPosts={totalItems}
+        />
       </div>
     </main>
   );

@@ -2,12 +2,15 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
 import { commitAndPush } from "@/lib/git";
+import { projectSchema } from "@/lib/validations/project";
+import { deleteSchema } from "@/lib/validations/common";
+import { execa } from "execa";
 
-const projectRoot = process.cwd(); // Assumes process.cwd() is already the project root
+const projectRoot = process.cwd();
 const contentDirectory = path.join(projectRoot, "content", "projects");
 
 export async function POST(req: NextRequest) {
@@ -20,37 +23,64 @@ export async function POST(req: NextRequest) {
   try {
     const projectData = await req.json();
 
-    if (!projectData.slug || !projectData.title) {
+    // Convert localhost URLs to relative paths for production compatibility
+    const processUrl = (url: string | undefined): string => {
+      if (!url) return "";
+      const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      return url.replace(siteUrl, "");
+    };
+
+    projectData.projectIcon = processUrl(projectData.projectIcon);
+    projectData.openGraphImage = processUrl(projectData.openGraphImage);
+    projectData.canonicalUrl = processUrl(projectData.canonicalUrl);
+
+    // Валидация с помощью Zod
+    const validationResult = projectSchema.safeParse(projectData);
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+      }));
+
       return NextResponse.json(
-        { message: "Slug and Title are required" },
+        {
+          message: "Ошибки валидации",
+          errors,
+        },
         { status: 400 },
       );
     }
 
+    const validatedData = validationResult.data;
     const { slug, introDescription, fullDescription, ...frontmatterData } =
-      projectData;
+      validatedData;
 
-    const markdownContent = ""; // Content is now stored in frontmatter fields introDescription and fullDescription
-    const fullMarkdown = matter.stringify(markdownContent, {
-      slug: slug, // Explicitly add slug to frontmatter
+    // FIXED: fullDescription as content, introDescription in frontmatter
+    const fullMarkdown = matter.stringify(fullDescription || "", {
+      slug: slug,
       ...frontmatterData,
       introDescription: introDescription,
-      fullDescription: fullDescription,
     });
 
     const filePath = path.join(contentDirectory, `${slug}.md`);
 
-    if (!fs.existsSync(contentDirectory)) {
-      fs.mkdirSync(contentDirectory, { recursive: true });
+    // Create directory if it doesn't exist (async)
+    try {
+      await fs.access(contentDirectory);
+    } catch {
+      await fs.mkdir(contentDirectory, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, fullMarkdown, "utf8");
+    // Write file (async)
+    await fs.writeFile(filePath, fullMarkdown, "utf8");
 
     // --- Git Operations ---
     const relativeFilePath = path.relative(projectRoot, filePath);
     const gitResult = await commitAndPush({
       filePath: relativeFilePath,
-      commitMessage: `feat: Update project: ${projectData.title}`,
+      commitMessage: `feat: Update project: ${validatedData.title}`,
       operation: "add",
     });
 
@@ -63,9 +93,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Revalidate the dashboard path to show new/updated content
-    console.log("revalidatePath('/admin/dashboard') called");
+    // Revalidate relevant paths
     revalidatePath("/admin/dashboard");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${validatedData.slug}`);
+
+    // Regenerate content cache after successful save and commit
+    try {
+      // Use execa to run the cache generation script
+      const { stdout, stderr } = await execa(
+        "node",
+        [path.join(projectRoot, "scripts", "generate-content-cache.ts")],
+        { cwd: projectRoot },
+      );
+      if (stdout) console.log("Cache generation stdout:", stdout);
+      if (stderr) console.error("Cache generation stderr:", stderr);
+      console.log("Content cache regenerated successfully.");
+    } catch (cacheError) {
+      console.error("Failed to regenerate content cache:", cacheError);
+      return NextResponse.json(
+        { message: "Project saved, but failed to regenerate content cache." },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json(
       { message: "Project saved and committed successfully!", slug },
@@ -93,26 +143,41 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
-    const { slug } = await req.json();
+    const body = await req.json();
 
-    if (!slug) {
+    // Валидация с помощью Zod
+    const validationResult = deleteSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+      }));
+
       return NextResponse.json(
-        { message: "Slug is required" },
+        {
+          message: "Ошибки валидации",
+          errors,
+        },
         { status: 400 },
       );
     }
 
+    const { slug } = validationResult.data;
     const filePath = path.join(contentDirectory, `${slug}.md`);
 
-    if (!fs.existsSync(filePath)) {
+    // Check if file exists (async)
+    try {
+      await fs.access(filePath);
+    } catch {
       return NextResponse.json(
         { message: "Project not found" },
         { status: 404 },
       );
     }
 
-    // Delete file from file system
-    fs.unlinkSync(filePath);
+    // Delete file from file system (async)
+    await fs.unlink(filePath);
 
     // --- Git Operations for deletion ---
     const relativeFilePath = path.relative(projectRoot, filePath);
@@ -134,7 +199,7 @@ export async function DELETE(req: NextRequest) {
     // Revalidate relevant paths
     revalidatePath("/admin/dashboard");
     revalidatePath("/projects");
-    revalidatePath(`/projects/${slug}`); // Revalidate the specific project page
+    revalidatePath(`/projects/${slug}`);
 
     return NextResponse.json(
       { message: "Project deleted and committed successfully!" },

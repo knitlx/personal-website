@@ -1,9 +1,30 @@
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer"; // Use full puppeteer package
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 import { load } from "cheerio";
 import PptxGenJS from "pptxgenjs";
 
+// Cache browser instance for serverless optimization
+let browserInstance: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
+
+async function getBrowser() {
+  if (browserInstance) {
+    return browserInstance;
+  }
+
+  browserInstance = await puppeteer.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: true,
+  });
+
+  return browserInstance;
+}
+
 export async function POST(request: Request) {
+  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
+  let page: any = null;
+
   try {
     const { htmlContent } = await request.json();
 
@@ -14,22 +35,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const browser = await puppeteer.launch({
-      headless: true, // Always headless for server-side operations
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--no-zygote",
-        "--single-process",
-      ],
-      ...(process.env.CHROMIUM_EXECUTABLE_PATH
-        ? { executablePath: process.env.CHROMIUM_EXECUTABLE_PATH }
-        : {}),
-    });
-
-    const page = await browser.newPage();
+    browser = await getBrowser();
+    page = await browser.newPage();
     await page.setViewport({ width: 960, height: 540, deviceScaleFactor: 2 });
 
     // 1. Load HTML and extract slides and styles
@@ -85,7 +92,9 @@ export async function POST(request: Request) {
       const screenshot = await page.screenshot();
       screenshotBuffers.push(screenshot);
     }
-    await browser.close();
+
+    // Close page but keep browser instance cached
+    await page.close();
 
     // 3. Generate PPTX
     const pptx = new PptxGenJS();
@@ -117,6 +126,16 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error converting HTML to PPTX:", error);
+
+    // Close page on error
+    if (page) {
+      try {
+        await page.close();
+      } catch (closeError) {
+        console.error("Error closing page:", closeError);
+      }
+    }
+
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

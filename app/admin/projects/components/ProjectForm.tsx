@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Image from "next/image";
-import ImageGalleryModal from "../../components/ImageGalleryModal";
-import SeoPreview from "../../../components/SeoPreview"; // Import SeoPreview
+import { generateSlug } from "@/lib/slug";
+import { useFormState } from "@/hooks/useFormState";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import { useGalleryModal } from "@/contexts/ModalContext";
+import { MD_EDITOR_HEIGHT } from "@/lib/constants";
+import { API_ROUTES } from "@/lib/routes";
+import FormInput from "../../components/FormInput";
+import FormTextarea from "../../components/FormTextarea";
+import ImageUploadField from "../../components/ImageUploadField";
+import SeoFields from "../../components/SeoFields";
+import SeoPreview from "../../../components/SeoPreview";
 
-// Dynamically import MDEditor to ensure it's client-side rendered
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 interface ProjectFormData {
@@ -31,492 +38,254 @@ interface ProjectFormData {
 
 interface ProjectFormProps {
   initialData?: Partial<ProjectFormData> & { content?: string };
-  baseUrl: string; // Add baseUrl prop
+  baseUrl: string;
 }
-
-// Function-helper for slug generation (remains unchanged)
-const generateSlug = (title: string) => {
-  const cyrillicToLatinMap: { [key: string]: string } = {
-    а: "a",
-    б: "b",
-    в: "v",
-    г: "g",
-    д: "d",
-    е: "e",
-    ё: "yo",
-    ж: "zh",
-    з: "z",
-    и: "i",
-    й: "y",
-    к: "k",
-    л: "l",
-    м: "m",
-    н: "n",
-    о: "o",
-    п: "p",
-    р: "r",
-    с: "s",
-    т: "t",
-    у: "u",
-    ф: "f",
-    х: "h",
-    ц: "ts",
-    ч: "ch",
-    ш: "sh",
-    щ: "sch",
-    Ъ: "",
-    ы: "y",
-    ь: "",
-    э: "e",
-    ю: "yu",
-    я: "ya",
-    А: "A",
-    Б: "B",
-    В: "V",
-    Г: "G",
-    Д: "D",
-    Е: "E",
-    Ё: "Yo",
-    Ж: "Zh",
-    З: "Z",
-    И: "I",
-    Й: "Y",
-    К: "K",
-    Л: "L",
-    М: "M",
-    Н: "N",
-    О: "O",
-    П: "P",
-    Р: "R",
-    С: "S",
-    Т: "T",
-    У: "U",
-    Ф: "F",
-    Х: "H",
-    Ц: "Ts",
-    Ч: "Ch",
-    Ш: "Sh",
-    Щ: "Sch",
-    Ы: "Y",
-    Э: "E",
-    Ю: "Yu",
-    Я: "Ya",
-  };
-
-  let processedTitle = title.toLowerCase();
-
-  // Transliterate Cyrillic
-  processedTitle = Array.from(processedTitle)
-    .map((char) => cyrillicToLatinMap[char] || char)
-    .join("");
-
-  return processedTitle
-    .trim()
-    .replace(/[^a-zA-Z0-9а-яА-ЯёЁ-]/g, "-") // Replace non-alphanumeric characters (excluding hyphen) with a hyphen
-    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
-};
 
 export default function ProjectForm({
   initialData,
   baseUrl,
 }: ProjectFormProps) {
   const router = useRouter();
-  const [formData, setFormData] = useState<ProjectFormData>({
-    slug: initialData?.slug || "",
-    title: initialData?.title || "",
-    shortDescriptionHomepage: initialData?.shortDescriptionHomepage || "",
-    shortDescriptionProjectsPage:
-      initialData?.shortDescriptionProjectsPage || "",
-    projectIcon: initialData?.projectIcon || "",
-    trylink: initialData?.trylink || "",
-    introDescription: "", // Will be parsed from content
-    fullDescription: "", // Will be parsed from content
-    creationDate: initialData?.creationDate || "",
-    updateDate: initialData?.updateDate || "",
-    seoTitle: initialData?.seoTitle || "",
-    seoDescription: initialData?.seoDescription || "",
-    seoTags: initialData?.seoTags || "",
-    canonicalUrl: initialData?.canonicalUrl || "",
-    openGraphImage: initialData?.openGraphImage || "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [_error, _setError] = useState<string | null>(null);
-  const [isSlugTouched, setIsSlugTouched] = useState(false); // New state
-
-  // Состояния для управления галереей изображений
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [currentImageField, setCurrentImageField] = useState<
-    "projectIcon" | "openGraphImage" | null
-  >(null);
-
-  // Новое состояние для ошибок валидации
-  const [validationErrors, setValidationErrors] = useState<{
-    [key: string]: string;
-  }>({});
-
-  // Separate state for rich-text content to handle its parsing from initialData.content
-  const [richTextContent, setRichTextContent] = useState({
-    introDescription: initialData?.introDescription || "",
-    fullDescription: initialData?.fullDescription || "",
-  });
-
-  // States for image upload
-  const [selectedFiles, setSelectedFiles] = useState<{
-    projectIcon: File | null;
-    openGraphImage: File | null;
-  }>({
-    projectIcon: null,
-    openGraphImage: null,
-  });
-  const [previewUrls, setPreviewUrls] = useState<{
-    projectIcon: string | null;
-    openGraphImage: string | null;
-  }>({
-    // Added state for preview URLs
-    projectIcon: null,
-    openGraphImage: null,
-  });
-  // Refs to track current URLs for cleanup
-  const projectIconUrlRef = useRef<string | null>(null);
-  const openGraphImageUrlRef = useRef<string | null>(null);
-  const [uploading, setUploading] = useState<{
-    projectIcon: boolean;
-    openGraphImage: boolean;
-  }>({
-    projectIcon: false,
-    openGraphImage: false,
-  });
-  const [uploadError, setUploadError] = useState<{
-    projectIcon: string | null;
-    openGraphImage: string | null;
-  }>({
-    projectIcon: null,
-    openGraphImage: null,
-  });
-
-  // Рефы для скрытых инпутов файлов для MDEditor
   const fileInputIntroRef = useRef<HTMLInputElement>(null);
   const fileInputFullRef = useRef<HTMLInputElement>(null);
+  const { openGalleryModal } = useGalleryModal();
 
-  // Функция для валидации URL
-  const isValidUrl = (url: string) => {
-    // Allow relative paths starting with /
-    if (url.startsWith("/")) {
-      return true;
-    }
-    // For absolute URLs, try to parse
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
+  // Используем хук для состояния формы
+  const {
+    formData,
+    setFormData,
+    handleSlugChange,
+    validationErrors,
+    setFieldError,
+    loading,
+    setLoading,
+    handleSubmit: handleFormSubmit,
+    resetForm,
+  } = useFormState<ProjectFormData>({
+    initialValues: {
+      slug: initialData?.slug || "",
+      title: initialData?.title || "",
+      shortDescriptionHomepage: initialData?.shortDescriptionHomepage || "",
+      shortDescriptionProjectsPage:
+        initialData?.shortDescriptionProjectsPage || "",
+      projectIcon: initialData?.projectIcon || "",
+      trylink: initialData?.trylink || "",
+      introDescription: initialData?.introDescription || "",
+      fullDescription: initialData?.fullDescription || "",
+      creationDate: initialData?.creationDate || "",
+      updateDate: initialData?.updateDate || "",
+      seoTitle: initialData?.seoTitle || "",
+      seoDescription: initialData?.seoDescription || "",
+      seoTags: initialData?.seoTags || "",
+      canonicalUrl: initialData?.canonicalUrl || "",
+      openGraphImage: initialData?.openGraphImage || "",
+    },
+    validate: (data) => {
+      const errors: Record<string, string> = {};
 
-  // Функция валидации формы
-  const validateForm = () => {
-    const errors: { [key: string]: string } = {};
-
-    // Обязательные поля
-    if (!formData.title.trim()) errors.title = "Название обязательно.";
-    if (!formData.slug.trim()) errors.slug = "ЧПУ обязательно.";
-    if (!richTextContent.introDescription.trim())
-      errors.introDescription = "Вводный абзац обязателен.";
-    if (!richTextContent.fullDescription.trim())
-      errors.fullDescription = "Полное описание обязательно.";
-
-    // Минимальная длина
-    if (
-      formData.shortDescriptionHomepage.length > 0 &&
-      formData.shortDescriptionHomepage.length < 10
-    ) {
-      errors.shortDescriptionHomepage =
-        "Краткое описание для главной страницы должно быть не менее 10 символов.";
-    }
-    if (
-      formData.shortDescriptionProjectsPage.length > 0 &&
-      formData.shortDescriptionProjectsPage.length < 10
-    ) {
-      errors.shortDescriptionProjectsPage =
-        "Краткое описание для страницы проектов должно быть не менее 10 символов.";
-    }
-
-    // Валидация URL для projectIcon - только если не выбран новый файл
-    if (formData.projectIcon && !selectedFiles.projectIcon) {
+      if (!data.title.trim()) errors.title = "Название обязательно.";
+      if (!data.slug.trim()) errors.slug = "ЧПУ обязательно.";
+      if (!data.introDescription.trim()) {
+        errors.introDescription = "Вводный абзац обязателен.";
+      }
+      if (!data.fullDescription.trim()) {
+        errors.fullDescription = "Полное описание обязательно.";
+      }
       if (
-        !formData.projectIcon.startsWith("/") &&
-        !isValidUrl(formData.projectIcon)
+        data.shortDescriptionHomepage.length > 0 &&
+        data.shortDescriptionHomepage.length < 10
+      ) {
+        errors.shortDescriptionHomepage =
+          "Краткое описание для главной страницы должно быть не менее 10 символов.";
+      }
+      if (
+        data.shortDescriptionProjectsPage.length > 0 &&
+        data.shortDescriptionProjectsPage.length < 10
+      ) {
+        errors.shortDescriptionProjectsPage =
+          "Краткое описание для страницы проектов должно быть не менее 10 символов.";
+      }
+
+      // Валидация URL
+      const isValidUrl = (url: string) => {
+        if (url.startsWith("/")) return true;
+        try {
+          new URL(url);
+          return true;
+        } catch {
+          return false;
+        }
+      };
+
+      if (
+        data.projectIcon &&
+        !data.projectIcon.startsWith("/") &&
+        !isValidUrl(data.projectIcon)
       ) {
         errors.projectIcon =
           "Неверный формат URL для иконки проекта. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
       }
-    }
-    if (formData.trylink && !isValidUrl(formData.trylink))
-      errors.trylink = "Неверный формат URL для кнопки 'Попробовать'.";
-
-    // Валидация URL для openGraphImage - только если не выбран новый файл
-    if (formData.openGraphImage && !selectedFiles.openGraphImage) {
+      if (data.trylink && !isValidUrl(data.trylink)) {
+        errors.trylink = "Неверный формат URL для кнопки 'Попробовать'.";
+      }
       if (
-        !formData.openGraphImage.startsWith("/") &&
-        !isValidUrl(formData.openGraphImage)
+        data.openGraphImage &&
+        !data.openGraphImage.startsWith("/") &&
+        !isValidUrl(data.openGraphImage)
       ) {
         errors.openGraphImage =
           "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
       }
-    }
 
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+      return errors;
+    },
+    onSubmit: async (data) => {
+      const dataToSubmit = {
+        ...data,
+        updateDate: new Date().toISOString(),
+      };
 
-  const handleSelectImageFromGallery = (imageUrl: string) => {
-    if (currentImageField) {
-      // Clean up previous preview if it was a blob URL
-      if (previewUrls[currentImageField]) {
-        URL.revokeObjectURL(previewUrls[currentImageField]!);
-        setPreviewUrls((prev) => ({ ...prev, [currentImageField]: null }));
-      }
-      setSelectedFiles((prev) => ({ ...prev, [currentImageField]: null }));
-      setFormData((prev) => ({ ...prev, [currentImageField]: imageUrl }));
-      setValidationErrors((prev) => ({ ...prev, [currentImageField]: "" }));
-    }
-    setIsGalleryOpen(false);
-    setCurrentImageField(null);
-  };
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData((prev) => ({
-        ...prev,
-        slug: initialData.slug || "",
-        title: initialData.title || "",
-        shortDescriptionHomepage: initialData.shortDescriptionHomepage || "",
-        shortDescriptionProjectsPage:
-          initialData.shortDescriptionProjectsPage || "",
-        projectIcon: initialData.projectIcon || "",
-        trylink: initialData.trylink || "",
-        creationDate: initialData.creationDate || "",
-        updateDate: initialData.updateDate || "",
-        seoTitle: initialData.seoTitle || "",
-        seoDescription: initialData.seoDescription || "",
-        seoTags: initialData.seoTags || "",
-        canonicalUrl: initialData.canonicalUrl || "",
-        openGraphImage: initialData.openGraphImage || "",
-      }));
-      setRichTextContent({
-        introDescription: initialData.introDescription || "",
-        fullDescription: initialData.fullDescription || "",
-      });
-    }
-  }, [initialData]);
-
-  // Update refs when preview URLs change
-  useEffect(() => {
-    projectIconUrlRef.current = previewUrls.projectIcon;
-    openGraphImageUrlRef.current = previewUrls.openGraphImage;
-  }, [previewUrls.projectIcon, previewUrls.openGraphImage]);
-
-  // Clean up object URLs to avoid memory leaks when component unmounts
-  useEffect(() => {
-    return () => {
-      if (projectIconUrlRef.current)
-        URL.revokeObjectURL(projectIconUrlRef.current);
-      if (openGraphImageUrlRef.current)
-        URL.revokeObjectURL(openGraphImageUrlRef.current);
-    };
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    if (name === "slug") {
-      setIsSlugTouched(true); // User manually edited the slug
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-        canonicalUrl: `/projects/${value}`,
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-
-    // Auto-generate slug and canonicalUrl if title changes AND slug hasn't been touched manually
-    if (name === "title" && !isSlugTouched) {
-      const generatedSlug = generateSlug(value);
-      setFormData((prev) => ({
-        ...prev,
-        slug: generatedSlug,
-        canonicalUrl: `${baseUrl}/projects/${generatedSlug}`,
-      }));
-    }
-  };
-
-  const handleRichTextChange = (
-    field: "introDescription" | "fullDescription",
-    value: string | undefined,
-  ) => {
-    setRichTextContent((prev) => ({ ...prev, [field]: value || "" }));
-  };
-
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: "projectIcon" | "openGraphImage",
-  ) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      // Revoke previous object URL to prevent memory leaks
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
-      }
-
-      const newPreviewUrl = URL.createObjectURL(file);
-      setPreviewUrls((prev) => ({ ...prev, [field]: newPreviewUrl }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: file }));
-      setFormData((prev) => ({ ...prev, [field]: file.name })); // Set file name in the input
-      setUploadError((prev) => ({ ...prev, [field]: null }));
-    } else {
-      // If no file is selected, clear the related states
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
-      }
-      setPreviewUrls((prev) => ({ ...prev, [field]: null }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: null }));
-      // Do not clear the formData field, user might want to keep the existing URL
-    }
-  };
-
-  const handleUpload = async (field: "projectIcon" | "openGraphImage") => {
-    if (!selectedFiles[field]) {
-      setUploadError((prev) => ({
-        ...prev,
-        [field]: "Пожалуйста, выберите файл для загрузки.",
-      }));
-      return;
-    }
-
-    setUploading((prev) => ({ ...prev, [field]: true }));
-    setUploadError((prev) => ({ ...prev, [field]: null }));
-
-    const formDataToUpload = new FormData();
-    formDataToUpload.append("file", selectedFiles[field]!);
-
-    try {
-      const response = await fetch("/api/admin/upload-image", {
+      const response = await fetch(API_ROUTES.ADMIN_PROJECTS, {
         method: "POST",
-        body: formDataToUpload,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Ошибка загрузки файла.");
-      }
-
-      const result = await response.json();
-      setFormData((prev) => ({ ...prev, [field]: result.url }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: null }));
-      // Clean up preview URL after successful upload
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
-        setPreviewUrls((prev) => ({ ...prev, [field]: null }));
-      }
-      toast.success("Изображение успешно загружено!");
-    } catch (err) {
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка загрузки: ${error}`);
-    } finally {
-      setUploading((prev) => ({ ...prev, [field]: false }));
-    }
-  };
-
-  const handleMDEditorImageUpload = async (file: File): Promise<string> => {
-    const formDataToUpload = new FormData();
-    formDataToUpload.append("file", file);
-
-    try {
-      const response = await fetch("/api/admin/upload-image", {
-        method: "POST",
-        body: formDataToUpload,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Ошибка загрузки файла.");
-      }
-
-      const result = await response.json();
-      return result.url; // MDEditor expects the URL back
-    } catch (err) {
-      console.error("MDEditor image upload error:", err);
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка загрузки изображения: ${error}`);
-      throw err; // Re-throw to indicate upload failure to MDEditor
-    }
-  };
-
-  // Обработчик для выбора файла из скрытого инпута и вставки в MDEditor
-  const handleImageSelected = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    field: "introDescription" | "fullDescription",
-  ) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      try {
-        const imageUrl = await handleMDEditorImageUpload(file);
-        // Вставляем Markdown-синтаксис в текущее значение MDEditor
-        setRichTextContent((prev) => ({
-          ...prev,
-          [field]: `${prev[field]}\n![image](${imageUrl})\n`,
-        }));
-        event.target.value = ""; // Очищаем input, чтобы можно было загрузить тот же файл снова
-      } catch {
-        // Ошибка уже обработана в handleMDEditorImageUpload
-      }
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      toast.error("Пожалуйста, исправьте ошибки в форме.");
-      return;
-    }
-
-    setLoading(true);
-
-    const dataToSubmit = {
-      ...formData,
-      introDescription: richTextContent.introDescription,
-      fullDescription: richTextContent.fullDescription,
-      updateDate: new Date().toISOString(),
-    };
-
-    try {
-      const response = await fetch("/api/admin/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSubmit),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({
+          message: "Failed to save project.",
+        }));
+
+        // Handle validation errors
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          const errorMessages = errorData.errors
+            .map((e: any) => `${e.field}: ${e.message}`)
+            .join(", ");
+          toast.error(`Ошибки валидации: ${errorMessages}`);
+          throw new Error(errorMessages);
+        }
+
+        toast.error(errorData.message || "Failed to save project.");
         throw new Error(errorData.message || "Failed to save project.");
       }
 
       toast.success("Проект успешно сохранен!");
       router.push("/admin/dashboard");
-      router.refresh(); // Refresh the dashboard to show updated list
-    } catch (err) {
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка сохранения проекта: ${error}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+      router.refresh();
+    },
+  });
+
+  // Используем хук для загрузки изображений
+  const {
+    uploading,
+    uploadError,
+    selectedFiles,
+    previewUrls,
+    handleFileChange,
+    handleUpload,
+    setValue: setImageValue,
+  } = useImageUpload({
+    onSuccess: (field, url) => {
+      setFormData((prev) => ({ ...prev, [field]: url }));
+    },
+  });
+
+  // Обработчик выбора изображения из галереи для projectIcon
+  const handleSelectProjectIconFromGallery = useCallback(() => {
+    openGalleryModal((url: string) => {
+      setImageValue("projectIcon", url);
+      setFormData((prev) => ({ ...prev, projectIcon: url }));
+      setFieldError("projectIcon", "");
+    });
+  }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
+
+  // Обработчик выбора изображения из галереи для openGraphImage
+  const handleSelectOpenGraphFromGallery = useCallback(() => {
+    openGalleryModal((url: string) => {
+      setImageValue("openGraphImage", url);
+      setFormData((prev) => ({ ...prev, openGraphImage: url }));
+      setFieldError("openGraphImage", "");
+    });
+  }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
+
+  // Обработчик загрузки изображения из MDEditor
+  const handleMDEditorImageUpload = useCallback(
+    async (file: File): Promise<string> => {
+      const formDataToUpload = new FormData();
+      formDataToUpload.append("file", file);
+
+      try {
+        const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
+          method: "POST",
+          body: formDataToUpload,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Ошибка загрузки файла.");
+        }
+
+        const result = await response.json();
+        return result.url;
+      } catch (err) {
+        const error = err instanceof Error ? err.message : "Неизвестная ошибка";
+        toast.error(`Ошибка загрузки изображения: ${error}`);
+        throw err;
+      }
+    },
+    [],
+  );
+
+  // Handler for rich text editor changes
+  const handleRichTextChange = useCallback(
+    (
+      field: "introDescription" | "fullDescription",
+      value: string | undefined,
+    ) => {
+      setFormData((prev) => ({ ...prev, [field]: value || "" }));
+    },
+    [setFormData],
+  );
+
+  const handleImageSelected = useCallback(
+    async (
+      event: React.ChangeEvent<HTMLInputElement>,
+      field: "introDescription" | "fullDescription",
+    ) => {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        try {
+          const imageUrl = await handleMDEditorImageUpload(file);
+          const currentContent = formData[field] || "";
+          handleRichTextChange(
+            field,
+            `${currentContent}\n![image](${imageUrl})\n`,
+          );
+          event.target.value = "";
+        } catch {
+          // Ошибка уже обработана
+        }
+      }
+    },
+    [handleMDEditorImageUpload, formData, handleRichTextChange],
+  );
+
+  // Обертка для handleSubmit с вызовом handleFormSubmit
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      await handleFormSubmit(e);
+    },
+    [handleFormSubmit],
+  );
+
+  // Обработчик изменений в форме
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      handleSlugChange(e, generateSlug, baseUrl, "projects/");
+    },
+    [handleSlugChange, baseUrl],
+  );
 
   const projectIconPreviewUrl = previewUrls.projectIcon || formData.projectIcon;
   const openGraphImagePreviewUrl =
@@ -524,216 +293,84 @@ export default function ProjectForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Название
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.title && (
-          <p className="text-red-500 text-sm mt-1">{validationErrors.title}</p>
-        )}
-      </div>
+      <FormInput
+        id="title"
+        name="title"
+        label="Название"
+        value={formData.title || ""}
+        onChange={handleChange}
+        required
+        error={validationErrors.title}
+      />
 
-      <div>
-        <label
-          htmlFor="slug"
-          className="block text-sm font-medium text-gray-700"
-        >
-          ЧПУ (URL)
-        </label>
-        <input
-          type="text"
-          id="slug"
-          name="slug"
-          value={formData.slug}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.slug && (
-          <p className="text-red-500 text-sm mt-1">{validationErrors.slug}</p>
-        )}
-      </div>
+      <FormInput
+        id="slug"
+        name="slug"
+        label="ЧПУ (URL)"
+        value={formData.slug || ""}
+        onChange={handleChange}
+        required
+        error={validationErrors.slug}
+      />
 
-      <div>
-        <label
-          htmlFor="canonicalUrl"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Canonical URL
-        </label>
-        <input
-          type="text"
-          id="canonicalUrl"
-          name="canonicalUrl"
-          value={formData.canonicalUrl}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.canonicalUrl && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.canonicalUrl}
-          </p>
-        )}
-      </div>
+      <FormInput
+        id="canonicalUrl"
+        name="canonicalUrl"
+        label="Canonical URL"
+        value={formData.canonicalUrl || ""}
+        onChange={handleChange}
+        error={validationErrors.canonicalUrl}
+      />
 
-      <div>
-        <label
-          htmlFor="projectIcon"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Иконка проекта (путь)
-        </label>
-        <input
-          type="text"
-          id="projectIcon"
-          name="projectIcon"
-          value={formData.projectIcon}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        <div className="flex flex-col space-y-2 mt-2 w-fit">
-          <div className="flex items-center space-x-2">
-            <label
-              htmlFor="uploadProjectIcon"
-              className="inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer w-auto"
-            >
-              Выбрать файл
-              <input
-                type="file"
-                id="uploadProjectIcon"
-                name="uploadProjectIcon"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, "projectIcon")}
-                className="hidden"
-              />
-            </label>
-            <button
-              type="button"
-              onClick={() => handleUpload("projectIcon")}
-              disabled={uploading.projectIcon || !selectedFiles.projectIcon}
-              className={`inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 ${uploading.projectIcon || !selectedFiles.projectIcon ? "cursor-pointer" : "disabled:cursor-not-allowed"}`}
-            >
-              {uploading.projectIcon ? "Загрузка..." : "Загрузить"}
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setCurrentImageField("projectIcon");
-              setIsGalleryOpen(true);
-            }}
-            className="inline-flex justify-start py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-auto cursor-pointer"
-          >
-            Выбрать из галереи
-          </button>
-        </div>
-        {uploadError.projectIcon && (
-          <p className="text-red-500 text-sm mt-1">{uploadError.projectIcon}</p>
-        )}
-        {validationErrors.projectIcon && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.projectIcon}
-          </p>
-        )}
-        {/* Добавляем предпросмотр иконки проекта */}
-        {projectIconPreviewUrl && (
-          <div className="mt-2">
-            <p className="text-sm font-medium text-gray-700">
-              Предпросмотр иконки:
-            </p>
-            <Image
-              src={projectIconPreviewUrl}
-              alt="Project Icon Preview"
-              width={64}
-              height={64}
-              className="rounded-md object-cover border border-gray-200"
-            />
-          </div>
-        )}
-      </div>
+      <ImageUploadField
+        id="projectIcon"
+        label="Иконка проекта (путь)"
+        value={formData.projectIcon || ""}
+        onChange={handleChange}
+        onFileChange={(e) => handleFileChange(e, "projectIcon")}
+        onUpload={() => handleUpload("projectIcon")}
+        onSelectFromGallery={handleSelectProjectIconFromGallery}
+        previewUrl={projectIconPreviewUrl || null}
+        uploadError={uploadError.projectIcon || null}
+        isUploading={uploading.projectIcon}
+        hasFile={!!selectedFiles.projectIcon}
+        error={validationErrors.projectIcon}
+        previewWidth={64}
+        previewHeight={64}
+        previewLabel="Предпросмотр иконки:"
+      />
 
-      <div>
-        <label
-          htmlFor="trylink"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Ссылка для кнопки 'Попробовать'
-        </label>
-        <input
-          type="text"
-          id="trylink"
-          name="trylink"
-          value={formData.trylink}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.trylink && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.trylink}
-          </p>
-        )}
-      </div>
+      <FormInput
+        id="trylink"
+        name="trylink"
+        label="Ссылка для кнопки 'Попробовать'"
+        value={formData.trylink || ""}
+        onChange={handleChange}
+        error={validationErrors.trylink}
+      />
 
-      <div>
-        <label
-          htmlFor="shortDescriptionHomepage"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Краткое описание для главной страницы
-        </label>
-        <textarea
-          id="shortDescriptionHomepage"
-          name="shortDescriptionHomepage"
-          value={formData.shortDescriptionHomepage}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.shortDescriptionHomepage && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.shortDescriptionHomepage}
-          </p>
-        )}
-      </div>
+      <FormTextarea
+        id="shortDescriptionHomepage"
+        name="shortDescriptionHomepage"
+        label="Краткое описание для главной страницы"
+        value={formData.shortDescriptionHomepage || ""}
+        onChange={handleChange}
+        rows={3}
+        error={validationErrors.shortDescriptionHomepage}
+      />
 
-      <div>
-        <label
-          htmlFor="shortDescriptionProjectsPage"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Краткое описание для страницы проектов
-        </label>
-        <textarea
-          id="shortDescriptionProjectsPage"
-          name="shortDescriptionProjectsPage"
-          value={formData.shortDescriptionProjectsPage}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.shortDescriptionProjectsPage && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.shortDescriptionProjectsPage}
-          </p>
-        )}
-      </div>
+      <FormTextarea
+        id="shortDescriptionProjectsPage"
+        name="shortDescriptionProjectsPage"
+        label="Краткое описание для страницы проектов"
+        value={formData.shortDescriptionProjectsPage || ""}
+        onChange={handleChange}
+        rows={3}
+        error={validationErrors.shortDescriptionProjectsPage}
+      />
 
       {/* Rich Text Editor for Intro Description */}
       <div data-color-mode="light">
-        {" "}
-        {/* MDEditor requires a color mode context */}
         <label
           htmlFor="introDescription"
           className="block text-sm font-medium text-gray-700 mb-1"
@@ -741,9 +378,9 @@ export default function ProjectForm({
           Вводный абзац для подробной страницы проекта (Markdown)
         </label>
         <MDEditor
-          value={richTextContent.introDescription}
+          value={formData.introDescription || ""}
           onChange={(val) => handleRichTextChange("introDescription", val)}
-          height={200}
+          height={MD_EDITOR_HEIGHT.INTRO}
         />
         {validationErrors.introDescription && (
           <p className="text-red-500 text-sm mt-1">
@@ -768,8 +405,6 @@ export default function ProjectForm({
 
       {/* Rich Text Editor for Full Description */}
       <div data-color-mode="light">
-        {" "}
-        {/* MDEditor requires a color mode context */}
         <label
           htmlFor="fullDescription"
           className="block text-sm font-medium text-gray-700 mb-1 mt-4"
@@ -777,9 +412,9 @@ export default function ProjectForm({
           Подробное описание проекта (Markdown)
         </label>
         <MDEditor
-          value={richTextContent.fullDescription}
+          value={formData.fullDescription || ""}
           onChange={(val) => handleRichTextChange("fullDescription", val)}
-          height={400}
+          height={MD_EDITOR_HEIGHT.FULL}
         />
         {validationErrors.fullDescription && (
           <p className="text-red-500 text-sm mt-1">
@@ -802,146 +437,32 @@ export default function ProjectForm({
         </button>
       </div>
 
-      {/* SEO Fields */}
-      <h2 className="text-xl font-semibold mt-8 mb-4">SEO</h2>
-      <div>
-        <label
-          htmlFor="seoTitle"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Заголовок
-        </label>
-        <input
-          type="text"
-          id="seoTitle"
-          name="seoTitle"
-          value={formData.seoTitle}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="seoDescription"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Описание
-        </label>
-        <textarea
-          id="seoDescription"
-          name="seoDescription"
-          value={formData.seoDescription}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="seoTags"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Теги (через запятую)
-        </label>
-        <input
-          type="text"
-          id="seoTags"
-          name="seoTags"
-          value={formData.seoTags}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="openGraphImage"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Open Graph Изображение
-        </label>
-        <input
-          type="text"
-          id="openGraphImage"
-          name="openGraphImage"
-          value={formData.openGraphImage}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        <div className="flex flex-col space-y-2 mt-2 w-fit">
-          <div className="flex items-center space-x-2">
-            <label
-              htmlFor="uploadOpenGraphImage"
-              className="inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer w-auto"
-            >
-              Выбрать файл
-              <input
-                type="file"
-                id="uploadOpenGraphImage"
-                name="uploadOpenGraphImage"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, "openGraphImage")}
-                className="hidden"
-              />
-            </label>
-            <button
-              type="button"
-              onClick={() => handleUpload("openGraphImage")}
-              disabled={
-                uploading.openGraphImage || !selectedFiles.openGraphImage
-              }
-              className={`inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 ${uploading.openGraphImage || !selectedFiles.openGraphImage ? "cursor-pointer" : "disabled:cursor-not-allowed"}`}
-            >
-              {uploading.openGraphImage ? "Загрузка..." : "Загрузить"}
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setCurrentImageField("openGraphImage");
-              setIsGalleryOpen(true);
-            }}
-            className="inline-flex justify-start py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-auto cursor-pointer"
-          >
-            Выбрать из галереи
-          </button>
-        </div>
-        {uploadError.openGraphImage && (
-          <p className="text-red-500 text-sm mt-1">
-            {uploadError.openGraphImage}
-          </p>
-        )}
-        {validationErrors.openGraphImage && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.openGraphImage}
-          </p>
-        )}
-        {/* Добавляем предпросмотр Open Graph изображения */}
-        {openGraphImagePreviewUrl && (
-          <div className="mt-2">
-            <p className="text-sm font-medium text-gray-700">
-              Предпросмотр Open Graph изображения:
-            </p>
-            <Image
-              src={openGraphImagePreviewUrl}
-              alt="Open Graph Image Preview"
-              width={120}
-              height={63}
-              className="rounded-md object-cover border border-gray-200"
-            />
-          </div>
-        )}
-      </div>
+      <SeoFields
+        seoTitle={formData.seoTitle || ""}
+        seoDescription={formData.seoDescription || ""}
+        seoTags={formData.seoTags || ""}
+        openGraphImage={formData.openGraphImage || ""}
+        onFieldChange={handleChange}
+        onOpenGraphFileChange={(e) => handleFileChange(e, "openGraphImage")}
+        onOpenGraphUpload={() => handleUpload("openGraphImage")}
+        onOpenGraphSelectFromGallery={handleSelectOpenGraphFromGallery}
+        openGraphPreviewUrl={openGraphImagePreviewUrl || null}
+        openGraphUploadError={uploadError.openGraphImage || null}
+        isOpenGraphUploading={uploading.openGraphImage}
+        hasOpenGraphFile={!!selectedFiles.openGraphImage}
+        openGraphError={validationErrors.openGraphImage}
+      />
 
-      {/* Add SeoPreview component */}
       <SeoPreview
-        title={formData.seoTitle || formData.title}
+        title={formData.seoTitle || formData.title || ""}
         description={
           formData.seoDescription ||
           formData.shortDescriptionProjectsPage ||
-          formData.introDescription
+          formData.introDescription ||
+          ""
         }
-        imageUrl={openGraphImagePreviewUrl}
-        url={`${baseUrl}/projects/${formData.slug}`}
+        imageUrl={openGraphImagePreviewUrl || undefined}
+        url={`${baseUrl}/projects/${formData.slug || ""}`}
         type="article"
       />
 
@@ -952,11 +473,6 @@ export default function ProjectForm({
       >
         {loading ? "Сохранение..." : "Сохранить проект"}
       </button>
-      <ImageGalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        onSelectImage={handleSelectImageFromGallery}
-      />
     </form>
   );
 }

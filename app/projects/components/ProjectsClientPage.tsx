@@ -3,11 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
+import BentoButton from "../../components/BentoButton";
+import ContactModal from "../../components/ContactModal";
+
+// Dynamic import for ReactMarkdown with code-splitting
+const ReactMarkdownComp = dynamic(() => import("react-markdown"), {
+  ssr: true,
+  loading: () => <p className="text-gray-600">Loading...</p>,
+});
+
+// Import remark-gfm normally (it's small)
 import remarkGfm from "remark-gfm";
-import styles from "../projects.module.css"; // Note: relative import adjusted
-import BentoButton from "../../components/BentoButton"; // Note: relative import adjusted
-import ContactModal from "../../components/ContactModal"; // Note: relative import adjusted
 
 interface Project {
   title?: string;
@@ -40,7 +47,7 @@ export default function ProjectsClientPage({
         {projects.map((project) => (
           <div
             key={project.slug}
-            className={`${styles.projectCard} flex flex-col`}
+            className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full"
           >
             <Link
               href={`/projects/${project.slug}`}
@@ -52,23 +59,22 @@ export default function ProjectsClientPage({
                   alt={project.title || "Project icon"}
                   width={40}
                   height={40}
+                  sizes="40px"
                   className="rounded-lg mr-4"
                 />
               )}
-              <h2 className="text-2xl font-semibold group-hover:bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] group-hover:bg-clip-text group-hover:text-transparent transition-colors">
+              <h2 className="text-2xl font-semibold group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-primary group-hover:bg-clip-text group-hover:text-transparent transition-colors">
                 {project.title || "Без названия"}
               </h2>
             </Link>
             {(project.shortDescriptionProjectsPage ||
               project.shortDescriptionHomepage) && (
               <div className="text-gray-600 mb-6 flex-grow prose prose-sm max-w-none">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                >
+                <ReactMarkdownComp remarkPlugins={[remarkGfm]}>
                   {project.shortDescriptionProjectsPage ||
                     project.shortDescriptionHomepage ||
                     ""}
-                </ReactMarkdown>
+                </ReactMarkdownComp>
               </div>
             )}
             <div className="flex justify-start items-baseline mt-auto">

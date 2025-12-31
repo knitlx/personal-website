@@ -1,74 +1,98 @@
 .whatIDoItem {
-    background-color: #f7f9fc;
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    border-radius: 12px;
-    padding: 25px; 
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
+  background-color: #f7f9fc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 25px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  /* Оптимизация: анимируем только transform и box-shadow */
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 .whatIDoItem:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(123, 104, 238, 0.2);
 }
 
 .whatIDoItem::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 12px;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    border-image: linear-gradient(45deg, var(--accent-color), var(--primary-color));
-    border-image-slice: 1;
-    opacity: 0;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  /* Оптимизация: анимируем только opacity */
+  transition: opacity 0.3s ease;
+  border-image: linear-gradient(
+    45deg,
+    var(--accent-color),
+    var(--primary-color)
+  );
+  border-image-slice: 1;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .whatIDoItem:hover::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 .whatIDoList li::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background-color: #9137df;
-    border-radius: 50%;
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 8px;
+  content: "";
+  width: 6px;
+  height: 6px;
+  background-color: #9137df;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 8px;
 }
 
 /* Note: .what-i-do-icon is a descendant selector, so it does not get a modular class name */
-.whatIDoItem:nth-child(1) .what-i-do-icon { background-color: var(--primary-color); }
-.whatIDoItem:nth-child(1) .what-i-do-icon::before { content: "📋"; }
+.whatIDoItem:nth-child(1) .what-i-do-icon {
+  background-color: var(--primary-color);
+}
+.whatIDoItem:nth-child(1) .what-i-do-icon::before {
+  content: "📋";
+}
 
-.whatIDoItem:nth-child(2) .what-i-do-icon { background-color: #f7a268; }
-.whatIDoItem:nth-child(2) .what-i-do-icon::before { content: "⚙️"; }
+.whatIDoItem:nth-child(2) .what-i-do-icon {
+  background-color: #f7a268;
+}
+.whatIDoItem:nth-child(2) .what-i-do-icon::before {
+  content: "⚙️";
+}
 
-.whatIDoItem:nth-child(3) .what-i-do-icon { background-color: var(--accent-color); }
-.whatIDoItem:nth-child(3) .what-i-do-icon::before { content: "💻"; }
+.whatIDoItem:nth-child(3) .what-i-do-icon {
+  background-color: var(--accent-color);
+}
+.whatIDoItem:nth-child(3) .what-i-do-icon::before {
+  content: "💻";
+}
 
-.whatIDoItem:nth-child(4) .what-i-do-icon { background-color: #80e69f; }
-.whatIDoItem:nth-child(4) .what-i-do-icon::before { content: "🔍"; }
+.whatIDoItem:nth-child(4) .what-i-do-icon {
+  background-color: #80e69f;
+}
+.whatIDoItem:nth-child(4) .what-i-do-icon::before {
+  content: "🔍";
+}
 
 /* Base icon pseudo-element style */
 .what-i-do-icon::before {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

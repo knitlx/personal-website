@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import BentoButton from "../../components/BentoButton";
+import { API_ROUTES } from "@/lib/routes";
 
 // --- Helper: Icon Components ---
 const DownloadIcon = () => (
@@ -127,17 +128,18 @@ function DocumentConverter() {
   const handleUnitChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setMarginUnit(e.target.value);
 
-  const handlePdfPreview = async () => {
-    if (!htmlInput.trim())
-      return setError("Пожалуйста, введите HTML-код для конвертации.");
+  // Общая функция для получения PDF
+  const fetchPdf = async () => {
+    if (!htmlInput.trim()) {
+      setError("Пожалуйста, введите HTML-код для конвертации.");
+      return null;
+    }
+
     setLoading(true);
     setError(null);
-    if (pdfPreviewUrl) {
-      URL.revokeObjectURL(pdfPreviewUrl);
-      setPdfPreviewUrl(null);
-    }
+
     try {
-      const res = await fetch("/api/convert-html-to-pdf", {
+      const res = await fetch(API_ROUTES.CONVERT_HTML_TO_PDF, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -152,44 +154,39 @@ function DocumentConverter() {
           },
         }),
       });
+
       if (!res.ok)
         throw new Error((await res.json()).error || "Ошибка сервера");
+
       const blob = await res.blob();
       if (blob.size === 0) throw new Error("Сервер вернул пустой PDF.");
-      setPdfPreviewUrl(URL.createObjectURL(blob) + "#navpanes=1&view=FitH");
+
+      return blob;
     } catch (err) {
       const error = err instanceof Error ? err.message : "Неизвестная ошибка";
       setError(error);
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
+  const handlePdfPreview = async () => {
+    // Очистка предыдущего preview
+    if (pdfPreviewUrl) {
+      URL.revokeObjectURL(pdfPreviewUrl);
+      setPdfPreviewUrl(null);
+    }
+
+    const blob = await fetchPdf();
+    if (blob) {
+      setPdfPreviewUrl(URL.createObjectURL(blob) + "#navpanes=1&view=FitH");
+    }
+  };
+
   const handlePdfDownloadDirectly = async () => {
-    if (!htmlInput.trim())
-      return setError("Пожалуйста, введите HTML-код для конвертации.");
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/convert-html-to-pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          htmlContent: htmlInput,
-          options: {
-            margin: {
-              top: `${margins.top}${marginUnit}`,
-              right: `${margins.right}${marginUnit}`,
-              bottom: `${margins.bottom}${marginUnit}`,
-              left: `${margins.left}${marginUnit}`,
-            },
-          },
-        }),
-      });
-      if (!res.ok)
-        throw new Error((await res.json()).error || "Ошибка сервера");
-      const blob = await res.blob();
-      if (blob.size === 0) throw new Error("Сервер вернул пустой PDF.");
+    const blob = await fetchPdf();
+    if (blob) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -198,11 +195,6 @@ function DocumentConverter() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-    } catch (err) {
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      setError(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -212,7 +204,7 @@ function DocumentConverter() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/convert-to-pptx", {
+      const res = await fetch(API_ROUTES.CONVERT_TO_PPTX, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ htmlContent: htmlInput }),
@@ -245,7 +237,7 @@ function DocumentConverter() {
     setError(null);
     setPptxPreviewImages([]);
     try {
-      const res = await fetch("/api/preview-pptx", {
+      const res = await fetch(API_ROUTES.PREVIEW_PPTX, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ htmlContent: htmlInput }),
@@ -333,7 +325,7 @@ function DocumentConverter() {
                 value={htmlInput}
                 onChange={handleHtmlInputChange}
                 disabled={loading}
-              ></textarea>
+              />
             </section>
             <section>
               <Title>Отступы</Title>
@@ -449,7 +441,7 @@ function DocumentConverter() {
                   src={pdfPreviewUrl}
                   className="w-full h-full"
                   title="PDF Preview"
-                ></iframe>
+                />
               )}
               {!loading && !error && !pdfPreviewUrl && (
                 <div className="text-gray-400">
@@ -473,7 +465,7 @@ function DocumentConverter() {
                 value={htmlInput}
                 onChange={handleHtmlInputChange}
                 disabled={loading}
-              ></textarea>
+              />
             </section>
             <section className="flex items-center gap-4">
               <BentoButton

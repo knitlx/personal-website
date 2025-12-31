@@ -5,7 +5,7 @@ import Link from "next/link";
 import ContactModal from "./ContactModal";
 import BentoButton from "./BentoButton";
 
-const Header = () => {
+function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -82,6 +82,6 @@ const Header = () => {
       />
     </>
   );
-};
+}
 
 export default Header;

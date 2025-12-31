@@ -1,5 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { contactFormSchema } from "@/lib/validations/contact";
+import { rateLimit } from "@/lib/rate-limit";
+import {
+  ALLOWED_EXTENSIONS,
+  FILE_SIZE_LIMITS,
+  ALLOWED_IMAGE_EXTENSIONS,
+} from "@/lib/file-validation";
 
 interface MailOptions {
   from: string;
@@ -13,39 +20,49 @@ interface MailOptions {
   }>;
 }
 
-const ALLOWED_EXTENSIONS = [
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".gif",
-  ".webp",
-  ".svg",
-  ".heic",
-  ".bmp",
-  ".pdf",
-  ".doc",
-  ".docx",
-  ".xls",
-  ".xlsx",
-  ".ppt",
-  ".pptx",
-  ".txt",
-  ".rtf",
-  ".pages",
-  ".numbers",
-  ".key",
-  ".zip",
-  ".rar",
-  ".7z",
-];
-
 export async function POST(request: NextRequest) {
+  // Rate limiting - max 3 messages per 10 minutes per IP
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const rateLimitResult = rateLimit(ip, {
+    interval: 10 * 60 * 1000, // 10 minutes
+    limit: 3,
+  });
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { message: "Слишком много сообщений. Попробуйте позже." },
+      { status: 429 },
+    );
+  }
+
   try {
     const formData = await request.formData();
-    const name = formData.get("name") as string;
-    const contact = formData.get("contact") as string;
-    const message = formData.get("message") as string;
-    const projectTitle = formData.get("projectTitle") as string | null;
+    const rawData = {
+      name: formData.get("name") as string,
+      contact: formData.get("contact") as string,
+      message: formData.get("message") as string,
+      projectTitle: formData.get("projectTitle") as string | null,
+    };
+
+    // Валидация с помощью zod
+    const validationResult = contactFormSchema.safeParse(rawData);
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+      }));
+
+      return NextResponse.json(
+        {
+          message: "Ошибки валидации",
+          errors,
+        },
+        { status: 400 },
+      );
+    }
+
+    const { name, contact, message, projectTitle } = validationResult.data;
     const attachment = formData.get("attachment") as File | null;
 
     if (attachment) {
@@ -53,20 +70,30 @@ export async function POST(request: NextRequest) {
       const fileExtension = fileName
         .substring(fileName.lastIndexOf("."))
         .toLowerCase();
+
+      // Check file extension
       if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
         return NextResponse.json(
           { message: "Недопустимый тип файла." },
           { status: 400 },
         );
       }
-    }
 
-    // Basic validation
-    if (!name || !contact || !message) {
-      return NextResponse.json(
-        { message: "Пожалуйста, заполните все поля." },
-        { status: 400 },
-      );
+      // Check file size - different limits for images vs other files
+      const isImage = ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension);
+      const maxSize = isImage
+        ? FILE_SIZE_LIMITS.MAX_IMAGE_SIZE // 5MB for images
+        : FILE_SIZE_LIMITS.MAX_FILE_SIZE; // 10MB for other files
+
+      if (attachment.size > maxSize) {
+        const maxSizeMB = (maxSize / (1024 * 1024)).toFixed(0);
+        return NextResponse.json(
+          {
+            message: `Файл слишком большой. Максимальный размер: ${maxSizeMB}MB.`,
+          },
+          { status: 400 },
+        );
+      }
     }
 
     const transporter = nodemailer.createTransport({

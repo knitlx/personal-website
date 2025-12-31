@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, FormEvent, ChangeEvent } from "react";
-import BentoButton from "./BentoButton"; // Import BentoButton
+import { useState, useEffect, FormEvent, ChangeEvent, memo } from "react";
+import { ALLOWED_EXTENSIONS } from "@/lib/file-validation";
+import { API_ROUTES } from "@/lib/routes";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -27,33 +28,7 @@ const CloseIcon = () => (
   </svg>
 );
 
-const ALLOWED_EXTENSIONS = [
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".gif",
-  ".webp",
-  ".svg",
-  ".heic",
-  ".bmp", // Images
-  ".pdf",
-  ".doc",
-  ".docx",
-  ".xls",
-  ".xlsx",
-  ".ppt",
-  ".pptx",
-  ".txt",
-  ".rtf", // Documents
-  ".pages",
-  ".numbers",
-  ".key", // Apple iWork
-  ".zip",
-  ".rar",
-  ".7z", // Archives
-];
-
-const ContactModal: React.FC<ContactModalProps> = ({
+const ContactModalImpl: React.FC<ContactModalProps> = ({
   isOpen,
   onClose,
   projectTitle,
@@ -162,7 +137,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
     }
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(API_ROUTES.CONTACT, {
         method: "POST",
         body: data, // No 'Content-Type' header, browser sets it for FormData
       });
@@ -191,22 +166,29 @@ const ContactModal: React.FC<ContactModalProps> = ({
       className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
       onClick={handleClose}
       style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="contact-modal-title"
     >
       <div
         className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative transition-all duration-300"
         onClick={(e) => e.stopPropagation()}
+        role="document"
       >
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors z-10 cursor-pointer"
-          aria-label="Close modal"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors z-10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+          aria-label="Закрыть модальное окно"
         >
           <CloseIcon />
         </button>
 
         {view === "main" && (
           <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-center mb-4 font-unbounded-fix">
+            <h2
+              id="contact-modal-title"
+              className="text-2xl font-bold text-center mb-4 font-unbounded-fix"
+            >
               Связаться со мной
             </h2>
             <a
@@ -215,7 +197,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-[#619BEC] text-white py-3 rounded-lg font-semibold hover:bg-[#5081E1] transition-colors cursor-pointer">
+              <button className="w-full bg-[#619BEC] text-white py-3 rounded-lg font-semibold hover:bg-[#5081E1] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-700">
                 Написать в Telegram
               </button>
             </a>
@@ -225,7 +207,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:bg-[#6c58de] transition-colors cursor-pointer">
+              <button className="w-full bg-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:bg-[#6c58de] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-700">
                 Написать в WhatsApp
               </button>
             </a>
@@ -235,13 +217,13 @@ const ContactModal: React.FC<ContactModalProps> = ({
               rel="noopener noreferrer"
               className="block w-full"
             >
-              <button className="w-full bg-[#AB5EED] text-white py-3 rounded-lg font-semibold hover:bg-[#9a4edb] transition-colors cursor-pointer">
+              <button className="w-full bg-[#AB5EED] text-white py-3 rounded-lg font-semibold hover:bg-[#9a4edb] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600">
                 Написать боту-ассистенту
               </button>
             </a>
             <button
               onClick={handleShowForm}
-              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors cursor-pointer"
+              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
               Оставить заявку
             </button>
@@ -259,7 +241,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
                 <span className="font-semibold">{projectTitle}</span>
               </p>
             )}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} aria-describedby="form-status">
               <input
                 type="hidden"
                 name="projectTitle"
@@ -267,49 +249,60 @@ const ContactModal: React.FC<ContactModalProps> = ({
               />
               <div className="mb-4">
                 <label
-                  htmlFor="name"
+                  htmlFor="contact-name"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Ваше имя
+                  Ваше имя{" "}
+                  <span className="text-red-500" aria-hidden="true">
+                    *
+                  </span>
                 </label>
                 <input
                   type="text"
-                  id="name"
+                  id="contact-name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Иван"
                   required
+                  aria-required="true"
                 />
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="contact"
+                  htmlFor="contact-info"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Telegram или WhatsApp
+                  Telegram или WhatsApp{" "}
+                  <span className="text-red-500" aria-hidden="true">
+                    *
+                  </span>
                 </label>
                 <input
                   type="text"
-                  id="contact"
+                  id="contact-info"
                   name="contact"
                   value={formData.contact}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="@username или +79991234567"
                   required
+                  aria-required="true"
                 />
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="message"
+                  htmlFor="contact-message"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Сообщение
+                  Сообщение{" "}
+                  <span className="text-red-500" aria-hidden="true">
+                    *
+                  </span>
                 </label>
                 <textarea
-                  id="message"
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
@@ -317,81 +310,88 @@ const ContactModal: React.FC<ContactModalProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Кратко опишите вашу задачу..."
                   required
-                ></textarea>
+                  aria-required="true"
+                />
               </div>
               <div className="mb-6">
                 <label
-                  htmlFor="attachment"
+                  htmlFor="contact-attachment"
                   className="block text-gray-700 font-semibold mb-2"
                 >
                   Приложить файл
                 </label>
                 <input
                   type="file"
-                  id="attachment"
+                  id="contact-attachment"
                   name="attachment"
                   onChange={handleFileChange}
-                  accept={ALLOWED_EXTENSIONS.join(",")} // Added accept attribute
+                  accept={ALLOWED_EXTENSIONS.join(",")}
                   className="w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-lg file:border file:border-gray-200
                     file:text-sm file:font-semibold file:bg-white file:text-[#1a1a1a]
-                    hover:file:bg-gray-50 file:cursor-pointer"
+                    hover:file:bg-gray-50 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-describedby={fileError ? "file-error" : undefined}
+                  aria-invalid={!!fileError}
                 />
                 {fileError && (
-                  <p className="text-red-500 text-xs mt-1">{fileError}</p>
+                  <p
+                    id="file-error"
+                    className="text-red-500 text-xs mt-1"
+                    role="alert"
+                  >
+                    {fileError}
+                  </p>
                 )}
               </div>
               {statusMessage && (
                 <p
+                  id="form-status"
                   className={`text-center mb-4 ${statusMessage.includes("ошибка") ? "text-red-500" : "text-green-500"}`}
+                  role="status"
+                  aria-live="polite"
                 >
                   {statusMessage}
                 </p>
               )}
-              <div className="flex justify-between items-center">
-                <button
-                  type="button"
-                  onClick={handleShowMain}
-                  className="text-gray-600 hover:text-gray-900 font-semibold transition-colors disabled:opacity-50 cursor-pointer"
-                  disabled={isSubmitting}
-                >
-                  &larr; Назад
-                </button>
-                <BentoButton
-                  variant="primary"
-                  size="default"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Отправка..." : "Отправить"}
-                </BentoButton>
-              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-600"
+                aria-busy={isSubmitting}
+              >
+                {isSubmitting ? "Отправка..." : "Отправить"}
+              </button>
+              <button
+                type="button"
+                onClick={handleShowMain}
+                className="w-full mt-3 bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
+              >
+                Назад
+              </button>
             </form>
           </div>
         )}
 
         {view === "success" && (
-          <div className="text-center">
+          <div className="text-center" role="status" aria-live="polite">
             <h2 className="text-2xl font-bold text-center mb-4 font-unbounded-fix bg-gradient-to-b from-[var(--accent-color)] to-[var(--primary-color)] bg-clip-text text-transparent">
               Спасибо!
             </h2>
-            <p className="text-gray-700">{statusMessage}</p>
-            <p className="mt-4 text-gray-600">
-              Ваша заявка принята. Я скоро с вами свяжусь.
-            </p>
-            <BentoButton
+            <p className="text-gray-700 mb-6">{statusMessage}</p>
+            <button
               onClick={handleClose}
-              variant="primary"
-              size="default"
-              className="mt-6"
+              className="bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600"
             >
               Закрыть
-            </BentoButton>
+            </button>
           </div>
         )}
       </div>
     </div>
   );
 };
+
+const ContactModal = memo(ContactModalImpl);
 
 export default ContactModal;

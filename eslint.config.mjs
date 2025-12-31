@@ -15,47 +15,38 @@ export default [
       "build/**",
       "next-env.d.ts",
       "node_modules/**",
+      "eslint.config.mjs",
+      "**/*.md", // Ignore all Markdown files
+      "**/*.json", // Ignore all JSON files
+      ".claude/settings.local.json", // Specific ignore
+      "public/content-cache.json", // Specific ignore
     ],
   },
-  // Base JS config
+  // Base JS config - applies to all JS-like files by default
   js.configs.recommended,
-  // TypeScript config
-  ...tseslint.configs.recommended,
-  // React config
+
+  // Configuration for next.config.mjs
   {
-    ...pluginReact.configs.flat.recommended,
-    settings: {
-      react: {
-        version: "detect",
+    files: ["next.config.mjs"],
+    languageOptions: {
+      globals: {
+        process: "readonly", // Define 'process' as a readonly global
       },
     },
   },
-  // React Hooks config
-  pluginReactHooks.configs.flat.recommended,
-  // JSX A11y config
-  jsxA11y.flatConfigs.recommended,
-  // Next.js config
+
+  // TypeScript specific configuration
+  ...tseslint.configs.recommended, // Apply recommended TypeScript rules
   {
-    plugins: {
-      "@next/next": pluginNext,
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.json"],
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
-      ...pluginNext.configs.recommended.rules,
-      ...pluginNext.configs["core-web-vitals"].rules,
-    },
-  },
-  // Prettier integration
-  {
-    plugins: {
-      prettier: prettierPlugin,
-    },
-    rules: {
-      "prettier/prettier": "error",
-    },
-  },
-  // Custom rules
-  {
-    rules: {
+      // Custom TypeScript-specific rules
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -64,13 +55,67 @@ export default [
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/prefer-nullish-coalescing": "warn",
+      "@typescript-eslint/prefer-optional-chain": "warn",
+    },
+  },
+
+  // React specific configuration
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    ...pluginReact.configs.flat.recommended,
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+
+  // React Hooks specific configuration
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    ...pluginReactHooks.configs.flat.recommended,
+  },
+
+  // JSX A11y specific configuration
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    ...jsxA11y.flatConfigs.recommended,
+  },
+
+  // Next.js specific configuration
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    plugins: {
+      "@next/next": pluginNext,
+    },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs["core-web-vitals"].rules,
+    },
+  },
+
+  // Prettier integration (applies to all relevant files)
+  {
+    files: ["**/*.{js,jsx,ts,tsx,json,md}"], // Common file types for Prettier
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      "prettier/prettier": "error",
+    },
+  },
+
+  // Custom general (non-type-specific) React rules
+  {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    rules: {
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/no-unescaped-entities": "off",
-      // Disable some a11y rules for flexibility
-      "jsx-a11y/click-events-have-key-events": "off",
-      "jsx-a11y/no-static-element-interactions": "off",
-      "jsx-a11y/anchor-is-valid": "off",
+      "react/jsx-boolean-value": ["error", "never"],
+      "react/jsx-curly-brace-presence": ["error", "never"],
+      "react/self-closing-comp": "error",
     },
   },
 ];

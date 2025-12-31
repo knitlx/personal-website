@@ -1,11 +1,13 @@
 // app/components/MarkdownImage.tsx
-import Image from "next/image";
+import { ComponentProps } from "react";
 
-interface MarkdownImageProps {
-  src?: string;
+interface MarkdownImageProps extends ComponentProps<"img"> {
+  src?: string | Blob;
   alt?: string;
   title?: string;
-  onImageClick?: (src: string) => void; // Added onImageClick prop
+  width?: string | number;
+  height?: string | number;
+  onImageClick?: (src: string) => void;
 }
 
 const MarkdownImage: React.FC<MarkdownImageProps> = ({
@@ -13,25 +15,25 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
   alt,
   title,
   onImageClick,
+  width,
+  height,
+  ...props
 }) => {
-  // Determine if it's an external image that needs Next.js Image configuration
-  // For simplicity, we'll assume all images are local or correctly configured in next.config.js
-  // You might want to add more sophisticated logic here (e.g., check for absolute URLs)
+  // Convert Blob to string if needed
+  const imageSrc = src instanceof Blob ? URL.createObjectURL(src) : src;
 
-  if (!src) return null;
+  if (!imageSrc || typeof imageSrc !== "string") return null;
 
   return (
-    <Image
-      src={src}
+    <img
+      src={imageSrc}
       alt={alt || ""}
       title={title}
-      width={700} // Set a reasonable default width
-      height={400} // Set a reasonable default height
-      // layout="responsive" // In Next.js 13+, 'layout' is deprecated. Use fill, fixed, intrinsic, or responsive.
-      // objectFit="contain" // Adjust as needed
-      className="max-w-full h-auto cursor-pointer" // Added cursor-pointer
-      priority // Consider loading important images earlier
-      onClick={() => onImageClick && onImageClick(src)} // Attach onClick handler
+      width={width}
+      height={height}
+      className="max-w-full h-auto cursor-pointer"
+      onClick={() => onImageClick?.(imageSrc)}
+      {...props}
     />
   );
 };

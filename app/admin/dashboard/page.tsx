@@ -9,7 +9,7 @@ import DashboardClient from "./components/DashboardClient";
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const session = await getServerSession(authOptions);
 
@@ -17,18 +17,17 @@ export default async function DashboardPage({
     redirect("/admin/login");
   }
 
+  // Await searchParams в Next.js 15+
+  const params = await searchParams;
+
   // Извлечение параметров пагинации и поиска для проектов и статей
-  const projectsPage = searchParams?.projectsPage
-    ? Number(searchParams.projectsPage)
-    : 1;
-  const projectsSearch = searchParams?.projectsSearch
-    ? String(searchParams.projectsSearch)
+  const projectsPage = params?.projectsPage ? Number(params.projectsPage) : 1;
+  const projectsSearch = params?.projectsSearch
+    ? String(params.projectsSearch)
     : undefined;
-  const blogPage = searchParams?.blogPage ? Number(searchParams.blogPage) : 1;
-  const blogSearch = searchParams?.blogSearch
-    ? String(searchParams.blogSearch)
-    : undefined;
-  const limit = searchParams?.limit ? Number(searchParams.limit) : 10; // Может быть общим или отдельным
+  const blogPage = params?.blogPage ? Number(params.blogPage) : 1;
+  const blogSearch = params?.blogSearch ? String(params.blogSearch) : undefined;
+  const limit = params?.limit ? Number(params.limit) : 10; // Может быть общим или отдельным
 
   const projectsResult = getAllContent("projects", {
     page: projectsPage,

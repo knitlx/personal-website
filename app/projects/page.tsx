@@ -1,17 +1,21 @@
 import { getAllContent } from "@/lib/content";
-import ProjectsClientPage from "./components/ProjectsClientPage";
+import InfiniteScrollProjects from "./components/InfiniteScrollProjects";
 
 export default async function ProjectsPage() {
-  const projects = getAllContent("projects").data.map((project) => ({
+  const { data: allProjects, totalItems } = getAllContent("projects");
+
+  const projects = allProjects.map((project) => ({
     ...project,
-    projectIcon: project.projectIcon || project.icon, // Ensure projectIcon is available
+    projectIcon: project.projectIcon || project.icon,
     shortDescriptionHomepage:
       project.shortDescriptionHomepage || project.description,
     shortDescriptionProjectsPage:
       project.shortDescriptionProjectsPage || project.pageDescription,
-    // Ensure slug is a string
     slug: String(project.slug),
   }));
+
+  // Показываем первые 6 проектов изначально
+  const initialProjects = projects.slice(0, 6);
 
   return (
     <main className="py-12">
@@ -19,7 +23,10 @@ export default async function ProjectsPage() {
         <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix">
           Проекты
         </h1>
-        <ProjectsClientPage projects={projects} />
+        <InfiniteScrollProjects
+          initialProjects={initialProjects}
+          totalProjects={totalItems}
+        />
       </div>
     </main>
   );

@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { aiFeatures } from "../data/homePageData";
 import styles from "./AiCreatedSiteSection.module.css";
-import Image from "next/image"; // Added Image import
+import Image from "next/image";
 
-export default function AiCreatedSiteSection() {
+function AiCreatedSiteSection() {
   return (
     <section className="bg-[#F9FAFB] py-16 text-center mb-[50px]">
       <div className="container">
@@ -26,6 +27,7 @@ export default function AiCreatedSiteSection() {
                 alt={feature.alt}
                 width={70}
                 height={70}
+                sizes="70px"
                 className="ai-feature-icon w-[70px] h-[70px] flex items-center justify-center mx-auto mb-[15px] relative"
               />
               <h3 className="text-[18px] font-semibold text-[#333333] mb-2">
@@ -41,3 +43,5 @@ export default function AiCreatedSiteSection() {
     </section>
   );
 }
+
+export default memo(AiCreatedSiteSection);

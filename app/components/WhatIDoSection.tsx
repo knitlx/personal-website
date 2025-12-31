@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { whatIDo } from "../data/homePageData";
 import styles from "./WhatIDoSection.module.css";
 import Image from "next/image"; // Added Image import
 
-export default function WhatIDoSection() {
+function WhatIDoSection() {
   return (
     <section className="bg-[#F9FAFB] py-8 text-center mb-[50px]">
       <div className="container">
@@ -25,6 +26,7 @@ export default function WhatIDoSection() {
                   alt={item.alt}
                   width={42}
                   height={42}
+                  sizes="42px"
                   className="what-i-do-icon w-[42px] h-[42px] flex items-center justify-center mr-[15px] relative"
                 />
                 <h3 className="what-i-do-item-title text-[18px] font-semibold text-[#333333] mb-0">
@@ -50,3 +52,5 @@ export default function WhatIDoSection() {
     </section>
   );
 }
+
+export default memo(WhatIDoSection);

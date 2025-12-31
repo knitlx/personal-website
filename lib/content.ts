@@ -1,7 +1,41 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { unstable_noStore as noStore } from "next/cache"; // Use unstable_noStore
+import { unstable_cacheLife as cacheLife } from "next/cache";
+
+// Cache file structure
+interface CacheItem {
+  slug: string;
+  title?: string;
+  description?: string;
+  creationDate?: string;
+  updateDate?: string;
+  projectIcon?: string;
+  icon?: string;
+  shortDescriptionHomepage?: string;
+  shortDescriptionProjectsPage?: string;
+  shortDescription?: string;
+  pageDescription?: string;
+  trylink?: string;
+  introDescription?: string;
+  fullDescription?: string;
+  date?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoTags?: string;
+  canonicalUrl?: string;
+  openGraphImage?: string;
+  [key: string]: unknown;
+}
+
+interface ContentCache {
+  blogs: CacheItem[];
+  projects: CacheItem[];
+  generatedAt: string;
+}
+
+// In-memory cache to avoid reading JSON file on every request
+let memoryCache: ContentCache | null = null;
 
 // Define a more comprehensive ContentItem interface
 export interface ContentItem {
@@ -44,14 +78,44 @@ interface GetAllContentOptions {
 
 const contentDirectory = path.join(process.cwd(), "content");
 
-export function getSlugs(collection: string) {
-  const collectionPath = path.join(contentDirectory, collection);
-  // Check if the directory exists
-  if (!fs.existsSync(collectionPath)) {
-    return [];
+// Load cache from JSON file (with in-memory caching)
+function loadCache(): ContentCache {
+  // Return in-memory cache if available
+  if (memoryCache) {
+    return memoryCache;
   }
-  const files = fs.readdirSync(collectionPath);
-  return files.map((file) => file.replace(/\.md$/, ""));
+
+  const cachePath = path.join(process.cwd(), "public", "content-cache.json");
+
+  if (!fs.existsSync(cachePath)) {
+    console.warn(
+      "Content cache file not found. Generate it with: npm run cache:generate",
+    );
+    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+  }
+
+  try {
+    const cacheContent = fs.readFileSync(cachePath, "utf-8");
+    memoryCache = JSON.parse(cacheContent) as ContentCache;
+    return memoryCache!;
+  } catch (error) {
+    console.error("Error loading content cache:", error);
+    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+  }
+}
+
+// Get cached metadata for a collection
+export function getCachedMetadata(
+  collection: "blog" | "projects",
+): CacheItem[] {
+  const cache = loadCache();
+  return collection === "blog" ? cache.blogs : cache.projects;
+}
+
+export function getSlugs(collection: string) {
+  const cache = loadCache();
+  const items = collection === "blog" ? cache.blogs : cache.projects;
+  return items.map((item) => item.slug);
 }
 
 export function getMarkdownFile(collection: string, slug: string) {
@@ -62,6 +126,24 @@ export function getMarkdownFile(collection: string, slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
   return { data, content, slug };
+}
+
+// Lightweight function to get only metadata (no content) for sitemap
+export interface ContentMetadata {
+  slug: string;
+  creationDate?: string;
+  updateDate?: string;
+}
+
+export function getContentMetadata(collection: string): ContentMetadata[] {
+  const cache = loadCache();
+  const items = collection === "blog" ? cache.blogs : cache.projects;
+
+  return items.map((item) => ({
+    slug: item.slug,
+    creationDate: item.creationDate,
+    updateDate: item.updateDate,
+  }));
 }
 
 // Define the shape of the return object for getAllContent
@@ -77,34 +159,18 @@ export function getAllContent(
   collection: string,
   options?: GetAllContentOptions,
 ) {
-  noStore();
+  // Get metadata from cache (much faster than reading all files)
+  const cachedItems = getCachedMetadata(collection as "blog" | "projects");
+  let allContent: ContentItem[] = [...cachedItems] as ContentItem[];
 
-  const slugs = getSlugs(collection);
-  let allContent: ContentItem[] = slugs
-    .map((slug) => {
-      const file = getMarkdownFile(collection, slug);
-      if (file) {
-        // Ensure content and description are included for searching
-        return {
-          ...file.data,
-          slug,
-          content: file.content,
-          description: file.data.description,
-        };
-      }
-      return null;
-    })
-    .filter(Boolean) as ContentItem[]; // Filter out any nulls and assert type
-
-  // Apply search
+  // Apply search (only searches metadata, not full content)
   if (options?.search && options.search.trim() !== "") {
     const searchTerm = options.search.toLowerCase();
     allContent = allContent.filter(
       (item) =>
-        (item.title && item.title.toLowerCase().includes(searchTerm)) ||
-        (item.description &&
-          item.description.toLowerCase().includes(searchTerm)) ||
-        (item.content && item.content.toLowerCase().includes(searchTerm)), // Search in full content
+        item.title?.toLowerCase().includes(searchTerm) ||
+        item.description?.toLowerCase().includes(searchTerm) ||
+        item.shortDescription?.toLowerCase().includes(searchTerm),
     );
   }
 
@@ -113,7 +179,7 @@ export function getAllContent(
     const filterBy = options.filterBy as keyof ContentItem;
     const filterValue = options.filterValue.toLowerCase();
     allContent = allContent.filter((item) => {
-      const itemValue = String(item[filterBy]).toLowerCase();
+      const itemValue = String(item[filterBy] || "").toLowerCase();
       return itemValue.includes(filterValue);
     });
   }
@@ -133,4 +199,22 @@ export function getAllContent(
     currentPage: page,
     limit: limit,
   };
+}
+
+// Get full content for a single item (includes body content)
+export function getFullContent(
+  collection: string,
+  slug: string,
+): ContentItem | null {
+  const file = getMarkdownFile(collection, slug);
+  if (!file) {
+    return null;
+  }
+
+  return {
+    ...file.data,
+    slug,
+    content: file.content,
+    description: file.data.description,
+  } as ContentItem;
 }

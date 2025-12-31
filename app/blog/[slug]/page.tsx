@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw"; // Import rehypeRaw
 import MarkdownImage from "../../components/MarkdownImage"; // Import MarkdownImage
+import { Metadata } from "next";
 
 interface PostPageProps {
   params: {
@@ -11,8 +12,54 @@ interface PostPageProps {
   };
 }
 
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const postFile = getMarkdownFile("blog", slug);
+
+  if (!postFile) {
+    return {
+      title: "Пост не найден",
+    };
+  }
+
+  const post = postFile.data;
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const canonicalUrl = post.canonicalUrl || `${baseUrl}/blog/${slug}`;
+  const title = post.seoTitle || post.title;
+  const description = post.seoDescription || post.description;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/blog/${slug}`,
+      siteName: "Личный сайт",
+      locale: "ru_RU",
+      type: "article",
+      publishedTime: post.creationDate,
+      modifiedTime: post.updateDate,
+      images: post.openGraphImage ? [{ url: post.openGraphImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: post.openGraphImage ? [post.openGraphImage] : undefined,
+    },
+    keywords: post.seoTags,
+  };
+}
+
 export default async function PostPage({ params }: PostPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const postFile = getMarkdownFile("blog", slug);
 
   if (!postFile) {

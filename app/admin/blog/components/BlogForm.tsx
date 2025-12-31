@@ -1,22 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Image from "next/image";
-import ImageGalleryModal from "../../components/ImageGalleryModal";
-import SeoPreview from "../../../components/SeoPreview"; // Import SeoPreview
+import { generateSlug } from "@/lib/slug";
+import { useFormState } from "@/hooks/useFormState";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import { useGalleryModal } from "@/contexts/ModalContext";
+import { MD_EDITOR_HEIGHT } from "@/lib/constants";
+import { API_ROUTES } from "@/lib/routes";
+import FormInput from "../../components/FormInput";
+import FormTextarea from "../../components/FormTextarea";
+import SeoFields from "../../components/SeoFields";
+import SeoPreview from "../../../components/SeoPreview";
 
-// Dynamically import MDEditor to ensure it's client-side rendered
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 interface BlogFormData {
   slug: string;
   title: string;
-  date: string; // The original date from blogData.ts, will be initialData.date
-  description: string; // Mapped from blogData.ts description
-  articleBody: string; // Mapped from blogData.ts content
+  date: string;
+  description: string;
+  articleBody: string;
   creationDate: string;
   updateDate: string;
   seoTitle: string;
@@ -31,534 +37,242 @@ interface BlogFormProps {
   baseUrl: string;
 }
 
-// Function-helper for slug generation (reused from ProjectForm)
-const generateSlug = (title: string) => {
-  const cyrillicToLatinMap: { [key: string]: string } = {
-    а: "a",
-    б: "b",
-    в: "v",
-    г: "g",
-    д: "d",
-    е: "e",
-    ё: "yo",
-    ж: "zh",
-    з: "z",
-    и: "i",
-    й: "y",
-    к: "k",
-    л: "l",
-    м: "m",
-    н: "n",
-    о: "o",
-    п: "p",
-    р: "r",
-    с: "s",
-    т: "t",
-    у: "u",
-    ф: "f",
-    х: "h",
-    ц: "ts",
-    ч: "ch",
-    ш: "sh",
-    щ: "sch",
-    Ъ: "",
-    ы: "y",
-    ь: "",
-    э: "e",
-    ю: "yu",
-    я: "ya",
-    А: "A",
-    Б: "B",
-    В: "V",
-    Г: "G",
-    Д: "D",
-    Е: "E",
-    Ё: "Yo",
-    Ж: "Zh",
-    З: "Z",
-    И: "I",
-    Й: "Y",
-    К: "K",
-    Л: "L",
-    М: "M",
-    Н: "N",
-    О: "O",
-    П: "P",
-    Р: "R",
-    С: "S",
-    Т: "T",
-    У: "U",
-    Ф: "F",
-    Х: "H",
-    Ц: "Ts",
-    Ч: "Ch",
-    Ш: "Sh",
-    Щ: "Sch",
-    Ы: "Y",
-    Э: "E",
-    Ю: "Yu",
-    Я: "Ya",
-  };
-
-  let processedTitle = title.toLowerCase();
-
-  // Transliterate Cyrillic
-  processedTitle = Array.from(processedTitle)
-    .map((char) => cyrillicToLatinMap[char] || char)
-    .join("");
-
-  return processedTitle
-    .trim()
-    .replace(/[\s\W_]+/g, "-") // Replace spaces, non-word chars (except -) with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
-};
-
 export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
   const router = useRouter();
-  const [formData, setFormData] = useState<BlogFormData>({
-    slug: initialData?.slug || "",
-    title: initialData?.title || "",
-    date: initialData?.date || new Date().toISOString().split("T")[0], // Default to current date
-    description: initialData?.description || "",
-    articleBody: initialData?.articleBody || "",
-    creationDate: initialData?.creationDate || new Date().toISOString(),
-    updateDate: initialData?.updateDate || new Date().toISOString(),
-    seoTitle: initialData?.seoTitle || "",
-    seoDescription: initialData?.seoDescription || "",
-    seoTags: initialData?.seoTags || "",
-    canonicalUrl: initialData?.canonicalUrl || "",
-    openGraphImage: initialData?.openGraphImage || "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [_error, _setError] = useState<string | null>(null);
-  const [isSlugTouched, setIsSlugTouched] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { openGalleryModal } = useGalleryModal();
 
-  // Новое состояние для ошибок валидации
-  const [validationErrors, setValidationErrors] = useState<{
-    [key: string]: string;
-  }>({});
+  // Используем хук для состояния формы
+  const {
+    formData,
+    setFormData,
+    handleSlugChange,
+    validationErrors,
+    setFieldError,
+    loading,
+    setLoading,
+    handleSubmit: handleFormSubmit,
+    resetForm,
+  } = useFormState<BlogFormData>({
+    initialValues: {
+      slug: initialData?.slug || "",
+      title: initialData?.title || "",
+      date: initialData?.date || new Date().toISOString().split("T")[0],
+      description: initialData?.description || "",
+      articleBody: initialData?.articleBody || "",
+      creationDate: initialData?.creationDate || new Date().toISOString(),
+      updateDate: initialData?.updateDate || new Date().toISOString(),
+      seoTitle: initialData?.seoTitle || "",
+      seoDescription: initialData?.seoDescription || "",
+      seoTags: initialData?.seoTags || "",
+      canonicalUrl: initialData?.canonicalUrl || "",
+      openGraphImage: initialData?.openGraphImage || "",
+    },
+    validate: (data) => {
+      const errors: Record<string, string> = {};
 
-  // States for image upload
-  const [selectedFiles, setSelectedFiles] = useState<{
-    openGraphImage: File | null;
-  }>({ openGraphImage: null });
-  const [previewUrls, setPreviewUrls] = useState<{
-    openGraphImage: string | null;
-  }>({ openGraphImage: null });
-  // Ref to track current URL for cleanup
-  const openGraphImageUrlRef = useRef<string | null>(null);
-  const [uploading, setUploading] = useState<{ openGraphImage: boolean }>({
-    openGraphImage: false,
-  });
-  const [uploadError, setUploadError] = useState<{
-    openGraphImage: string | null;
-  }>({ openGraphImage: null });
-
-  // Состояния для управления галереей изображений
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [currentImageField, setCurrentImageField] = useState<
-    "openGraphImage" | null
-  >(null);
-
-  // Реф для скрытого инпута файла для MDEditor
-  const fileInputArticleBodyRef = useRef<HTMLInputElement>(null);
-
-  // Функция для валидации URL
-  const isValidUrl = (url: string) => {
-    // Allow relative paths starting with /
-    if (url.startsWith("/")) {
-      return true;
-    }
-    // For absolute URLs, try to parse
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  // Функция валидации формы
-  const validateForm = () => {
-    const errors: { [key: string]: string } = {};
-
-    // Обязательные поля
-    if (!formData.title.trim()) errors.title = "Заголовок обязателен.";
-    if (!formData.slug.trim()) errors.slug = "ЧПУ обязательно.";
-    if (!formData.date.trim()) errors.date = "Дата публикации обязательна.";
-    if (!formData.description.trim())
-      errors.description = "Краткое описание обязательно.";
-    if (!formData.articleBody.trim())
-      errors.articleBody = "Тело статьи обязательно.";
-
-    // Минимальная длина
-    if (formData.description.length > 0 && formData.description.length < 10) {
-      errors.description = "Краткое описание должно быть не менее 10 символов.";
-    }
-
-    // Валидация URL для openGraphImage - только если не выбран новый файл
-    if (formData.openGraphImage && !selectedFiles.openGraphImage) {
-      if (
-        !formData.openGraphImage.startsWith("/") &&
-        !isValidUrl(formData.openGraphImage)
-      ) {
-        errors.openGraphImage =
-          "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
-      }
-    }
-
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSelectImageFromGallery = (imageUrl: string) => {
-    if (currentImageField) {
-      // Clean up previous preview if it was a blob URL
-      if (previewUrls[currentImageField]) {
-        URL.revokeObjectURL(previewUrls[currentImageField]!);
-        setPreviewUrls((prev) => ({ ...prev, [currentImageField]: null }));
-      }
-      setSelectedFiles((prev) => ({ ...prev, [currentImageField]: null }));
-      setFormData((prev) => ({ ...prev, [currentImageField]: imageUrl }));
-      setValidationErrors((prev) => ({ ...prev, [currentImageField]: "" }));
-    }
-    setIsGalleryOpen(false);
-    setCurrentImageField(null);
-  };
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData((prev) => ({
-        ...prev,
-        slug: initialData.slug || "",
-        title: initialData.title || "",
-        date: initialData.date || new Date().toISOString().split("T")[0],
-        description: initialData.description || "",
-        articleBody: initialData.articleBody || "",
-        creationDate: initialData.creationDate || new Date().toISOString(),
-        updateDate: initialData.updateDate || new Date().toISOString(),
-        seoTitle: initialData.seoTitle || "",
-        seoDescription: initialData.seoDescription || "",
-        seoTags: initialData.seoTags || "",
-        canonicalUrl: initialData.canonicalUrl || "",
-        openGraphImage: initialData.openGraphImage || "",
-      }));
-    }
-  }, [initialData]);
-
-  // Update ref when preview URL changes
-  useEffect(() => {
-    openGraphImageUrlRef.current = previewUrls.openGraphImage;
-  }, [previewUrls.openGraphImage]);
-
-  // Clean up object URLs to avoid memory leaks when component unmounts
-  useEffect(() => {
-    return () => {
-      if (openGraphImageUrlRef.current)
-        URL.revokeObjectURL(openGraphImageUrlRef.current);
-    };
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    setFormData((prevFormData) => {
-      const newFormData = { ...prevFormData, [name]: value };
-
-      if (name === "slug") {
-        setIsSlugTouched(true);
-        newFormData.canonicalUrl = `${baseUrl}/blog/${value}`;
-      } else if (name === "title" && !isSlugTouched) {
-        const generatedSlug = generateSlug(value);
-        newFormData.slug = generatedSlug;
-        newFormData.canonicalUrl = `${baseUrl}/blog/${generatedSlug}`;
-      }
-      return newFormData;
-    });
-  };
-
-  const handleRichTextChange = (
-    field: "articleBody",
-    value: string | undefined,
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value || "" }));
-  };
-
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: "openGraphImage",
-  ) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      // Revoke previous object URL to prevent memory leaks
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
+      if (!data.title.trim()) errors.title = "Заголовок обязателен.";
+      if (!data.slug.trim()) errors.slug = "ЧПУ обязательно.";
+      if (!data.date.trim()) errors.date = "Дата публикации обязательна.";
+      if (!data.description.trim())
+        errors.description = "Краткое описание обязательно.";
+      if (!data.articleBody.trim())
+        errors.articleBody = "Тело статьи обязательно.";
+      if (data.description.length > 0 && data.description.length < 10) {
+        errors.description = "Описание должно быть не менее 10 символов.";
       }
 
-      const newPreviewUrl = URL.createObjectURL(file);
-      setPreviewUrls((prev) => ({ ...prev, [field]: newPreviewUrl }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: file }));
-      setFormData((prev) => ({ ...prev, [field]: file.name })); // Set file name in the input
-      setUploadError((prev) => ({ ...prev, [field]: null }));
-    } else {
-      // If no file is selected, clear the related states
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
-      }
-      setPreviewUrls((prev) => ({ ...prev, [field]: null }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: null }));
-      // Do not clear the formData field, user might want to keep the existing URL
-    }
-  };
+      return errors;
+    },
+    onSubmit: async (data) => {
+      const dataToSubmit = {
+        ...data,
+        updateDate: new Date().toISOString(),
+      };
 
-  const handleUpload = async (field: "openGraphImage") => {
-    if (!selectedFiles[field]) {
-      setUploadError((prev) => ({
-        ...prev,
-        [field]: "Пожалуйста, выберите файл для загрузки.",
-      }));
-      return;
-    }
-
-    setUploading((prev) => ({ ...prev, [field]: true }));
-    setUploadError((prev) => ({ ...prev, [field]: null }));
-
-    const formDataToUpload = new FormData();
-    formDataToUpload.append("file", selectedFiles[field]!);
-
-    try {
-      const response = await fetch("/api/admin/upload-image", {
+      const response = await fetch(API_ROUTES.ADMIN_BLOG, {
         method: "POST",
-        body: formDataToUpload,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Ошибка загрузки файла.");
-      }
-
-      const result = await response.json();
-      setFormData((prev) => ({ ...prev, [field]: result.url }));
-      setSelectedFiles((prev) => ({ ...prev, [field]: null }));
-      // Clean up preview URL after successful upload
-      if (previewUrls[field]) {
-        URL.revokeObjectURL(previewUrls[field]!);
-        setPreviewUrls((prev) => ({ ...prev, [field]: null }));
-      }
-      toast.success("Изображение успешно загружено!");
-    } catch (err) {
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка загрузки: ${error}`);
-    } finally {
-      setUploading((prev) => ({ ...prev, [field]: false }));
-    }
-  };
-
-  const handleMDEditorImageUpload = async (file: File): Promise<string> => {
-    const formDataToUpload = new FormData();
-    formDataToUpload.append("file", file);
-
-    try {
-      const response = await fetch("/api/admin/upload-image", {
-        method: "POST",
-        body: formDataToUpload,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Ошибка загрузки файла.");
-      }
-
-      const result = await response.json();
-      return result.url; // MDEditor expects the URL back
-    } catch (err) {
-      console.error("MDEditor image upload error:", err);
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка загрузки изображения: ${error}`);
-      throw err; // Re-throw to indicate upload failure to MDEditor
-    }
-  };
-
-  // Обработчик для выбора файла из скрытого инпута и вставки в MDEditor
-  const handleArticleBodyImageSelected = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      try {
-        const imageUrl = await handleMDEditorImageUpload(file);
-        // Вставляем Markdown-синтаксис в текущее значение MDEditor
-        setFormData((prev) => ({
-          ...prev,
-          articleBody: `${prev.articleBody}\n![image](${imageUrl})\n`,
-        }));
-        event.target.value = ""; // Очищаем input, чтобы можно было загрузить тот же файл снова
-      } catch {
-        // Ошибка уже обработана в handleMDEditorImageUpload
-      }
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      toast.error("Пожалуйста, исправьте ошибки в форме.");
-      return;
-    }
-
-    setLoading(true);
-    // setError(null);
-
-    const dataToSubmit = {
-      ...formData,
-      updateDate: new Date().toISOString(), // Update updateDate on submission
-    };
-
-    try {
-      const response = await fetch("/api/admin/blog", {
-        // Target /api/admin/blog API route
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSubmit),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({
+          message: "Failed to save blog post.",
+        }));
+
+        // Handle validation errors
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          const errorMessages = errorData.errors
+            .map((e: any) => `${e.field}: ${e.message}`)
+            .join(", ");
+          toast.error(`Ошибки валидации: ${errorMessages}`);
+          throw new Error(errorMessages);
+        }
+
+        toast.error(errorData.message || "Failed to save blog post.");
         throw new Error(errorData.message || "Failed to save blog post.");
       }
 
-      toast.success("Статья успешно сохранена!"); // Добавить
+      toast.success("Статья успешно сохранена!");
       router.push("/admin/dashboard");
-      router.refresh(); // Refresh the dashboard to show updated list
-    } catch (err) {
-      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-      toast.error(`Ошибка сохранения статьи: ${error}`); // Заменить setError
-    } finally {
-      setLoading(false);
-    }
-  };
+      router.refresh();
+    },
+  });
+
+  // Используем хук для загрузки изображений
+  const {
+    uploading,
+    uploadError,
+    selectedFiles,
+    previewUrls,
+    handleFileChange,
+    handleUpload,
+    setValue: setImageValue,
+  } = useImageUpload({
+    onSuccess: (field, url) => {
+      setFormData((prev) => ({ ...prev, [field]: url }));
+    },
+  });
+
+  // Обработчик выбора изображения из галереи
+  const handleSelectFromGallery = useCallback(() => {
+    openGalleryModal((url: string) => {
+      setImageValue("openGraphImage", url);
+      setFormData((prev) => ({ ...prev, openGraphImage: url }));
+      setFieldError("openGraphImage", "");
+    });
+  }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
+
+  // Обработчик загрузки изображения из MDEditor
+  const handleMDEditorImageUpload = useCallback(
+    async (file: File): Promise<string> => {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({
+            message: "Ошибка загрузки файла.",
+          }));
+          throw new Error(errorData.message || "Ошибка загрузки файла.");
+        }
+
+        const result = await response.json();
+        return result.url;
+      } catch (err) {
+        const error = err instanceof Error ? err.message : "Неизвестная ошибка";
+        toast.error(`Ошибка загрузки изображения: ${error}`);
+        throw err;
+      }
+    },
+    [],
+  );
+
+  const handleArticleBodyImageSelected = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        try {
+          const imageUrl = await handleMDEditorImageUpload(file);
+          setFormData((prev) => ({
+            ...prev,
+            articleBody: `${prev.articleBody}\n![image](${imageUrl})\n`,
+          }));
+          event.target.value = "";
+        } catch {
+          // Ошибка уже обработана
+        }
+      }
+    },
+    [handleMDEditorImageUpload, setFormData],
+  );
+
+  // Обертка для handleSubmit с вызовом handleFormSubmit
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      await handleFormSubmit(e);
+    },
+    [handleFormSubmit],
+  );
+
+  // Обработчик изменений в форме
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      handleSlugChange(e, generateSlug, baseUrl, "blog/");
+    },
+    [handleSlugChange, baseUrl],
+  );
+
+  const handleRichTextChange = useCallback(
+    (field: "articleBody", value: string | undefined) => {
+      setFormData((prev) => ({ ...prev, [field]: value || "" }));
+    },
+    [setFormData],
+  );
 
   const openGraphImagePreviewUrl =
     previewUrls.openGraphImage || formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Заголовок
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.title && (
-          <p className="text-red-500 text-sm mt-1">{validationErrors.title}</p>
-        )}
-      </div>
+      <FormInput
+        id="title"
+        name="title"
+        label="Заголовок"
+        value={formData.title || ""}
+        onChange={handleChange}
+        required
+        error={validationErrors.title}
+      />
 
-      <div>
-        <label
-          htmlFor="slug"
-          className="block text-sm font-medium text-gray-700"
-        >
-          ЧПУ (URL)
-        </label>
-        <input
-          type="text"
-          id="slug"
-          name="slug"
-          value={formData.slug}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.slug && (
-          <p className="text-red-500 text-sm mt-1">{validationErrors.slug}</p>
-        )}
-      </div>
+      <FormInput
+        id="slug"
+        name="slug"
+        label="ЧПУ (URL)"
+        value={formData.slug || ""}
+        onChange={handleChange}
+        required
+        error={validationErrors.slug}
+      />
 
-      <div>
-        <label
-          htmlFor="canonicalUrl"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Canonical URL
-        </label>
-        <input
-          type="text"
-          id="canonicalUrl"
-          name="canonicalUrl"
-          value={formData.canonicalUrl}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.canonicalUrl && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.canonicalUrl}
-          </p>
-        )}
-      </div>
+      <FormInput
+        id="canonicalUrl"
+        name="canonicalUrl"
+        label="Canonical URL"
+        value={formData.canonicalUrl || ""}
+        onChange={handleChange}
+        error={validationErrors.canonicalUrl}
+      />
 
-      <div>
-        <label
-          htmlFor="date"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Дата публикации
-        </label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.date && (
-          <p className="text-red-500 text-sm mt-1">{validationErrors.date}</p>
-        )}
-      </div>
+      <FormInput
+        id="date"
+        name="date"
+        label="Дата публикации"
+        value={formData.date || ""}
+        onChange={handleChange}
+        required
+        type="date"
+        error={validationErrors.date}
+      />
 
-      <div>
-        <label
-          htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Краткое описание
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {validationErrors.description && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.description}
-          </p>
-        )}
-      </div>
+      <FormTextarea
+        id="description"
+        name="description"
+        label="Краткое описание"
+        value={formData.description || ""}
+        onChange={handleChange}
+        rows={3}
+        error={validationErrors.description}
+      />
 
-      {/* Rich Text Editor for Article Body */}
       <div data-color-mode="light">
-        {" "}
-        {/* MDEditor requires a color mode context */}
         <label
           htmlFor="articleBody"
           className="block text-sm font-medium text-gray-700 mb-1 mt-4"
@@ -566,9 +280,9 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           Тело статьи (Markdown)
         </label>
         <MDEditor
-          value={formData.articleBody}
+          value={formData.articleBody || ""}
           onChange={(val) => handleRichTextChange("articleBody", val)}
-          height={400}
+          height={MD_EDITOR_HEIGHT.FULL}
         />
         {validationErrors.articleBody && (
           <p className="text-red-500 text-sm mt-1">
@@ -578,154 +292,40 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         <input
           type="file"
           accept="image/*"
-          ref={fileInputArticleBodyRef}
+          ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleArticleBodyImageSelected}
         />
         <button
           type="button"
-          onClick={() => fileInputArticleBodyRef.current?.click()}
+          onClick={() => fileInputRef.current?.click()}
           className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Загрузить изображение в статью
         </button>
       </div>
 
-      {/* SEO Fields */}
-      <h2 className="text-xl font-semibold mt-8 mb-4">SEO</h2>
-      <div>
-        <label
-          htmlFor="seoTitle"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Заголовок
-        </label>
-        <input
-          type="text"
-          id="seoTitle"
-          name="seoTitle"
-          value={formData.seoTitle}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="seoDescription"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Описание
-        </label>
-        <textarea
-          id="seoDescription"
-          name="seoDescription"
-          value={formData.seoDescription}
-          onChange={handleChange}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="seoTags"
-          className="block text-sm font-medium text-gray-700"
-        >
-          SEO Теги (через запятую)
-        </label>
-        <input
-          type="text"
-          id="seoTags"
-          name="seoTags"
-          value={formData.seoTags}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="openGraphImage"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Open Graph Изображение
-        </label>
-        <input
-          type="text"
-          id="openGraphImage"
-          name="openGraphImage"
-          value={formData.openGraphImage}
-          onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        <div className="flex flex-col space-y-2 mt-2 w-fit">
-          <div className="flex items-center space-x-2">
-            <label
-              htmlFor="uploadOpenGraphImage"
-              className="inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer w-auto"
-            >
-              Выбрать файл
-              <input
-                type="file"
-                id="uploadOpenGraphImage"
-                name="uploadOpenGraphImage"
-                accept="image/*"
-                onChange={(e) => handleFileChange(e, "openGraphImage")}
-                className="hidden"
-              />
-            </label>
-            <button
-              type="button"
-              onClick={() => handleUpload("openGraphImage")}
-              disabled={
-                uploading.openGraphImage || !selectedFiles.openGraphImage
-              }
-              className={`inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 ${uploading.openGraphImage || !selectedFiles.openGraphImage ? "disabled:cursor-not-allowed" : "cursor-pointer"}`}
-            >
-              {uploading.openGraphImage ? "Загрузка..." : "Загрузить"}
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setCurrentImageField("openGraphImage");
-              setIsGalleryOpen(true);
-            }}
-            className="inline-flex justify-start py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-auto cursor-pointer"
-          >
-            Выбрать из галереи
-          </button>
-        </div>
-        {uploadError.openGraphImage && (
-          <p className="text-red-500 text-sm mt-1">
-            {uploadError.openGraphImage}
-          </p>
-        )}
-        {validationErrors.openGraphImage && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.openGraphImage}
-          </p>
-        )}
-        {openGraphImagePreviewUrl && (
-          <div className="mt-2">
-            <p className="text-sm font-medium text-gray-700">
-              Предпросмотр Open Graph изображения:
-            </p>
-            <Image
-              src={openGraphImagePreviewUrl}
-              alt="Open Graph Image Preview"
-              width={120}
-              height={63}
-              className="rounded-md object-cover border border-gray-200"
-            />
-          </div>
-        )}
-      </div>
+      <SeoFields
+        seoTitle={formData.seoTitle || ""}
+        seoDescription={formData.seoDescription || ""}
+        seoTags={formData.seoTags || ""}
+        openGraphImage={formData.openGraphImage || ""}
+        onFieldChange={handleChange}
+        onOpenGraphFileChange={(e) => handleFileChange(e, "openGraphImage")}
+        onOpenGraphUpload={() => handleUpload("openGraphImage")}
+        onOpenGraphSelectFromGallery={handleSelectFromGallery}
+        openGraphPreviewUrl={openGraphImagePreviewUrl || null}
+        openGraphUploadError={uploadError.openGraphImage || null}
+        isOpenGraphUploading={uploading.openGraphImage}
+        hasOpenGraphFile={!!selectedFiles.openGraphImage}
+        openGraphError={validationErrors.openGraphImage}
+      />
 
-      {/* Add SeoPreview component */}
       <SeoPreview
-        title={formData.seoTitle || formData.title}
-        description={formData.seoDescription || formData.description}
-        imageUrl={openGraphImagePreviewUrl}
-        url={`${baseUrl}/blog/${formData.slug}`}
+        title={formData.seoTitle || formData.title || ""}
+        description={formData.seoDescription || formData.description || ""}
+        imageUrl={openGraphImagePreviewUrl || undefined}
+        url={`${baseUrl}/blog/${formData.slug || ""}`}
         type="article"
       />
 
@@ -736,11 +336,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       >
         {loading ? "Сохранение..." : "Сохранить статью"}
       </button>
-      <ImageGalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        onSelectImage={handleSelectImageFromGallery}
-      />
     </form>
   );
 }

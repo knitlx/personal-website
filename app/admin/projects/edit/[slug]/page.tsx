@@ -10,7 +10,7 @@ interface ProjectEditPageProps {
 export default async function ProjectEditPage({
   params,
 }: ProjectEditPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   let project = null;
 
   if (slug !== "new") {
@@ -29,7 +29,11 @@ export default async function ProjectEditPage({
       <ProjectForm
         initialData={
           project
-            ? { ...project.data, content: project.content, slug: project.slug }
+            ? {
+                ...project.data,
+                fullDescription: project.content,
+                slug: project.slug,
+              }
             : undefined
         }
         baseUrl={baseUrl}

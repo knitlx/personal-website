@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import {
   Inter as FontInter,
   Unbounded as FontUnbounded,
-} from "next/font/google"; // Import Inter and Unbounded fonts
+} from "next/font/google";
 
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import ModalManager from "./components/ModalManager";
 
 const fontInter = FontInter({
   subsets: ["latin"],
@@ -28,10 +30,7 @@ export const metadata: Metadata = {
   title: "Александра | AI-универсал и промт-инженер",
   description:
     "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса. Разработка ботов, мини-приложений и другие кейсы.",
-  icons: {
-    icon: "/favicon.png",
-    apple: "/apple-touch-icon.png",
-  },
+  manifest: "/manifest.json",
   openGraph: {
     title: "Александра | AI-универсал и промт-инженер",
     description:
@@ -85,7 +84,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="ru" suppressHydrationWarning={true}>
+    <html lang="ru">
       <head>
         <script
           type="application/ld+json"
@@ -95,18 +94,22 @@ export default function RootLayout({
         />
       </head>
       <body
+        suppressHydrationWarning
         className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}
       >
         <Providers>
-          <div className="relative flex-grow">
-            {/* <TracerCanvas /> */}
-            {/* <PlexusCanvas /> */}
-            <div className="site-content relative z-10 flex flex-col flex-grow">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
+          <ErrorBoundary>
+            <div className="relative flex-grow">
+              {/* <TracerCanvas /> */}
+              {/* <PlexusCanvas /> */}
+              <div className="site-content relative z-10 flex flex-col flex-grow">
+                <Header />
+                <main className="flex-grow">{children}</main>
+                <Footer />
+              </div>
             </div>
-          </div>
+          </ErrorBoundary>
+          <ModalManager />
         </Providers>
       </body>
     </html>

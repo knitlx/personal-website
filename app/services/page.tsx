@@ -1,8 +1,6 @@
-"use client";
-
-import { useState } from "react";
+import LazySection from "../components/LazySection";
+import ContactModalWrapper from "../components/ContactModalWrapper";
 import BentoButton from "../components/BentoButton";
-import ContactModal from "../components/ContactModal";
 
 const servicesData = [
   {
@@ -97,23 +95,21 @@ const servicesData = [
 ];
 
 export default function ServicesPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <>
-      <div className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-[2.75rem] font-unbounded-fix">
-            Как я могу быть полезна
-          </h1>
-          <p className="mt-4 text-xl text-gray-600">
-            Я подключаюсь к задачам, где нужно навести цифровой порядок,
-            автоматизировать процессы или разобраться в хаосе. Можно прийти с
-            конкретным запросом или просто описать ситуацию — я помогу разложить
-            её и собрать рабочее решение.
-          </p>
-        </div>
+    <div className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto text-center mb-16">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-[2.75rem] font-unbounded-fix">
+          Как я могу быть полезна
+        </h1>
+        <p className="mt-4 text-xl text-gray-600">
+          Я подключаюсь к задачам, где нужно навести цифровой порядок,
+          автоматизировать процессы или разобраться в хаосе. Можно прийти с
+          конкретным запросом или просто описать ситуацию — я помогу разложить
+          её и собрать рабочее решение.
+        </p>
+      </div>
 
+      <LazySection rootMargin="200px">
         <div className="max-w-7xl mx-auto space-y-12">
           {servicesData.map((service, index) => (
             <div
@@ -162,7 +158,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="h-[3px] w-full bg-[linear-gradient(to_right,#9137DF_0%,#7A68EE_100%)] my-5"></div>
+                <div className="h-[3px] w-full bg-[linear-gradient(to_right,#9137DF_0%,#7A68EE_100%)] my-5" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800">
                     Результат:
@@ -173,31 +169,24 @@ export default function ServicesPage() {
             </div>
           ))}
         </div>
+      </LazySection>
 
-        <div className="mt-16 max-w-7xl mx-auto text-center bg-white p-14 rounded-lg shadow-md">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold font-unbounded-fix text-gray-900">
-              Не уверены, с чего начать?
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Можно просто описать ситуацию или задачу.
-              <br />Я помогу разобраться и предложу подходящий формат работы.
-            </p>
-            <div className="mt-8">
-              <BentoButton
-                onClick={() => setIsModalOpen(true)}
-                variant="primary"
-              >
-                Написать мне
-              </BentoButton>
-            </div>
+      <div className="mt-16 max-w-7xl mx-auto text-center bg-white p-14 rounded-lg shadow-md">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold font-unbounded-fix text-gray-900">
+            Не уверены, с чего начать?
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Можно просто описать ситуацию или задачу.
+            <br />Я помогу разобраться и предложу подходящий формат работы.
+          </p>
+          <div className="mt-8">
+            <ContactModalWrapper
+              button={<BentoButton variant="primary">Написать мне</BentoButton>}
+            />
           </div>
         </div>
       </div>
-      <ContactModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
+    </div>
   );
 }

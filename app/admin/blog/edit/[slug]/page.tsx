@@ -9,7 +9,7 @@ interface BlogEditPageProps {
 }
 
 export default async function BlogEditPage({ params }: BlogEditPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   let blogPost = null;
 
   if (slug !== "new") {

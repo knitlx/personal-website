@@ -2,13 +2,15 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
 import { commitAndPush } from "@/lib/git";
+import { blogPostSchema } from "@/lib/validations/blog";
+import { deleteSchema } from "@/lib/validations/common";
 
-const projectRoot = process.cwd(); // Assumes process.cwd() is already the project root
-const contentDirectory = path.join(projectRoot, "content", "blog"); // Target blog content directory
+const projectRoot = process.cwd();
+const contentDirectory = path.join(projectRoot, "content", "blog");
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -20,37 +22,63 @@ export async function POST(req: NextRequest) {
   try {
     const blogPostData = await req.json();
 
-    if (!blogPostData.slug || !blogPostData.title) {
+    // Convert localhost URLs to relative paths for production compatibility
+    const processUrl = (url: string | undefined): string => {
+      if (!url) return "";
+      const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      return url.replace(siteUrl, "");
+    };
+
+    blogPostData.openGraphImage = processUrl(blogPostData.openGraphImage);
+    blogPostData.canonicalUrl = processUrl(blogPostData.canonicalUrl);
+
+    // Валидация с помощью Zod
+    const validationResult = blogPostSchema.safeParse(blogPostData);
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+      }));
+
       return NextResponse.json(
-        { message: "Slug and Title are required" },
+        {
+          message: "Ошибки валидации",
+          errors,
+        },
         { status: 400 },
       );
     }
 
-    const { slug, description, articleBody, ...frontmatterData } = blogPostData;
+    const validatedData = validationResult.data;
+    const { slug, description, articleBody, ...frontmatterData } =
+      validatedData;
 
-    // Map description and articleBody to the content as required
-    const markdownContent = ""; // Content is now stored in frontmatter fields
-    const fullMarkdown = matter.stringify(markdownContent, {
-      slug: slug, // Explicitly add slug to frontmatter
+    // FIXED: articleBody as content, not frontmatter
+    const fullMarkdown = matter.stringify(articleBody || "", {
+      slug: slug,
       ...frontmatterData,
       description: description,
-      articleBody: articleBody,
     });
 
     const filePath = path.join(contentDirectory, `${slug}.md`);
 
-    if (!fs.existsSync(contentDirectory)) {
-      fs.mkdirSync(contentDirectory, { recursive: true });
+    // Create directory if it doesn't exist (async)
+    try {
+      await fs.access(contentDirectory);
+    } catch {
+      await fs.mkdir(contentDirectory, { recursive: true });
     }
 
-    fs.writeFileSync(filePath, fullMarkdown, "utf8");
+    // Write file (async)
+    await fs.writeFile(filePath, fullMarkdown, "utf8");
 
     // --- Git Operations ---
     const relativeFilePath = path.relative(projectRoot, filePath);
     const gitResult = await commitAndPush({
       filePath: relativeFilePath,
-      commitMessage: `feat: Update blog post: ${blogPostData.title}`,
+      commitMessage: `feat: Update blog post: ${validatedData.title}`,
       operation: "add",
     });
 
@@ -93,26 +121,41 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
-    const { slug } = await req.json();
+    const body = await req.json();
 
-    if (!slug) {
+    // Валидация с помощью Zod
+    const validationResult = deleteSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.issues.map((err) => ({
+        field: err.path.join("."),
+        message: err.message,
+      }));
+
       return NextResponse.json(
-        { message: "Slug is required" },
+        {
+          message: "Ошибки валидации",
+          errors,
+        },
         { status: 400 },
       );
     }
 
+    const { slug } = validationResult.data;
     const filePath = path.join(contentDirectory, `${slug}.md`);
 
-    if (!fs.existsSync(filePath)) {
+    // Check if file exists (async)
+    try {
+      await fs.access(filePath);
+    } catch {
       return NextResponse.json(
         { message: "Blog post not found" },
         { status: 404 },
       );
     }
 
-    // Delete file from file system
-    fs.unlinkSync(filePath);
+    // Delete file from file system (async)
+    await fs.unlink(filePath);
 
     // --- Git Operations for deletion ---
     const relativeFilePath = path.relative(projectRoot, filePath);
@@ -134,7 +177,7 @@ export async function DELETE(req: NextRequest) {
     // Revalidate relevant paths
     revalidatePath("/admin/dashboard");
     revalidatePath("/blog");
-    revalidatePath(`/blog/${slug}`); // Revalidate the specific blog post page
+    revalidatePath(`/blog/${slug}`);
 
     return NextResponse.json(
       { message: "Blog post deleted and committed successfully!" },
