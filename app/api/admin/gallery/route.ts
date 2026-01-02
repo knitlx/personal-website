@@ -9,13 +9,12 @@ const projectRoot = process.cwd(); // Assume project root for Git operations
 
 export async function GET() {
   const uploadsDirectory = path.join(projectRoot, "public", "uploads");
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   try {
     const files = await fs.readdir(uploadsDirectory);
     const imageUrls = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file))
-      .map((file) => `${baseUrl}/uploads/${file}`);
+      .map((file) => `/uploads/${file}`);
 
     return NextResponse.json({ images: imageUrls });
   } catch (error) {

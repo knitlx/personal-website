@@ -142,7 +142,7 @@ export default function ImageGalleryModal({
             {images.map((url) => (
               <div
                 key={url}
-                className="relative group border-2 border-transparent hover:border-blue-500 rounded-md overflow-hidden"
+                className="relative group border-2 border-transparent hover:border-blue-500 rounded-md overflow-hidden aspect-square"
               >
                 <button
                   type="button"
@@ -158,7 +158,7 @@ export default function ImageGalleryModal({
                     alt={`Галерея: ${url.split("/").pop()}`}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "contain" }}
                     className="rounded-md"
                   />
                 </button>
