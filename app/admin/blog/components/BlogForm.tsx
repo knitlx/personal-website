@@ -144,7 +144,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   const handleSelectFromGallery = useCallback(() => {
     openGalleryModal((url: string) => {
-      setImageValue("openGraphImage", url);
+      setImageValue("openGraphImage");
       setFormData((prev) => ({ ...prev, openGraphImage: url }));
       setFieldError("openGraphImage", "");
     });
@@ -270,7 +270,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         name="sortOrder"
         label="Порядок сортировки"
         type="number"
-        value={formData.sortOrder ?? 0}
+        value={String(formData.sortOrder ?? 0)}
         onChange={handleChange}
         error={validationErrors.sortOrder}
       />

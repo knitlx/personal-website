@@ -107,7 +107,9 @@ function loadCache(): ContentCache {
 // Get all unique tags from blog posts
 export function getAllTags(): string[] {
   const cache = loadCache();
-  const allTags = cache.blogs.flatMap((post) => post.tags ?? []);
+  const allTags = cache.blogs.flatMap(
+    (post) => (post.tags as string[]) ?? [],
+  );
   return [...new Set(allTags)];
 }
 
@@ -201,8 +203,8 @@ export function getAllContent(
 
   // Sort by sortOrder before pagination
   allContent.sort((a, b) => {
-    const orderA = a.sortOrder ?? Infinity;
-    const orderB = b.sortOrder ?? Infinity;
+    const orderA: number = (a.sortOrder as number | undefined) ?? Infinity;
+    const orderB: number = (b.sortOrder as number | undefined) ?? Infinity;
     return orderA - orderB;
   });
 

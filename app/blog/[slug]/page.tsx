@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getMarkdownFile } from "@/lib/content";
+import { getMarkdownFile, ContentItem } from "@/lib/content";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -67,7 +67,7 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
-  const post = {
+  const post: ContentItem = {
     ...postFile.data,
     slug: postFile.slug,
     articleBody: postFile.data.articleBody ?? "", // Ensure articleBody is available

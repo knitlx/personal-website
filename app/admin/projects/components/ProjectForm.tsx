@@ -201,7 +201,7 @@ export default function ProjectForm({
   // Обработчик выбора изображения из галереи для projectIcon
   const handleSelectProjectIconFromGallery = useCallback(() => {
     openGalleryModal((url: string) => {
-      setImageValue("projectIcon", url);
+      setImageValue("projectIcon");
       setFormData((prev) => ({ ...prev, projectIcon: url }));
       setFieldError("projectIcon", "");
     });
@@ -210,7 +210,7 @@ export default function ProjectForm({
   // Обработчик выбора изображения из галереи для openGraphImage
   const handleSelectOpenGraphFromGallery = useCallback(() => {
     openGalleryModal((url: string) => {
-      setImageValue("openGraphImage", url);
+      setImageValue("openGraphImage");
       setFormData((prev) => ({ ...prev, openGraphImage: url }));
       setFieldError("openGraphImage", "");
     });
@@ -297,7 +297,12 @@ export default function ProjectForm({
       handleChange(e); // Обновляем состояние поля
       const { name } = e.target;
       if (name === "title" || name === "slug") {
-        handleSlugChange(e, generateSlug, baseUrl, "projects/");
+        handleSlugChange(
+          e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+          generateSlug,
+          baseUrl,
+          "projects/",
+        );
       }
     },
     [handleChange, handleSlugChange, baseUrl],
@@ -368,7 +373,7 @@ export default function ProjectForm({
         name="sortOrder"
         label="Порядок сортировки"
         type="number"
-        value={formData.sortOrder ?? 0}
+        value={String(formData.sortOrder ?? 0)}
         onChange={handleFormChange}
         error={validationErrors.sortOrder}
       />
