@@ -1,19 +1,21 @@
 ---
 slug: html-to-pdf-converter
 title: HTML → PDF конвертер
-shortDescriptionHomepage: Превращение HTML-страниц в PDF.
+shortDescriptionHomepage: Конвертация HTML в PDF с сохранением внешнего вида
 shortDescriptionProjectsPage: >-
-  Инструмент для конвертации HTML-документов в PDF. Сохраняет внешний вид
-  страницы и позволяет посмотреть результат перед скачиванием.
+  Инструмент для конвертации HTML в PDF с сохранением внешнего вида и
+  предпросмотром результата.
 projectIcon: /uploads/html-pdf.png
 trylink: /projects/document-converter?tab=pdf
 creationDate: ''
-updateDate: '2026-01-02T08:38:23.847Z'
-seoTitle: HTML to PDF конвертер
+updateDate: '2026-01-02T08:55:18.521Z'
+seoTitle: HTML to PDF конвертер с сохранением верстки
 seoDescription: >-
-  Инструмент для конвертации HTML-документов в PDF. Сохраняет внешний вид
-  страницы и позволяет посмотреть результат перед скачиванием.
-seoTags: ''
+  Конвертация HTML в PDF с сохранением верстки, стилей и фонов. Предпросмотр
+  результата до скачивания. Подходит для рабочих документов и отчётов.
+seoTags: >-
+  html to pdf, конвертация html в pdf, html pdf конвертер, генерация pdf из
+  html, pdf из html, puppeteer pdf, server-side pdf
 canonicalUrl: /projects/html-to-pdf-converter
 openGraphImage: ''
 schemaType: SoftwareApplication
@@ -49,8 +51,10 @@ introDescription: >-
 ### Техническая реализация
 * Next.js — веб-интерфейс и API
 * Puppeteer — рендеринг HTML и генерация PDF
-* Headless Chromium — точное воспроизведение верстки
+* Headless Chromium, оптимизированный для serverless — точное воспроизведение верстки
 * серверная конвертация без сохранения файлов
+* повторное использование экземпляра браузера для стабильной производительности
+* формирование PDF после полной загрузки ресурсов страницы
 
 Результат формируется детерминированно и не зависит от браузера пользователя.
 
