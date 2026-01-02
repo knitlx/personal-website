@@ -14,9 +14,12 @@ export const API_ROUTES = {
   DOWNLOADABLE_FILES: "/api/downloadable-files",
 
   // Converters
-  CONVERT_HTML_TO_PDF: "/api/convert-html-to-pdf",
-  CONVERT_TO_PPTX: "/api/convert-to-pptx",
-  PREVIEW_PPTX: "/api/preview-pptx",
+  CONVERT_HTML_TO_PDF:
+    "https://html-document-converter-production.up.railway.app/api/convert-html-to-pdf",
+  CONVERT_TO_PPTX:
+    "https://html-document-converter-production.up.railway.app/api/convert-to-pptx",
+  PREVIEW_PPTX:
+    "https://html-document-converter-production.up.railway.app/api/preview-pptx",
 
   // Feeds
   RSS: "/rss.xml",
