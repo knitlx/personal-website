@@ -40,6 +40,8 @@ export const blogPostSchema = z.object({
   seoTags: z.string().max(500, "SEO теги слишком длинные").optional(),
   canonicalUrl: z.string().optional(),
   openGraphImage: z.string().optional(),
+  sortOrder: z.coerce.number().optional(),
+  tags: z.string().optional(),
 });
 
 export type BlogPostData = z.infer<typeof blogPostSchema>;

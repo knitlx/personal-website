@@ -31,15 +31,15 @@ function BlogPostCard({ post }: BlogPostCardProps) {
       <Link href={`/blog/${post.slug}`}>
         <div className="p-6">
           <h2 className="text-3xl font-semibold text-[#333333]">
-            {post.title || "Без названия"}
+            {post.title ?? "Без названия"}
           </h2>
-          {(post.creationDate || post.date) && (
+          {(post.creationDate ?? post.date) && (
             <p className="text-sm text-gray-500 mb-4">
-              {formatDate(post.creationDate || post.date || "")}
+              {formatDate(post.creationDate ?? post.date ?? "")}
             </p>
           )}
           <p className="text-gray-700 line-clamp-3">
-            {post.shortDescription || post.description || ""}
+            {post.shortDescription ?? post.description ?? ""}
           </p>
         </div>
       </Link>

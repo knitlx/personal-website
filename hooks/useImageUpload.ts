@@ -35,7 +35,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
   // Обработчик выбора файла
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
-      const file = e.target.files && e.target.files[0];
+      const file = e.target.files?.[0];
       if (file) {
         // Revoke previous object URL
         if (state.previewUrls[field]) {
@@ -99,7 +99,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Ошибка загрузки файла.");
+          throw new Error(errorData.message ?? "Ошибка загрузки файла.");
         }
 
         const result = await response.json();
@@ -163,7 +163,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
 
   // Установка значения напрямую (например, из галереи)
   const setValue = useCallback(
-    (field: string, url: string) => {
+    (field: string) => {
       if (state.previewUrls[field]) {
         URL.revokeObjectURL(state.previewUrls[field]!);
       }

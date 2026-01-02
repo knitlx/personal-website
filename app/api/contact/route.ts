@@ -22,7 +22,7 @@ interface MailOptions {
 
 export async function POST(request: NextRequest) {
   // Rate limiting - max 3 messages per 10 minutes per IP
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
   const rateLimitResult = rateLimit(ip, {
     interval: 10 * 60 * 1000, // 10 minutes
     limit: 3,
@@ -43,11 +43,13 @@ export async function POST(request: NextRequest) {
       message: formData.get("message") as string,
       projectTitle: formData.get("projectTitle") as string | null,
     };
+    console.log("Received rawData for validation:", rawData); // DEBUG LOG
 
     // Валидация с помощью zod
     const validationResult = contactFormSchema.safeParse(rawData);
 
     if (!validationResult.success) {
+      console.error("Zod validation failed:", validationResult.error); // DEBUG LOG
       const errors = validationResult.error.issues.map((err) => ({
         field: err.path.join("."),
         message: err.message,

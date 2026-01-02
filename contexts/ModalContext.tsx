@@ -71,7 +71,7 @@ export function useContactModal() {
 
   const openContactModal = useCallback(
     (projectTitle?: string) => {
-      openModal("contact", { projectTitle: projectTitle || null });
+      openModal("contact", { projectTitle: projectTitle ?? null });
     },
     [openModal],
   );

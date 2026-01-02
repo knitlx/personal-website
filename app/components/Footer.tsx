@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link"; // Import Link component
 
 const Footer = () => {
-  const [currentYear, setCurrentYear] = useState(2025);
+  // Use lazy state initialization: pass a function to useState
+  const [currentYear] = useState(() => new Date().getFullYear());
 
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
+  // Remove the useEffect as it's no longer needed for setting the year
+  // useEffect(() => {
+  //   setCurrentYear(new Date().getFullYear());
+  // }, []);
 
   return (
     <footer className="main-footer bg-[#1a1a2e] text-[#f0f0f0] pt-[15px] pb-[10px] text-[15px]">
@@ -22,28 +25,28 @@ const Footer = () => {
           <div className="footer-links">
             <ul className="list-none p-0 m-0 flex justify-center gap-5">
               <li>
-                <a
-                  href="#"
+                <Link // Changed to Link
+                  href="/services"
                   className="text-[#b0b0b0] no-underline leading-loose transition-colors duration-300 ease-in-out hover:text-[#00C4FF]"
                 >
                   Услуги
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link // Changed to Link
+                  href="/projects"
                   className="text-[#b0b0b0] no-underline leading-loose transition-colors duration-300 ease-in-out hover:text-[#00C4FF]"
                 >
                   Проекты
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link // Changed to Link
+                  href="/about"
                   className="text-[#b0b0b0] no-underline leading-loose transition-colors duration-300 ease-in-out hover:text-[#00C4FF]"
                 >
                   Обо мне
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -51,13 +54,17 @@ const Footer = () => {
           <div className="footer-social">
             <div className="social-icons flex gap-5">
               <a
-                href="#"
+                href="https://t.me/knitlx"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="social-link text-[#b0b0b0] no-underline leading-loose transition-colors duration-300 ease-in-out hover:text-[#00C4FF]"
               >
                 Telegram
               </a>
               <a
-                href="#"
+                href="https://wa.me/79154683416"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="social-link text-[#b0b0b0] no-underline leading-loose transition-colors duration-300 ease-in-out hover:text-[#00C4FF]"
               >
                 WhatsApp

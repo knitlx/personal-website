@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import BlogPostCard from "./BlogPostCard";
 import { PAGINATION, INTERSECTION_OBSERVER } from "@/lib/constants";
 
@@ -11,17 +12,22 @@ interface BlogPost {
   date?: string;
   shortDescription?: string;
   description?: string;
+  tags?: string[];
   [key: string]: unknown;
 }
 
 interface InfiniteScrollBlogProps {
   initialPosts: BlogPost[];
   totalPosts: number;
+  allTags: string[];
+  activeTag?: string;
 }
 
 export default function InfiniteScrollBlog({
   initialPosts,
   totalPosts,
+  allTags,
+  activeTag,
 }: InfiniteScrollBlogProps) {
   const [visiblePosts, setVisiblePosts] = useState<BlogPost[]>(initialPosts);
   const [page, setPage] = useState(1);
@@ -29,14 +35,22 @@ export default function InfiniteScrollBlog({
   const [hasMore, setHasMore] = useState(initialPosts.length < totalPosts);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  // Effect to reset state when the initial posts change (e.g., due to tag filter)
+  useEffect(() => {
+    setVisiblePosts(initialPosts);
+    setPage(1);
+    setHasMore(initialPosts.length < totalPosts);
+  }, [initialPosts, totalPosts]);
+
   const loadMorePosts = useCallback(
     async (pageNum: number) => {
       if (loading || !hasMore) return;
 
       setLoading(true);
       try {
+        const tagQuery = activeTag ? `&tag=${activeTag}` : "";
         const response = await fetch(
-          `/api/content/blog?page=${pageNum}&limit=${PAGINATION.BLOG_POSTS_PER_PAGE}`,
+          `/api/content/blog?page=${pageNum}&limit=${PAGINATION.BLOG_POSTS_PER_PAGE}${tagQuery}`,
         );
         const data = await response.json();
 
@@ -53,7 +67,7 @@ export default function InfiniteScrollBlog({
         setLoading(false);
       }
     },
-    [loading, hasMore],
+    [loading, hasMore, activeTag],
   );
 
   useEffect(() => {
@@ -83,8 +97,36 @@ export default function InfiniteScrollBlog({
     };
   }, [page, loading, hasMore, loadMorePosts]);
 
+  const getTagClass = (tag: string) => {
+    const baseClass =
+      "inline-block px-3 py-1 text-sm font-medium rounded-full transition-colors duration-200";
+    if (tag === activeTag) {
+      return `${baseClass} bg-gradient-to-r from-[#9137DF] to-[#7A68EE] text-white`;
+    }
+    return `${baseClass} bg-gray-200 text-gray-700 hover:bg-gray-300`;
+  };
+
   return (
     <>
+      {/* Tag Filter UI */}
+      <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <Link
+          href="/blog"
+          className={getTagClass(activeTag === undefined ? "Все" : "")}
+        >
+          Все
+        </Link>
+        {allTags.map((tag) => (
+          <Link
+            href={`/blog?tag=${tag}`}
+            key={tag}
+            className={getTagClass(tag)}
+          >
+            {tag}
+          </Link>
+        ))}
+      </div>
+
       <div className="max-w-4xl mx-auto">
         <div className="grid gap-8">
           {visiblePosts.map((post) => (
@@ -106,6 +148,14 @@ export default function InfiniteScrollBlog({
           ) : (
             <p className="text-gray-500">Прокрутите вниз для загрузки</p>
           )}
+        </div>
+      )}
+
+      {!hasMore && visiblePosts.length === 0 && (
+        <div className="text-center mt-12">
+          <p className="text-gray-500 text-lg">
+            Статей с тегом "{activeTag}" не найдено.
+          </p>
         </div>
       )}
     </>

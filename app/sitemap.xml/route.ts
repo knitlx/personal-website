@@ -71,7 +71,7 @@ export async function GET() {
     .join("")}
   ${allProjects
     .map((project) => {
-      const date = project.updateDate || project.creationDate;
+      const date = project.updateDate ?? project.creationDate;
       const lastmod = date
         ? new Date(date).toISOString()
         : new Date().toISOString();
@@ -87,7 +87,7 @@ export async function GET() {
     .join("")}
   ${allBlogPosts
     .map((post) => {
-      const date = post.updateDate || post.creationDate;
+      const date = post.updateDate ?? post.creationDate;
       const lastmod = date
         ? new Date(date).toISOString()
         : new Date().toISOString();

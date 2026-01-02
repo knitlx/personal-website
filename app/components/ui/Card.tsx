@@ -1,5 +1,4 @@
-import { ReactNode } from "react";
-import { memo } from "react";
+import { ReactNode, memo, KeyboardEvent } from "react";
 
 interface CardProps {
   children: ReactNode;
@@ -29,8 +28,22 @@ function Card({
     "--gradient-border": "linear-gradient(45deg, #9137DF, #7B68EE)",
   } as React.CSSProperties;
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (onClick && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault(); // Prevent default scroll for Spacebar
+      onClick();
+    }
+  };
+
   return (
-    <div className={combinedClassName} style={style} onClick={onClick}>
+    <div
+      className={combinedClassName}
+      style={style}
+      onClick={onClick}
+      onKeyDown={handleKeyDown} // Add keyboard handler
+      role={onClick ? "button" : undefined} // Add role="button" if clickable
+      tabIndex={onClick ? 0 : undefined} // Add tabIndex="0" if clickable
+    >
       {/* Градиентная рамка через ::after псевдо-элемент */}
       <style jsx>{`
         div::after {

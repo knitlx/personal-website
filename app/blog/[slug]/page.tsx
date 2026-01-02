@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getMarkdownFile } from "@/lib/content";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -26,10 +27,10 @@ export async function generateMetadata({
 
   const post = postFile.data;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const canonicalUrl = post.canonicalUrl || `${baseUrl}/blog/${slug}`;
-  const title = post.seoTitle || post.title;
-  const description = post.seoDescription || post.description;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const canonicalUrl = post.canonicalUrl ?? `${baseUrl}/blog/${slug}`;
+  const title = post.seoTitle ?? post.title;
+  const description = post.seoDescription ?? post.description;
 
   return {
     title,
@@ -69,17 +70,68 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = {
     ...postFile.data,
     slug: postFile.slug,
-    articleBody: postFile.data.articleBody || "", // Ensure articleBody is available
+    articleBody: postFile.data.articleBody ?? "", // Ensure articleBody is available
+  };
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const imageUrl = post.openGraphImage
+    ? `${baseUrl}${post.openGraphImage}`
+    : `${baseUrl}/profile.png`; // Fallback image
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${baseUrl}/blog/${slug}`,
+    },
+    headline: post.title,
+    description: post.description,
+    image: imageUrl,
+    author: {
+      "@type": "Person",
+      name: "Александра",
+      url: baseUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Александра | AI-универсал и промт-инженер",
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/profile.png`,
+      },
+    },
+    datePublished: post.creationDate,
+    dateModified: post.updateDate ?? post.creationDate,
   };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main className="bg-white py-16">
         <div className="container mx-auto max-w-3xl px-4">
           <h1 className="text-4xl md:text-5xl font-bold font-unbounded-fix mb-4">
             {postFile.data.title}
           </h1>
-          <p className="text-gray-500 mb-8">{postFile.data.date}</p>
+          <p className="text-gray-500 mb-4">{postFile.data.date}</p>
+
+          {/* Tags Section */}
+          {Array.isArray(post.tags) && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {post.tags.map((tag: string) => (
+                <Link
+                  href={`/blog?tag=${tag}`}
+                  key={tag}
+                  className="bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-medium px-3 py-1 rounded-full transition-colors"
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          )}
 
           <article className="prose lg:prose-xl max-w-none">
             <ReactMarkdown

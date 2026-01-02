@@ -6,11 +6,11 @@ export default async function ProjectsPage() {
 
   const projects = allProjects.map((project) => ({
     ...project,
-    projectIcon: project.projectIcon || project.icon,
+    projectIcon: project.projectIcon ?? project.icon,
     shortDescriptionHomepage:
-      project.shortDescriptionHomepage || project.description,
+      project.shortDescriptionHomepage ?? project.description,
     shortDescriptionProjectsPage:
-      project.shortDescriptionProjectsPage || project.pageDescription,
+      project.shortDescriptionProjectsPage ?? project.pageDescription,
     slug: String(project.slug),
   }));
 

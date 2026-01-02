@@ -1,18 +1,28 @@
-import { getAllContent } from "@/lib/content";
+import { getAllContent, getAllTags } from "@/lib/content";
 import InfiniteScrollBlog from "./components/InfiniteScrollBlog";
+import { PAGINATION } from "@/lib/constants";
 
-export default async function BlogPage() {
-  const { data: allPosts, totalItems } = getAllContent("blog");
+interface BlogPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const activeTag =
+    typeof searchParams.tag === "string" ? searchParams.tag : undefined;
+
+  const { data: allPosts, totalItems } = getAllContent("blog", {
+    limit: PAGINATION.BLOG_POSTS_PER_PAGE,
+    tag: activeTag,
+  });
+
+  const allTags = getAllTags();
 
   const posts = allPosts.map((post) => ({
     ...post,
-    creationDate: post.creationDate || post.date,
-    shortDescription: post.shortDescription || post.description,
+    creationDate: post.creationDate ?? post.date,
+    shortDescription: post.shortDescription ?? post.description,
     slug: String(post.slug),
   }));
-
-  // Показываем первые 5 статей изначально
-  const initialPosts = posts.slice(0, 5);
 
   return (
     <main className="py-12">
@@ -21,8 +31,10 @@ export default async function BlogPage() {
           Блог
         </h1>
         <InfiniteScrollBlog
-          initialPosts={initialPosts}
+          initialPosts={posts}
           totalPosts={totalItems}
+          allTags={allTags}
+          activeTag={activeTag}
         />
       </div>
     </main>

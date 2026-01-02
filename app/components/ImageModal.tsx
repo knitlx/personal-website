@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react"; // Add useCallback
+import Image from "next/image";
 
 interface ImageModalProps {
   imageUrl: string;
@@ -17,7 +18,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
     };
   }, []);
 
-  // Обработка ESC для закрытия
+  // Обработка ESC для закрытия (already present)
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -28,18 +29,35 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
+  // Define handleOverlayKeyDown
+  const handleOverlayKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onClose();
+      }
+    },
+    [onClose],
+  );
+
   return (
     <div
       className="fixed inset-0 flex justify-center items-center z-50"
-      onClick={onClose}
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      // Modify onClick to only close if the actual overlay is clicked
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      onKeyDown={handleOverlayKeyDown} // Added for jsx-a11y/click-events-have-key-events
       role="dialog"
       aria-modal="true"
       aria-labelledby="image-modal-title"
+      tabIndex={0} // Changed to 0 so it's focusable by keyboard for onKeyDown, or -1 as before if only Escape is global
     >
       <div
         className="relative p-4 bg-white rounded-lg shadow-lg"
-        onClick={(e) => e.stopPropagation()}
+        // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed
         role="document"
       >
         <h2 id="image-modal-title" className="sr-only">
@@ -58,12 +76,16 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
         >
           &times;
         </button>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imageUrl}
-          alt="Просмотр изображения в полном размере"
-          className="max-w-screen-lg max-h-screen-lg"
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={imageUrl}
+            alt="Просмотр изображения в полном размере"
+            fill
+            sizes="(max-width: 1024px) 100vw, 1024px" // Adjust sizes based on your layout
+            style={{ objectFit: "contain" }}
+            className="rounded-lg" // Apply any existing styles if needed
+          />
+        </div>
       </div>
     </div>
   );

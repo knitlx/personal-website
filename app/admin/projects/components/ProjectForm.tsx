@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -34,11 +34,18 @@ interface ProjectFormData {
   seoTags: string;
   canonicalUrl: string;
   openGraphImage: string;
+  schemaType: string;
+  sortOrder: number;
 }
 
 interface ProjectFormProps {
   initialData?: Partial<ProjectFormData> & { content?: string };
   baseUrl: string;
+}
+
+interface ValidationError {
+  field: string;
+  message: string;
 }
 
 export default function ProjectForm({
@@ -54,31 +61,32 @@ export default function ProjectForm({
   const {
     formData,
     setFormData,
-    handleSlugChange,
+    handleChange, // Generic change handler from the hook
+    handleSlugChange, // Specific slug handler from the hook
     validationErrors,
     setFieldError,
     loading,
-    setLoading,
     handleSubmit: handleFormSubmit,
-    resetForm,
   } = useFormState<ProjectFormData>({
     initialValues: {
-      slug: initialData?.slug || "",
-      title: initialData?.title || "",
-      shortDescriptionHomepage: initialData?.shortDescriptionHomepage || "",
+      slug: initialData?.slug ?? "",
+      title: initialData?.title ?? "",
+      shortDescriptionHomepage: initialData?.shortDescriptionHomepage ?? "",
       shortDescriptionProjectsPage:
-        initialData?.shortDescriptionProjectsPage || "",
-      projectIcon: initialData?.projectIcon || "",
-      trylink: initialData?.trylink || "",
-      introDescription: initialData?.introDescription || "",
-      fullDescription: initialData?.fullDescription || "",
-      creationDate: initialData?.creationDate || "",
-      updateDate: initialData?.updateDate || "",
-      seoTitle: initialData?.seoTitle || "",
-      seoDescription: initialData?.seoDescription || "",
-      seoTags: initialData?.seoTags || "",
-      canonicalUrl: initialData?.canonicalUrl || "",
-      openGraphImage: initialData?.openGraphImage || "",
+        initialData?.shortDescriptionProjectsPage ?? "",
+      projectIcon: initialData?.projectIcon ?? "",
+      trylink: initialData?.trylink ?? "",
+      introDescription: initialData?.introDescription ?? "",
+      fullDescription: initialData?.fullDescription ?? "",
+      creationDate: initialData?.creationDate ?? "",
+      updateDate: initialData?.updateDate ?? "",
+      seoTitle: initialData?.seoTitle ?? "",
+      seoDescription: initialData?.seoDescription ?? "",
+      seoTags: initialData?.seoTags ?? "",
+      canonicalUrl: initialData?.canonicalUrl ?? "",
+      openGraphImage: initialData?.openGraphImage ?? "",
+      schemaType: initialData?.schemaType ?? "",
+      sortOrder: initialData?.sortOrder ?? 0,
     },
     validate: (data) => {
       const errors: Record<string, string> = {};
@@ -159,14 +167,14 @@ export default function ProjectForm({
         // Handle validation errors
         if (errorData.errors && Array.isArray(errorData.errors)) {
           const errorMessages = errorData.errors
-            .map((e: any) => `${e.field}: ${e.message}`)
+            .map((e: ValidationError) => `${e.field}: ${e.message}`)
             .join(", ");
           toast.error(`Ошибки валидации: ${errorMessages}`);
           throw new Error(errorMessages);
         }
 
-        toast.error(errorData.message || "Failed to save project.");
-        throw new Error(errorData.message || "Failed to save project.");
+        toast.error(errorData.message ?? "Failed to save project.");
+        throw new Error(errorData.message ?? "Failed to save project.");
       }
 
       toast.success("Проект успешно сохранен!");
@@ -222,7 +230,7 @@ export default function ProjectForm({
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Ошибка загрузки файла.");
+          throw new Error(errorData.message ?? "Ошибка загрузки файла.");
         }
 
         const result = await response.json();
@@ -242,7 +250,7 @@ export default function ProjectForm({
       field: "introDescription" | "fullDescription",
       value: string | undefined,
     ) => {
-      setFormData((prev) => ({ ...prev, [field]: value || "" }));
+      setFormData((prev) => ({ ...prev, [field]: value ?? "" }));
     },
     [setFormData],
   );
@@ -256,7 +264,7 @@ export default function ProjectForm({
         const file = event.target.files[0];
         try {
           const imageUrl = await handleMDEditorImageUpload(file);
-          const currentContent = formData[field] || "";
+          const currentContent = formData[field] ?? "";
           handleRichTextChange(
             field,
             `${currentContent}\n![image](${imageUrl})\n`,
@@ -279,17 +287,25 @@ export default function ProjectForm({
     [handleFormSubmit],
   );
 
-  // Обработчик изменений в форме
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      handleSlugChange(e, generateSlug, baseUrl, "projects/");
+  // Единый обработчик изменений в форме
+  const handleFormChange = useCallback(
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      handleChange(e); // Обновляем состояние поля
+      const { name } = e.target;
+      if (name === "title" || name === "slug") {
+        handleSlugChange(e, generateSlug, baseUrl, "projects/");
+      }
     },
-    [handleSlugChange, baseUrl],
+    [handleChange, handleSlugChange, baseUrl],
   );
 
-  const projectIconPreviewUrl = previewUrls.projectIcon || formData.projectIcon;
+  const projectIconPreviewUrl = previewUrls.projectIcon ?? formData.projectIcon;
   const openGraphImagePreviewUrl =
-    previewUrls.openGraphImage || formData.openGraphImage;
+    previewUrls.openGraphImage ?? formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -297,8 +313,8 @@ export default function ProjectForm({
         id="title"
         name="title"
         label="Название"
-        value={formData.title || ""}
-        onChange={handleChange}
+        value={formData.title ?? ""}
+        onChange={handleFormChange}
         required
         error={validationErrors.title}
       />
@@ -307,8 +323,8 @@ export default function ProjectForm({
         id="slug"
         name="slug"
         label="ЧПУ (URL)"
-        value={formData.slug || ""}
-        onChange={handleChange}
+        value={formData.slug ?? ""}
+        onChange={handleFormChange}
         required
         error={validationErrors.slug}
       />
@@ -317,21 +333,56 @@ export default function ProjectForm({
         id="canonicalUrl"
         name="canonicalUrl"
         label="Canonical URL"
-        value={formData.canonicalUrl || ""}
-        onChange={handleChange}
+        value={formData.canonicalUrl ?? ""}
+        onChange={handleFormChange}
         error={validationErrors.canonicalUrl}
+      />
+
+      {/* SchemaType Dropdown */}
+      <div className="flex flex-col space-y-1">
+        <label
+          htmlFor="schemaType"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Тип схемы (Schema.org)
+        </label>
+        <select
+          id="schemaType"
+          name="schemaType"
+          value={formData.schemaType ?? ""}
+          onChange={handleFormChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        >
+          <option value="">Не выбрано</option>
+          <option value="SoftwareApplication">Software Application</option>
+          <option value="Service">Service</option>
+          <option value="CreativeWork">Creative Work (Общее)</option>
+        </select>
+        <p className="text-xs text-gray-500">
+          Выберите тип разметки для поисковых систем.
+        </p>
+      </div>
+
+      <FormInput
+        id="sortOrder"
+        name="sortOrder"
+        label="Порядок сортировки"
+        type="number"
+        value={formData.sortOrder ?? 0}
+        onChange={handleFormChange}
+        error={validationErrors.sortOrder}
       />
 
       <ImageUploadField
         id="projectIcon"
         label="Иконка проекта (путь)"
-        value={formData.projectIcon || ""}
-        onChange={handleChange}
+        value={formData.projectIcon ?? ""}
+        onChange={handleFormChange}
         onFileChange={(e) => handleFileChange(e, "projectIcon")}
         onUpload={() => handleUpload("projectIcon")}
         onSelectFromGallery={handleSelectProjectIconFromGallery}
-        previewUrl={projectIconPreviewUrl || null}
-        uploadError={uploadError.projectIcon || null}
+        previewUrl={projectIconPreviewUrl ?? null}
+        uploadError={uploadError.projectIcon ?? null}
         isUploading={uploading.projectIcon}
         hasFile={!!selectedFiles.projectIcon}
         error={validationErrors.projectIcon}
@@ -344,8 +395,8 @@ export default function ProjectForm({
         id="trylink"
         name="trylink"
         label="Ссылка для кнопки 'Попробовать'"
-        value={formData.trylink || ""}
-        onChange={handleChange}
+        value={formData.trylink ?? ""}
+        onChange={handleFormChange}
         error={validationErrors.trylink}
       />
 
@@ -353,8 +404,8 @@ export default function ProjectForm({
         id="shortDescriptionHomepage"
         name="shortDescriptionHomepage"
         label="Краткое описание для главной страницы"
-        value={formData.shortDescriptionHomepage || ""}
-        onChange={handleChange}
+        value={formData.shortDescriptionHomepage ?? ""}
+        onChange={handleFormChange}
         rows={3}
         error={validationErrors.shortDescriptionHomepage}
       />
@@ -363,8 +414,8 @@ export default function ProjectForm({
         id="shortDescriptionProjectsPage"
         name="shortDescriptionProjectsPage"
         label="Краткое описание для страницы проектов"
-        value={formData.shortDescriptionProjectsPage || ""}
-        onChange={handleChange}
+        value={formData.shortDescriptionProjectsPage ?? ""}
+        onChange={handleFormChange}
         rows={3}
         error={validationErrors.shortDescriptionProjectsPage}
       />
@@ -378,7 +429,7 @@ export default function ProjectForm({
           Вводный абзац для подробной страницы проекта (Markdown)
         </label>
         <MDEditor
-          value={formData.introDescription || ""}
+          value={formData.introDescription ?? ""}
           onChange={(val) => handleRichTextChange("introDescription", val)}
           height={MD_EDITOR_HEIGHT.INTRO}
         />
@@ -412,7 +463,7 @@ export default function ProjectForm({
           Подробное описание проекта (Markdown)
         </label>
         <MDEditor
-          value={formData.fullDescription || ""}
+          value={formData.fullDescription ?? ""}
           onChange={(val) => handleRichTextChange("fullDescription", val)}
           height={MD_EDITOR_HEIGHT.FULL}
         />
@@ -438,31 +489,31 @@ export default function ProjectForm({
       </div>
 
       <SeoFields
-        seoTitle={formData.seoTitle || ""}
-        seoDescription={formData.seoDescription || ""}
-        seoTags={formData.seoTags || ""}
-        openGraphImage={formData.openGraphImage || ""}
-        onFieldChange={handleChange}
+        seoTitle={formData.seoTitle ?? ""}
+        seoDescription={formData.seoDescription ?? ""}
+        seoTags={formData.seoTags ?? ""}
+        openGraphImage={formData.openGraphImage ?? ""}
+        onFieldChange={handleFormChange}
         onOpenGraphFileChange={(e) => handleFileChange(e, "openGraphImage")}
         onOpenGraphUpload={() => handleUpload("openGraphImage")}
         onOpenGraphSelectFromGallery={handleSelectOpenGraphFromGallery}
-        openGraphPreviewUrl={openGraphImagePreviewUrl || null}
-        openGraphUploadError={uploadError.openGraphImage || null}
+        openGraphPreviewUrl={openGraphImagePreviewUrl ?? null}
+        openGraphUploadError={uploadError.openGraphImage ?? null}
         isOpenGraphUploading={uploading.openGraphImage}
         hasOpenGraphFile={!!selectedFiles.openGraphImage}
         openGraphError={validationErrors.openGraphImage}
       />
 
       <SeoPreview
-        title={formData.seoTitle || formData.title || ""}
+        title={formData.seoTitle ?? formData.title ?? ""}
         description={
-          formData.seoDescription ||
-          formData.shortDescriptionProjectsPage ||
-          formData.introDescription ||
+          formData.seoDescription ??
+          formData.shortDescriptionProjectsPage ??
+          formData.introDescription ??
           ""
         }
-        imageUrl={openGraphImagePreviewUrl || undefined}
-        url={`${baseUrl}/projects/${formData.slug || ""}`}
+        imageUrl={openGraphImagePreviewUrl ?? undefined}
+        url={`${baseUrl}/projects/${formData.slug ?? ""}`}
         type="article"
       />
 

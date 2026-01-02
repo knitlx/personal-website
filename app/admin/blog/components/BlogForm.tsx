@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -30,11 +30,18 @@ interface BlogFormData {
   seoTags: string;
   canonicalUrl: string;
   openGraphImage: string;
+  sortOrder: number;
+  tags: string;
 }
 
 interface BlogFormProps {
-  initialData?: Partial<BlogFormData>;
+  initialData?: Partial<BlogFormData> & { tags?: string[] | string }; // Allow tags to be array or string
   baseUrl: string;
+}
+
+interface ValidationError {
+  field: string;
+  message: string;
 }
 
 export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
@@ -42,7 +49,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { openGalleryModal } = useGalleryModal();
 
-  // Используем хук для состояния формы
   const {
     formData,
     setFormData,
@@ -50,23 +56,26 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     validationErrors,
     setFieldError,
     loading,
-    setLoading,
     handleSubmit: handleFormSubmit,
-    resetForm,
   } = useFormState<BlogFormData>({
     initialValues: {
-      slug: initialData?.slug || "",
-      title: initialData?.title || "",
-      date: initialData?.date || new Date().toISOString().split("T")[0],
-      description: initialData?.description || "",
-      articleBody: initialData?.articleBody || "",
-      creationDate: initialData?.creationDate || new Date().toISOString(),
-      updateDate: initialData?.updateDate || new Date().toISOString(),
-      seoTitle: initialData?.seoTitle || "",
-      seoDescription: initialData?.seoDescription || "",
-      seoTags: initialData?.seoTags || "",
-      canonicalUrl: initialData?.canonicalUrl || "",
-      openGraphImage: initialData?.openGraphImage || "",
+      slug: initialData?.slug ?? "",
+      title: initialData?.title ?? "",
+      date: initialData?.date ?? new Date().toISOString().split("T")[0],
+      description: initialData?.description ?? "",
+      articleBody: initialData?.articleBody ?? "",
+      creationDate: initialData?.creationDate ?? new Date().toISOString(),
+      updateDate: initialData?.updateDate ?? new Date().toISOString(),
+      seoTitle: initialData?.seoTitle ?? "",
+      seoDescription: initialData?.seoDescription ?? "",
+      seoTags: initialData?.seoTags ?? "",
+      canonicalUrl: initialData?.canonicalUrl ?? "",
+      openGraphImage: initialData?.openGraphImage ?? "",
+      sortOrder: initialData?.sortOrder ?? 0,
+      // Convert array to comma-separated string for display
+      tags: Array.isArray(initialData?.tags)
+        ? initialData.tags.join(", ")
+        : (initialData?.tags ?? ""),
     },
     validate: (data) => {
       const errors: Record<string, string> = {};
@@ -101,17 +110,16 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           message: "Failed to save blog post.",
         }));
 
-        // Handle validation errors
         if (errorData.errors && Array.isArray(errorData.errors)) {
           const errorMessages = errorData.errors
-            .map((e: any) => `${e.field}: ${e.message}`)
+            .map((e: ValidationError) => `${e.field}: ${e.message}`)
             .join(", ");
           toast.error(`Ошибки валидации: ${errorMessages}`);
           throw new Error(errorMessages);
         }
 
-        toast.error(errorData.message || "Failed to save blog post.");
-        throw new Error(errorData.message || "Failed to save blog post.");
+        toast.error(errorData.message ?? "Failed to save blog post.");
+        throw new Error(errorData.message ?? "Failed to save blog post.");
       }
 
       toast.success("Статья успешно сохранена!");
@@ -120,7 +128,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     },
   });
 
-  // Используем хук для загрузки изображений
   const {
     uploading,
     uploadError,
@@ -135,7 +142,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     },
   });
 
-  // Обработчик выбора изображения из галереи
   const handleSelectFromGallery = useCallback(() => {
     openGalleryModal((url: string) => {
       setImageValue("openGraphImage", url);
@@ -144,7 +150,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     });
   }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
 
-  // Обработчик загрузки изображения из MDEditor
   const handleMDEditorImageUpload = useCallback(
     async (file: File): Promise<string> => {
       const formData = new FormData();
@@ -160,7 +165,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           const errorData = await response.json().catch(() => ({
             message: "Ошибка загрузки файла.",
           }));
-          throw new Error(errorData.message || "Ошибка загрузки файла.");
+          throw new Error(errorData.message ?? "Ошибка загрузки файла.");
         }
 
         const result = await response.json();
@@ -193,7 +198,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     [handleMDEditorImageUpload, setFormData],
   );
 
-  // Обертка для handleSubmit с вызовом handleFormSubmit
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -202,7 +206,6 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     [handleFormSubmit],
   );
 
-  // Обработчик изменений в форме
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       handleSlugChange(e, generateSlug, baseUrl, "blog/");
@@ -212,13 +215,13 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
 
   const handleRichTextChange = useCallback(
     (field: "articleBody", value: string | undefined) => {
-      setFormData((prev) => ({ ...prev, [field]: value || "" }));
+      setFormData((prev) => ({ ...prev, [field]: value ?? "" }));
     },
     [setFormData],
   );
 
   const openGraphImagePreviewUrl =
-    previewUrls.openGraphImage || formData.openGraphImage;
+    previewUrls.openGraphImage ?? formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -226,7 +229,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         id="title"
         name="title"
         label="Заголовок"
-        value={formData.title || ""}
+        value={formData.title ?? ""}
         onChange={handleChange}
         required
         error={validationErrors.title}
@@ -236,7 +239,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         id="slug"
         name="slug"
         label="ЧПУ (URL)"
-        value={formData.slug || ""}
+        value={formData.slug ?? ""}
         onChange={handleChange}
         required
         error={validationErrors.slug}
@@ -246,7 +249,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         id="canonicalUrl"
         name="canonicalUrl"
         label="Canonical URL"
-        value={formData.canonicalUrl || ""}
+        value={formData.canonicalUrl ?? ""}
         onChange={handleChange}
         error={validationErrors.canonicalUrl}
       />
@@ -255,18 +258,37 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         id="date"
         name="date"
         label="Дата публикации"
-        value={formData.date || ""}
+        value={formData.date ?? ""}
         onChange={handleChange}
         required
         type="date"
         error={validationErrors.date}
       />
 
+      <FormInput
+        id="sortOrder"
+        name="sortOrder"
+        label="Порядок сортировки"
+        type="number"
+        value={formData.sortOrder ?? 0}
+        onChange={handleChange}
+        error={validationErrors.sortOrder}
+      />
+
+      <FormInput
+        id="tags"
+        name="tags"
+        label="Теги (через запятую)"
+        value={formData.tags ?? ""}
+        onChange={handleChange}
+        error={validationErrors.tags}
+      />
+
       <FormTextarea
         id="description"
         name="description"
         label="Краткое описание"
-        value={formData.description || ""}
+        value={formData.description ?? ""}
         onChange={handleChange}
         rows={3}
         error={validationErrors.description}
@@ -280,7 +302,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           Тело статьи (Markdown)
         </label>
         <MDEditor
-          value={formData.articleBody || ""}
+          value={formData.articleBody ?? ""}
           onChange={(val) => handleRichTextChange("articleBody", val)}
           height={MD_EDITOR_HEIGHT.FULL}
         />
@@ -306,26 +328,26 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       </div>
 
       <SeoFields
-        seoTitle={formData.seoTitle || ""}
-        seoDescription={formData.seoDescription || ""}
-        seoTags={formData.seoTags || ""}
-        openGraphImage={formData.openGraphImage || ""}
+        seoTitle={formData.seoTitle ?? ""}
+        seoDescription={formData.seoDescription ?? ""}
+        seoTags={formData.seoTags ?? ""}
+        openGraphImage={formData.openGraphImage ?? ""}
         onFieldChange={handleChange}
         onOpenGraphFileChange={(e) => handleFileChange(e, "openGraphImage")}
         onOpenGraphUpload={() => handleUpload("openGraphImage")}
         onOpenGraphSelectFromGallery={handleSelectFromGallery}
-        openGraphPreviewUrl={openGraphImagePreviewUrl || null}
-        openGraphUploadError={uploadError.openGraphImage || null}
+        openGraphPreviewUrl={openGraphImagePreviewUrl ?? null}
+        openGraphUploadError={uploadError.openGraphImage ?? null}
         isOpenGraphUploading={uploading.openGraphImage}
         hasOpenGraphFile={!!selectedFiles.openGraphImage}
         openGraphError={validationErrors.openGraphImage}
       />
 
       <SeoPreview
-        title={formData.seoTitle || formData.title || ""}
-        description={formData.seoDescription || formData.description || ""}
-        imageUrl={openGraphImagePreviewUrl || undefined}
-        url={`${baseUrl}/blog/${formData.slug || ""}`}
+        title={formData.seoTitle ?? formData.title ?? ""}
+        description={formData.seoDescription ?? formData.description ?? ""}
+        imageUrl={openGraphImagePreviewUrl ?? undefined}
+        url={`${baseUrl}/blog/${formData.slug ?? ""}`}
         type="article"
       />
 

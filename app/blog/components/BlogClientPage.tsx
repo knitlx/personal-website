@@ -29,7 +29,7 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
           )}
           <Link href={`/blog/${post.slug}`} className="group">
             <h2 className="text-3xl font-semibold text-[#333333] group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-primary group-hover:bg-clip-text group-hover:text-transparent transition-colors">
-              {post.title || "Без названия"}
+              {post.title ?? "Без названия"}
             </h2>
           </Link>
           {post.shortDescription && (

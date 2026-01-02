@@ -1,8 +1,11 @@
 "use client";
 
 import BentoButton from "./BentoButton"; // Импортируем новую кнопку
+import { useContactModal } from "@/contexts/ModalContext";
 
 export default function CtaSection() {
+  const { openContactModal } = useContactModal();
+
   return (
     <section className="py-8">
       <div className="container">
@@ -15,7 +18,7 @@ export default function CtaSection() {
           </p>
           <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
             {/* Используем новые кнопки */}
-            <BentoButton href="/contact" variant="primary">
+            <BentoButton onClick={() => openContactModal()} variant="primary">
               Написать мне
             </BentoButton>
             <BentoButton href="/projects" variant="outline">

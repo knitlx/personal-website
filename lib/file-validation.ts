@@ -69,6 +69,6 @@ export function isAllowedExtension(filename: string): boolean {
  * Check if file size is within limits
  */
 export function isValidFileSize(size: number, maxSize?: number): boolean {
-  const limit = maxSize || FILE_SIZE_LIMITS.MAX_FILE_SIZE;
+  const limit = maxSize ?? FILE_SIZE_LIMITS.MAX_FILE_SIZE;
   return size <= limit;
 }

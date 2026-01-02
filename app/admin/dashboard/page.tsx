@@ -42,8 +42,8 @@ export default async function DashboardPage({
 
   return (
     <DashboardClient
-      userName={session.user?.name || "Пользователь"}
-      userEmail={session.user?.email || "email@example.com"}
+      userName={session.user?.name ?? "Пользователь"}
+      userEmail={session.user?.email ?? "email@example.com"}
       projects={projectsResult}
       blogPosts={blogPostsResult}
     />

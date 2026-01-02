@@ -1,5 +1,6 @@
 import { memo } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Add this import
 import BentoButton from "../../components/BentoButton";
 import { getImageUrl } from "@/lib/image";
 
@@ -23,23 +24,23 @@ function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
         className="flex items-center mb-4 group"
       >
         {project.projectIcon && (
-          <img
+          <Image // Changed from img to Image
             src={getImageUrl(project.projectIcon)}
-            alt={project.title || "Project icon"}
+            alt={project.title ?? "Project icon"}
             width={40}
             height={40}
             className="rounded-lg mr-4"
           />
         )}
         <h2 className="text-2xl font-semibold group-hover:bg-gradient-to-r group-hover:from-[var(--accent-color)] group-hover:to-[var(--primary-color)] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-          {project.title || "Без названия"}
+          {project.title ?? "Без названия"}
         </h2>
       </Link>
-      {(project.shortDescriptionProjectsPage ||
+      {(project.shortDescriptionProjectsPage ??
         project.shortDescriptionHomepage) && (
         <div className="text-gray-600 mb-6 flex-grow prose prose-sm max-w-none">
-          {project.shortDescriptionProjectsPage ||
-            project.shortDescriptionHomepage ||
+          {project.shortDescriptionProjectsPage ??
+            project.shortDescriptionHomepage ??
             ""}
         </div>
       )}
@@ -50,7 +51,7 @@ function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
           </BentoButton>
         ) : (
           <BentoButton
-            onClick={() => onOrderClick(project.title || null)}
+            onClick={() => onOrderClick(project.title ?? null)}
             variant="primary"
             size="small"
           >

@@ -17,14 +17,14 @@ export default async function ProjectEditPage({
     project = getMarkdownFile("projects", slug);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Fallback for local development
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"; // Fallback for local development
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">
         {slug === "new"
           ? "Создать новый проект"
-          : `Редактировать проект: ${project?.data.title}`}
+          : `Редактировать проект: ${project?.data.title ?? ""}`}
       </h1>
       <ProjectForm
         initialData={

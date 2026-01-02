@@ -23,11 +23,11 @@ export async function generateMetadata({
 
   const project = projectFile.data;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const canonicalUrl = project.canonicalUrl || `${baseUrl}/projects/${slug}`;
-  const title = project.seoTitle || project.title;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const canonicalUrl = project.canonicalUrl ?? `${baseUrl}/projects/${slug}`;
+  const title = project.seoTitle ?? project.title;
   const description =
-    project.seoDescription || project.shortDescriptionHomepage || "";
+    project.seoDescription ?? project.shortDescriptionHomepage ?? "";
 
   return {
     title,
@@ -56,6 +56,61 @@ export async function generateMetadata({
   };
 }
 
+// Helper function to generate the correct schema based on project data
+const generateProjectSchema = (project: ContentItem, baseUrl: string) => {
+  const imageUrl = project.projectIcon
+    ? `${baseUrl}${project.projectIcon}`
+    : `${baseUrl}/profile.png`;
+
+  const baseSchema = {
+    "@context": "https://schema.org",
+    name: project.title,
+    description: project.shortDescriptionProjectsPage,
+    image: imageUrl,
+    url: `${baseUrl}/projects/${project.slug}`,
+    author: {
+      "@type": "Person",
+      name: "Александра",
+      url: baseUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Александра | AI-универсал и промт-инженер",
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/profile.png`,
+      },
+    },
+  };
+
+  switch (project.schemaType) {
+    case "SoftwareApplication":
+      return {
+        ...baseSchema,
+        "@type": "SoftwareApplication",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web", // Assuming it's a web application
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "RUB",
+        },
+      };
+    case "Service":
+      return {
+        ...baseSchema,
+        "@type": "Service",
+        serviceType: "Consulting", // Example, can be more specific
+        provider: {
+          "@type": "Person",
+          name: "Александра",
+        },
+      };
+    default:
+      return null;
+  }
+};
+
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
@@ -70,9 +125,9 @@ export default async function ProjectDetailPage({
   // Combine frontmatter data with content
   let project: ContentItem = {
     ...projectFile.data,
-    introDescription: (projectFile.data.introDescription as string) || "",
+    introDescription: (projectFile.data.introDescription as string) ?? "",
     fullDescription:
-      (projectFile.data.fullDescription as string) || projectFile.content || "", // Fix: Conditionally assign fullDescription
+      (projectFile.data.fullDescription as string) ?? projectFile.content ?? "", // Fix: Conditionally assign fullDescription
     slug: projectFile.slug,
   };
   // Ensure the projectIcon field matches the expected name in ProjectDetailClient
@@ -84,5 +139,18 @@ export default async function ProjectDetailPage({
     };
   }
 
-  return <ProjectDetailClient project={project} />;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const jsonLd = generateProjectSchema(project, baseUrl);
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      <ProjectDetailClient project={project} />
+    </>
+  );
 }

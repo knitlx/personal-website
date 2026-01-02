@@ -2,7 +2,6 @@ import Image from "next/image";
 import LazySection from "../components/LazySection";
 import ContactModalWrapper from "../components/ContactModalWrapper";
 import BentoButton from "../components/BentoButton";
-import SkillsIcon from "../components/icons/SkillsIcon";
 import CheckIcon from "../components/icons/CheckIcon";
 import whatIDoStyles from "../components/WhatIDoSection.module.css";
 

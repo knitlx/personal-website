@@ -24,7 +24,11 @@ export function useFormState<T extends object>({
 
   // Обработчик изменения поля
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
       const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -112,7 +116,7 @@ export function useFormState<T extends object>({
   // Сброс формы
   const resetForm = useCallback(
     (newValues?: Partial<T>) => {
-      setFormData(newValues || initialValues);
+      setFormData(newValues ?? initialValues);
       setValidationErrors({});
       setIsSlugTouched(false);
     },

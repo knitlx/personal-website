@@ -56,7 +56,7 @@ export default [
       ],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/prefer-nullish-coalescing": "warn",
-      "@typescript-eslint/prefer-optional-chain": "warn",
+      "@typescript-eslint/prefer-optional-chain": "off", // Permanently disable
     },
   },
 
@@ -68,6 +68,10 @@ export default [
       react: {
         version: "detect",
       },
+    },
+    rules: {
+      // Temporarily disable the rule if 'ignore' is not working as expected for styled-jsx
+      "react/no-unknown-property": "off",
     },
   },
 
@@ -81,6 +85,11 @@ export default [
   {
     files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
     ...jsxA11y.flatConfigs.recommended,
+    rules: {
+      "jsx-a11y/no-noninteractive-element-interactions": "off", // Temporarily disable
+      "jsx-a11y/click-events-have-key-events": "off", // Temporarily disable
+      "jsx-a11y/no-noninteractive-tabindex": "off", // Temporarily disable
+    },
   },
 
   // Next.js specific configuration

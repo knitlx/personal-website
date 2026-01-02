@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { commitAndPush } from "@/lib/git";
 import { revalidatePath } from "next/cache";
+import sharp from "sharp";
 
 const projectRoot = process.cwd();
 const uploadDirectory = path.join(projectRoot, "public", "uploads");
@@ -36,37 +37,41 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 10 * 1024 * 1024; // 10MB limit for original file
     if (file.size > maxSize) {
       return NextResponse.json(
-        { message: "File size exceeds 5MB limit." },
+        { message: "File size exceeds 10MB limit." },
         { status: 400 },
       );
     }
 
-    // Sanitize filename to prevent path traversal issues
-    const originalFilename = file.name;
-    const fileExtension = path.extname(originalFilename);
-    const baseFilename = path.basename(originalFilename, fileExtension);
-    const sanitizedFilename = `${baseFilename.replace(/[^a-z0-9-]/gi, "_")}${fileExtension}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const filePath = path.join(uploadDirectory, sanitizedFilename);
-    const publicPath = `/uploads/${sanitizedFilename}`; // Publicly accessible URL
+    // --- Image Optimization with Sharp ---
+    const originalFilename = file.name;
+    const baseFilename = path
+      .basename(originalFilename, path.extname(originalFilename))
+      .replace(/[^a-z0-9-]/gi, "_");
+    const newFilename = `${baseFilename}-${Date.now()}.webp`; // Add timestamp for uniqueness
+
+    const filePath = path.join(uploadDirectory, newFilename);
+    const publicPath = `/uploads/${newFilename}`; // Publicly accessible URL
+
+    await sharp(buffer)
+      .resize(1200, null, { withoutEnlargement: true }) // Resize width to 1200px max, no upscale
+      .webp({ quality: 80 }) // Convert to webp with 80% quality
+      .toFile(filePath);
 
     // Ensure upload directory exists
     if (!fs.existsSync(uploadDirectory)) {
       fs.mkdirSync(uploadDirectory, { recursive: true });
     }
 
-    // Read file content and write to disk
-    const buffer = Buffer.from(await file.arrayBuffer());
-    fs.writeFileSync(filePath, buffer);
-
     // --- Git Operations ---
     const relativeFilePath = path.relative(projectRoot, filePath);
     const gitResult = await commitAndPush({
       filePath: relativeFilePath,
-      commitMessage: `feat: Upload image: ${sanitizedFilename}`,
+      commitMessage: `feat: Upload optimized image: ${newFilename}`,
       operation: "add",
     });
 
@@ -79,8 +84,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Revalidate relevant paths if necessary (e.g., dashboard if images are shown there)
-    revalidatePath("/admin/dashboard"); // Example, adjust as needed
+    revalidatePath("/admin/dashboard");
 
     return NextResponse.json(
       { message: "File uploaded and committed successfully!", url: publicPath },

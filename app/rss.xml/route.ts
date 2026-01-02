@@ -18,10 +18,12 @@ export async function GET() {
       .map((post) => {
         const pubDate = post.date
           ? new Date(post.date).toUTCString()
-          : new Date(post.creationDate || "").toUTCString();
+          : new Date(post.creationDate ?? "").toUTCString();
         const description =
-          post.description ||
-          post.articleBody?.substring(0, 200) + "..." ||
+          post.description ??
+          (post.articleBody
+            ? post.articleBody.substring(0, 200) + "..."
+            : undefined) ??
           "Нет описания"; // Use description or a snippet of articleBody
 
         return `

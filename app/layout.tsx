@@ -25,7 +25,7 @@ const fontUnbounded = FontUnbounded({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   title: "Александра | AI-универсал и промт-инженер",
   description:
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "Александра | AI-универсал и промт-инженер",
     description:
       "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
     siteName: "Портфолио Александры",
     images: [
       {
@@ -56,7 +56,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   const jsonLd = {
     "@context": "https://schema.org",

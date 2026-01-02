@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import toast from "react-hot-toast";
+import Image from "next/image"; // Добавлен импорт Image
 import { API_ROUTES } from "@/lib/routes";
 
 interface ImageGalleryModalProps {
@@ -55,7 +55,7 @@ export default function ImageGalleryModal({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || "Не удалось загрузить изображения.",
+          errorData.message ?? "Не удалось загрузить изображения.",
         );
       }
       const data = await response.json();
@@ -95,7 +95,7 @@ export default function ImageGalleryModal({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Ошибка удаления изображения.");
+        throw new Error(errorData.message ?? "Ошибка удаления изображения.");
       }
 
       toast.success("Изображение успешно удалено!");
@@ -153,12 +153,13 @@ export default function ImageGalleryModal({
                   className="w-full h-full cursor-pointer"
                   aria-label={`Выбрать изображение: ${url.split("/").pop()}`}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={url}
                     alt={`Галерея: ${url.split("/").pop()}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ objectFit: "cover" }}
+                    className="rounded-md"
                   />
                 </button>
                 <button

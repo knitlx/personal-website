@@ -70,8 +70,8 @@ export async function commitAndPush({
 }: GitOptions): Promise<{ success: boolean; error?: string }> {
   try {
     // Get Git configuration from environment variables
-    const gitUserName = process.env.GIT_USER_NAME || "Admin Panel";
-    const gitUserEmail = process.env.GIT_USER_EMAIL || "admin@example.com";
+    const gitUserName = process.env.GIT_USER_NAME ?? "Admin Panel";
+    const gitUserEmail = process.env.GIT_USER_EMAIL ?? "admin@example.com";
     const githubPat = process.env.GITHUB_PAT;
 
     if (!githubPat) {
@@ -85,9 +85,9 @@ export async function commitAndPush({
     }
 
     const repoOwner =
-      process.env.VERCEL_GIT_REPO_OWNER || process.env.GITHUB_REPO_OWNER;
+      process.env.VERCEL_GIT_REPO_OWNER ?? process.env.GITHUB_REPO_OWNER;
     const repoSlug =
-      process.env.VERCEL_GIT_REPO_SLUG || process.env.GITHUB_REPO_SLUG;
+      process.env.VERCEL_GIT_REPO_SLUG ?? process.env.GITHUB_REPO_SLUG;
 
     if (!repoOwner || !repoSlug) {
       console.error(

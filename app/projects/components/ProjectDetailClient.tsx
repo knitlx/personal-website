@@ -49,7 +49,7 @@ export default function ProjectDetailClient({
             {project.projectIcon && (
               <Image
                 src={project.projectIcon}
-                alt={project.title || "Project icon"}
+                alt={project.title ?? "Project icon"}
                 width={60}
                 height={60}
                 className="rounded-xl mr-6"
@@ -70,7 +70,7 @@ export default function ProjectDetailClient({
                 ),
               }}
             >
-              {project.introDescription || ""}
+              {project.introDescription ?? ""}
             </ReactMarkdown>
 
             {/* --- In-content button inserted after the intro --- */}
@@ -80,7 +80,7 @@ export default function ProjectDetailClient({
                   onClick={() =>
                     setContactModal({
                       isOpen: true,
-                      projectTitle: project.title || null,
+                      projectTitle: project.title ?? null,
                     })
                   }
                   variant="primary"
@@ -101,7 +101,7 @@ export default function ProjectDetailClient({
                 ),
               }}
             >
-              {project.fullDescription || ""}
+              {project.fullDescription ?? ""}
             </ReactMarkdown>
           </div>
 
@@ -120,7 +120,7 @@ export default function ProjectDetailClient({
                 onClick={() =>
                   setContactModal({
                     isOpen: true,
-                    projectTitle: project.title || null,
+                    projectTitle: project.title ?? null,
                   })
                 }
                 variant="primary"

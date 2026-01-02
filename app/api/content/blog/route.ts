@@ -4,10 +4,19 @@ import { getCachedMetadata } from "@/lib/content";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const page = parseInt(searchParams.get("page") ?? "1", 10);
+    const limit = parseInt(searchParams.get("limit") ?? "10", 10);
+    const tag = searchParams.get("tag");
 
-    const allPosts = getCachedMetadata("blog");
+    let allPosts = getCachedMetadata("blog");
+
+    // Filter by tag if provided
+    if (tag) {
+      allPosts = allPosts.filter((post) =>
+        (post.tags as string[])?.includes(tag),
+      );
+    }
+
     const totalItems = allPosts.length;
     const totalPages = Math.ceil(totalItems / limit);
     const startIndex = (page - 1) * limit;

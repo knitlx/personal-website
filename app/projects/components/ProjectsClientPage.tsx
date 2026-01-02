@@ -56,7 +56,7 @@ export default function ProjectsClientPage({
               {project.projectIcon && (
                 <Image
                   src={project.projectIcon}
-                  alt={project.title || "Project icon"}
+                  alt={project.title ?? "Project icon"}
                   width={40}
                   height={40}
                   sizes="40px"
@@ -64,15 +64,15 @@ export default function ProjectsClientPage({
                 />
               )}
               <h2 className="text-2xl font-semibold group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-primary group-hover:bg-clip-text group-hover:text-transparent transition-colors">
-                {project.title || "Без названия"}
+                {project.title ?? "Без названия"}
               </h2>
             </Link>
-            {(project.shortDescriptionProjectsPage ||
+            {(project.shortDescriptionProjectsPage ??
               project.shortDescriptionHomepage) && (
               <div className="text-gray-600 mb-6 flex-grow prose prose-sm max-w-none">
                 <ReactMarkdownComp remarkPlugins={[remarkGfm]}>
-                  {project.shortDescriptionProjectsPage ||
-                    project.shortDescriptionHomepage ||
+                  {project.shortDescriptionProjectsPage ??
+                    project.shortDescriptionHomepage ??
                     ""}
                 </ReactMarkdownComp>
               </div>
@@ -91,7 +91,7 @@ export default function ProjectsClientPage({
                   onClick={() =>
                     setModalContext({
                       isOpen: true,
-                      projectTitle: project.title || null,
+                      projectTitle: project.title ?? null,
                     })
                   }
                   variant="primary"

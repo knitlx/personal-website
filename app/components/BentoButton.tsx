@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type ButtonProps = {
   children: React.ReactNode;
-  variant?: "primary" | "outline";
+  variant?: "primary" | "outline" | "custom";
   size?: "default" | "small";
   onClick?: () => void;
   href?: string;
@@ -37,9 +37,12 @@ export default function BentoButton({
   const variants = {
     primary: "bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white",
     outline: "bg-white border border-gray-200 text-[#1a1a1a] hover:bg-gray-50",
+    custom: "", // Allows for fully custom styling via className
   };
 
-  const className = `${baseClass} ${sizes[size]} ${variants[variant]} ${extraClassName || ""}`;
+  const className = `${baseClass} ${sizes[size]} ${
+    variants[variant]
+  } ${extraClassName ?? ""}`;
 
   if (onClick) {
     return (

@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ profile }) {
-      const allowedGithubEmails = (process.env.ALLOWED_GITHUB_EMAILS || "")
+      const allowedGithubEmails = (process.env.ALLOWED_GITHUB_EMAILS ?? "")
         .split(",")
         .map((email) => email.trim().toLowerCase())
         .filter(Boolean);

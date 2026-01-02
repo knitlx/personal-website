@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent, ChangeEvent, memo } from "react";
 import { ALLOWED_EXTENSIONS } from "@/lib/file-validation";
 import { API_ROUTES } from "@/lib/routes";
+import BentoButton from "./BentoButton";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -91,7 +92,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files && e.target.files[0];
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       const fileName = selectedFile.name;
       const fileExtension = fileName
@@ -148,7 +149,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
         setStatusMessage(result.message);
         setView("success");
       } else {
-        setStatusMessage(result.message || "Произошла ошибка.");
+        setStatusMessage(result.message ?? "Произошла ошибка.");
       }
     } catch {
       setStatusMessage("Ошибка сети. Попробуйте снова.");
@@ -164,15 +165,26 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
-      onClick={handleClose}
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      // Modify onClick to only close if the actual overlay is clicked
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          handleClose();
+        }
+      }}
+      // Add keyboard accessibility for closing with Escape key (standard modal behavior)
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          handleClose();
+        }
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="contact-modal-title"
+      tabIndex={-1} // Allow focus, but don't add to tab sequence naturally
     >
       <div
         className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative transition-all duration-300"
-        onClick={(e) => e.stopPropagation()}
+        // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed with the overlay's improved onClick
         role="document"
       >
         <button
@@ -191,42 +203,37 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
             >
               Связаться со мной
             </h2>
-            <a
+            <BentoButton
               href="https://t.me/knitlx"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full"
+              variant="custom"
+              size="default"
+              className="w-full bg-[#619BEC] text-white hover:bg-[#5081E1]"
             >
-              <button className="w-full bg-[#619BEC] text-white py-3 rounded-lg font-semibold hover:bg-[#5081E1] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-700">
-                Написать в Telegram
-              </button>
-            </a>
-            <a
+              Написать в Telegram
+            </BentoButton>
+            <BentoButton
               href="https://wa.me/79154683416"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full"
+              variant="custom"
+              size="default"
+              className="w-full bg-[#7A68EE] text-white hover:bg-[#6c58de]"
             >
-              <button className="w-full bg-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:bg-[#6c58de] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-700">
-                Написать в WhatsApp
-              </button>
-            </a>
-            <a
+              Написать в WhatsApp
+            </BentoButton>
+            {/* <BentoButton
               href="https://t.me/ai_universal_assistantbot"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full"
+              variant="custom"
+              size="default"
+              className="w-full bg-[#AB5EED] text-white hover:bg-[#9a4edb]"
             >
-              <button className="w-full bg-[#AB5EED] text-white py-3 rounded-lg font-semibold hover:bg-[#9a4edb] transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600">
-                Написать боту-ассистенту
-              </button>
-            </a>
-            <button
+              Написать боту-ассистенту
+            </BentoButton> */}
+            <BentoButton
               onClick={handleShowForm}
-              className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400"
+              variant="outline"
+              className="w-full"
             >
               Оставить заявку
-            </button>
+            </BentoButton>
           </div>
         )}
 
@@ -245,7 +252,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
               <input
                 type="hidden"
                 name="projectTitle"
-                value={projectTitle || ""}
+                value={projectTitle ?? ""}
               />
               <div className="mb-4">
                 <label

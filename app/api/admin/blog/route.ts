@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const processUrl = (url: string | undefined): string => {
       if (!url) return "";
       const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+        process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
       return url.replace(siteUrl, "");
     };
 
@@ -52,15 +52,25 @@ export async function POST(req: NextRequest) {
     }
 
     const validatedData = validationResult.data;
-    const { slug, description, articleBody, ...frontmatterData } =
+    const { slug, description, articleBody, tags, ...restOfFrontmatter } =
       validatedData;
 
-    // FIXED: articleBody as content, not frontmatter
-    const fullMarkdown = matter.stringify(articleBody || "", {
+    // Parse the tags string into an array
+    const tagsArray = tags
+      ? tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+      : [];
+
+    const frontmatterData = {
+      ...restOfFrontmatter,
       slug: slug,
-      ...frontmatterData,
       description: description,
-    });
+      tags: tagsArray, // Use the parsed array
+    };
+
+    const fullMarkdown = matter.stringify(articleBody || "", frontmatterData);
 
     const filePath = path.join(contentDirectory, `${slug}.md`);
 

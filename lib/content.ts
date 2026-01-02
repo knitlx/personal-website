@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { unstable_cacheLife as cacheLife } from "next/cache";
 
 // Cache file structure
 interface CacheItem {
@@ -72,6 +71,7 @@ interface GetAllContentOptions {
   page?: number;
   limit?: number;
   search?: string;
+  tag?: string;
   filterBy?: string; // e.g., "title", "description", "category"
   filterValue?: string; // value to filter by
 }
@@ -102,6 +102,13 @@ function loadCache(): ContentCache {
     console.error("Error loading content cache:", error);
     return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
   }
+}
+
+// Get all unique tags from blog posts
+export function getAllTags(): string[] {
+  const cache = loadCache();
+  const allTags = cache.blogs.flatMap((post) => post.tags ?? []);
+  return [...new Set(allTags)];
 }
 
 // Get cached metadata for a collection
@@ -168,9 +175,17 @@ export function getAllContent(
     const searchTerm = options.search.toLowerCase();
     allContent = allContent.filter(
       (item) =>
-        item.title?.toLowerCase().includes(searchTerm) ||
-        item.description?.toLowerCase().includes(searchTerm) ||
-        item.shortDescription?.toLowerCase().includes(searchTerm),
+        item.title?.toLowerCase().includes(searchTerm) ??
+        item.description?.toLowerCase().includes(searchTerm) ??
+        item.shortDescription?.toLowerCase().includes(searchTerm) ??
+        false,
+    );
+  }
+
+  // Filter by tag
+  if (collection === "blog" && options?.tag) {
+    allContent = allContent.filter((item) =>
+      (item.tags as string[])?.includes(options.tag!),
     );
   }
 
@@ -179,10 +194,17 @@ export function getAllContent(
     const filterBy = options.filterBy as keyof ContentItem;
     const filterValue = options.filterValue.toLowerCase();
     allContent = allContent.filter((item) => {
-      const itemValue = String(item[filterBy] || "").toLowerCase();
+      const itemValue = String(item[filterBy] ?? "").toLowerCase();
       return itemValue.includes(filterValue);
     });
   }
+
+  // Sort by sortOrder before pagination
+  allContent.sort((a, b) => {
+    const orderA = a.sortOrder ?? Infinity;
+    const orderB = b.sortOrder ?? Infinity;
+    return orderA - orderB;
+  });
 
   // Apply pagination
   const page = options?.page ? Number(options.page) : 1;

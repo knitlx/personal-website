@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import BentoButton from "../../components/BentoButton";
 import { API_ROUTES } from "@/lib/routes";
+import Image from "next/image"; // Добавлен импорт Image
 
 // --- Helper: Icon Components ---
 const DownloadIcon = () => (
@@ -156,7 +157,7 @@ function DocumentConverter() {
       });
 
       if (!res.ok)
-        throw new Error((await res.json()).error || "Ошибка сервера");
+        throw new Error((await res.json()).error ?? "Ошибка сервера");
 
       const blob = await res.blob();
       if (blob.size === 0) throw new Error("Сервер вернул пустой PDF.");
@@ -211,7 +212,7 @@ function DocumentConverter() {
       });
       if (!res.ok)
         throw new Error(
-          (await res.json()).error || "Ошибка конвертации в PPTX.",
+          (await res.json()).error ?? "Ошибка конвертации в PPTX.",
         );
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -244,7 +245,7 @@ function DocumentConverter() {
       });
       const data = await res.json();
       if (!res.ok)
-        throw new Error(data.error || "Ошибка генерации предпросмотра PPTX.");
+        throw new Error(data.error ?? "Ошибка генерации предпросмотра PPTX.");
       if (!data.images || data.images.length === 0)
         throw new Error("Не найдено слайдов для предпросмотра.");
       setPptxPreviewImages(data.images);
@@ -503,12 +504,16 @@ function DocumentConverter() {
               )}
               {pptxPreviewImages.length > 0 && !error && (
                 <div className="w-full h-full flex flex-col items-center justify-center p-4 relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={pptxPreviewImages[currentSlide]}
-                    alt={`Slide ${currentSlide + 1}`}
-                    className="max-w-full max-h-full object-contain rounded-md shadow-md"
-                  />
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      src={pptxPreviewImages[currentSlide]}
+                      alt={`Slide ${currentSlide + 1}`}
+                      fill
+                      sizes="100vw"
+                      style={{ objectFit: "contain" }}
+                      className="rounded-md shadow-md"
+                    />
+                  </div>
                   <div className="absolute top-2 right-2 flex items-center gap-2">
                     <span className="text-xs font-semibold text-gray-700 bg-white/70 backdrop-blur-sm rounded-full px-2 py-1">
                       {currentSlide + 1} / {pptxPreviewImages.length}

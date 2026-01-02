@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer-core";
+import puppeteer, { Page } from "puppeteer-core"; // Import Page
 import chromium from "@sparticuz/chromium";
 import { load } from "cheerio";
 
@@ -22,7 +22,7 @@ async function getBrowser() {
 
 export async function POST(request: Request) {
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
-  let page: any = null;
+  let page: Page | null = null; // Changed from any to Page
 
   try {
     const { htmlContent } = await request.json();

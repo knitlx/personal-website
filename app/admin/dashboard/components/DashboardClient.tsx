@@ -29,10 +29,10 @@ export default function DashboardClient({
 
   // Separate states for search queries and current pages for projects and blog posts
   const [projectSearchQuery, setProjectSearchQuery] = useState(
-    currentSearchParams?.get("projectsSearch") || "",
+    currentSearchParams?.get("projectsSearch") ?? "",
   );
   const [blogSearchQuery, setBlogSearchQuery] = useState(
-    currentSearchParams?.get("blogSearch") || "",
+    currentSearchParams?.get("blogSearch") ?? "",
   );
 
   // Function to update URL with new query parameters
@@ -182,7 +182,7 @@ export default function DashboardClient({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || `Failed to delete ${type}.`);
+        throw new Error(errorData.message ?? `Failed to delete ${type}.`);
       }
 
       toast.success(`${title} успешно удален!`);
@@ -279,7 +279,7 @@ export default function DashboardClient({
                           handleDelete(
                             "projects",
                             project.slug,
-                            project.title || "Проект",
+                            project.title ?? "Проект",
                           )
                         }
                         disabled={deleting}
@@ -354,7 +354,7 @@ export default function DashboardClient({
                           handleDelete(
                             "blog",
                             post.slug,
-                            post.title || "Статья",
+                            post.title ?? "Статья",
                           )
                         }
                         disabled={deleting}

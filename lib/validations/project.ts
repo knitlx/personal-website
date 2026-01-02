@@ -1,25 +1,5 @@
 import { z } from "zod";
 
-// Helper schema for URL or relative path
-const urlOrOptional = z.string().refine(
-  (value) => {
-    if (!value || value.trim() === "") return true; // Empty is OK
-    // Allow relative paths starting with /
-    if (value.startsWith("/")) return true;
-    // Allow full URLs
-    try {
-      new URL(value);
-      return true;
-    } catch {
-      return false;
-    }
-  },
-  {
-    message:
-      "Неверный формат URL. Используйте полный URL (http/https) или относительный путь (начинающийся с /)",
-  },
-);
-
 export const projectSchema = z.object({
   slug: z
     .string()
@@ -77,6 +57,8 @@ export const projectSchema = z.object({
       if (!value) return true; // Разрешить пустые строки
       return value.startsWith("/") || z.string().url().safeParse(value).success;
     }, "Неверный формат URL для Open Graph изображения. Используйте полный URL (http/https) или относительный путь (начинающийся с /)."),
+  schemaType: z.string().optional(),
+  sortOrder: z.coerce.number().optional(),
 });
 
 export type ProjectData = z.infer<typeof projectSchema>;
