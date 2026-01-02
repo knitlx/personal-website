@@ -12,7 +12,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
 creationDate: ''
-updateDate: '2026-01-02T09:26:45.785Z'
+updateDate: '2026-01-02T09:27:05.084Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
@@ -21,9 +21,6 @@ openGraphImage: ''
 schemaType: SoftwareApplication
 sortOrder: 1
 introDescription: >-
-  ### Финансовый Telegram-бот
-
-
   Учёт личных финансов часто ломается не из-за сложности, а из-за неудобства.
   Нужно открыть приложение, выбрать счёт, категорию, ввести сумму и дату.
 
