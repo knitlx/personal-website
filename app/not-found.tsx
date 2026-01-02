@@ -37,12 +37,6 @@ export default function NotFound() {
           <p className="text-sm text-gray-500 mb-4">Или посмотрите:</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto">
             <Link
-              href="/projects/document-converter"
-              className="text-[#7a68ee] hover:text-[#9137df] transition-colors"
-            >
-              → Конвертер документов
-            </Link>
-            <Link
               href="/services"
               className="text-[#7a68ee] hover:text-[#9137df] transition-colors"
             >

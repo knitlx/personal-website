@@ -13,14 +13,6 @@ export const API_ROUTES = {
   CONTACT: "/api/contact",
   DOWNLOADABLE_FILES: "/api/downloadable-files",
 
-  // Converters
-  CONVERT_HTML_TO_PDF:
-    "https://html-document-converter-production.up.railway.app/api/convert-html-to-pdf",
-  CONVERT_TO_PPTX:
-    "https://html-document-converter-production.up.railway.app/api/convert-to-pptx",
-  PREVIEW_PPTX:
-    "https://html-document-converter-production.up.railway.app/api/preview-pptx",
-
   // Feeds
   RSS: "/rss.xml",
   SITEMAP: "/sitemap.xml",
@@ -41,7 +33,6 @@ export const PAGE_ROUTES = {
 export const DYNAMIC_ROUTES = {
   BLOG_POST: (slug: string) => `/blog/${slug}`,
   PROJECT: (slug: string) => `/projects/${slug}`,
-  PROJECT_CONVERTER: "/projects/document-converter",
   ADMIN_EDIT_BLOG: (slug: string) => `/admin/blog/edit/${slug}`,
   ADMIN_EDIT_PROJECT: (slug: string) => `/admin/projects/edit/${slug}`,
   ADMIN_NEW_BLOG: "/admin/blog/new",

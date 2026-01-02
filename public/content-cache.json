@@ -90,7 +90,7 @@
       "shortDescriptionHomepage": "Конвертация HTML в PDF с сохранением внешнего вида",
       "shortDescriptionProjectsPage": "Инструмент для конвертации HTML в PDF с сохранением внешнего вида и предпросмотром результата.",
       "projectIcon": "/uploads/html-pdf.png",
-      "trylink": "/projects/document-converter?tab=pdf",
+      "trylink": "https://html-document-converter-production.up.railway.app",
       "creationDate": "",
       "updateDate": "2026-01-02T08:55:18.521Z",
       "seoTitle": "HTML to PDF конвертер с сохранением верстки",
@@ -108,7 +108,7 @@
       "shortDescriptionHomepage": "Конвертация HTML в презентации PowerPoint",
       "shortDescriptionProjectsPage": "Конвертация HTML в презентации PowerPoint. Каждый блок страницы становится отдельным слайдом, результат доступен для предпросмотра",
       "projectIcon": "/uploads/html-pptx.png",
-      "trylink": "/projects/document-converter?tab=pptx",
+      "trylink": "https://html-document-converter-production.up.railway.app",
       "creationDate": "",
       "updateDate": "2026-01-02T09:05:02.262Z",
       "seoTitle": "HTML to PowerPoint конвертер с предпросмотром",
@@ -121,5 +121,5 @@
       "introDescription": "HTML удобен для подготовки контента: шаблонов, отчётов, презентаций.\nЕго легко генерировать и изменять, но превратить готовый HTML-документ в презентацию PowerPoint — отдельная задача.\n\nЧаще всего это либо ручная сборка слайдов, либо автоматическая конвертация с потерей внешнего вида.\n\nВ этом проекте HTML используется как исходный формат для генерации презентаций PowerPoint."
     }
   ],
-  "generatedAt": "2026-01-02T13:20:38.274Z"
+  "generatedAt": "2026-01-02T19:00:42.266Z"
 }

@@ -6,7 +6,7 @@ shortDescriptionProjectsPage: >-
   Конвертация HTML в презентации PowerPoint. Каждый блок страницы становится
   отдельным слайдом, результат доступен для предпросмотра
 projectIcon: /uploads/html-pptx.png
-trylink: /projects/document-converter?tab=pptx
+trylink: https://html-document-converter-production.up.railway.app
 creationDate: ''
 updateDate: '2026-01-02T09:05:02.262Z'
 seoTitle: HTML to PowerPoint конвертер с предпросмотром

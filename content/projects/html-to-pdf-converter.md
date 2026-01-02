@@ -6,7 +6,7 @@ shortDescriptionProjectsPage: >-
   Инструмент для конвертации HTML в PDF с сохранением внешнего вида и
   предпросмотром результата.
 projectIcon: /uploads/html-pdf.png
-trylink: /projects/document-converter?tab=pdf
+trylink: https://html-document-converter-production.up.railway.app
 creationDate: ''
 updateDate: '2026-01-02T08:55:18.521Z'
 seoTitle: HTML to PDF конвертер с сохранением верстки
