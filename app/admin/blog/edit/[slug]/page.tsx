@@ -19,7 +19,7 @@ export default async function BlogEditPage({ params }: BlogEditPageProps) {
     }
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"; // Fallback for local development
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"; // Fallback for local development
 
   const initialData = blogPost
     ? {

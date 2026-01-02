@@ -7,8 +7,9 @@ interface BlogPageProps {
 }
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const resolvedSearchParams = await searchParams;
   const activeTag =
-    typeof searchParams.tag === "string" ? searchParams.tag : undefined;
+    typeof resolvedSearchParams.tag === "string" ? resolvedSearchParams.tag : undefined;
 
   const { data: allPosts, totalItems } = getAllContent("blog", {
     limit: PAGINATION.BLOG_POSTS_PER_PAGE,

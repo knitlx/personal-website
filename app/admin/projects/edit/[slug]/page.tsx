@@ -17,7 +17,7 @@ export default async function ProjectEditPage({
     project = getMarkdownFile("projects", slug);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"; // Fallback for local development
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"; // Fallback for local development
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
