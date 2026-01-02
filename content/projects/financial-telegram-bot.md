@@ -7,15 +7,20 @@ shortDescriptionHomepage: >-
 shortDescriptionProjectsPage: >-
   Учёт личных финансов прямо в Telegram. Доходы и расходы можно добавлять через
   чат — текстом, голосом или фото. Все данные автоматически собираются в
-  дашборде с графиками и фильтрами. Никаких отдельных приложений и ручного
-  разбора.
+  дашборде с графиками и фильтрами.
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
 creationDate: ''
-updateDate: '2026-01-02T09:41:29.737Z'
-seoTitle: ''
-seoDescription: ''
-seoTags: ''
+updateDate: '2026-01-02T09:44:06.967Z'
+seoTitle: Финансовый Telegram-бот для учёта доходов и расходов
+seoDescription: >-
+  Telegram-бот для учёта личных финансов. Доходы и расходы добавляются через чат
+  — текстом, голосом или фото. Данные автоматически собираются в дашборде с
+  графиками и фильтрами, без отдельных приложений и ручной обработки.
+seoTags: >-
+  финансовый телеграм-бот, учет личных финансов, учет доходов и расходов,
+  telegram mini app, финансовый бот, личные финансы telegram, учет расходов
+  telegram, финансовый дашборд, автоматизация учета финансов, n8n автоматизация
 canonicalUrl: /projects/financial-telegram-bot
 openGraphImage: ''
 schemaType: SoftwareApplication
