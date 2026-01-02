@@ -27,21 +27,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
-  title: "Александра | AI-универсал и промт-инженер",
+  title: "AI-специалист и разработчик автоматизаций | NoChaos",
   description:
     "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса. Разработка ботов, мини-приложений и другие кейсы.",
+  keywords:
+    "автоматизация процессов, ai автоматизация, n8n автоматизация, автоматизация бизнеса, автоматизация задач, AI специалист, nochaos, n8n, цифровой порядок, цифровая автоматизация, telegram боты, ai инструменты, разработка сценариев, разработчик автоматизаций, интеграция ai, промт-инженер",
   manifest: "/manifest.json",
   openGraph: {
-    title: "Александра | AI-универсал и промт-инженер",
+    title: "AI-специалист и разработчик автоматизаций | NoChaos",
     description:
       "Помогаю навести цифровой порядок, создаю автоматизации и настраиваю AI-инструменты под задачи бизнеса.",
     url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
     siteName: "Портфолио Александры",
     images: [
       {
-        url: "/profile.png",
-        width: 400,
-        height: 400,
+        url: "/og-image.png",
       },
     ],
     locale: "ru_RU",
@@ -65,14 +65,14 @@ export default function RootLayout({
         "@type": "Person",
         name: "Александра",
         url: siteUrl,
-        image: `${siteUrl}/profile.png`,
-        jobTitle: "AI-универсал и промт-инженер",
+        image: `${siteUrl}/og-image.png`,
+        jobTitle: "AI-специалист и разработчик автоматизаций",
         sameAs: ["https://github.com/knitlx"],
       },
       {
         "@type": "WebSite",
         url: siteUrl,
-        name: "Портфолио Александры",
+        name: "NoChaos",
         author: {
           "@type": "Person",
           name: "Александра",
