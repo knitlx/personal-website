@@ -37,6 +37,13 @@ yarn-error.log*
 # Keep .env.example for reference
 !.env.example
 
+# generated content cache
+public/content-cache.json
+
+# pm2 ecosystem and logs
+ecosystem.config.js
+logs/
+
 # vercel
 .vercel
 
