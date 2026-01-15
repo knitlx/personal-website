@@ -3,25 +3,19 @@ export const aiFeatures = [
     icon: "/icons/structure.png",
     alt: "Структура и тексты",
     title: "Структура и тексты",
-    desc: "сгенерированы совместно с GPT-5.1",
+    desc: "GPT",
   },
   {
     icon: "/icons/design.png",
-    alt: "Дизайн",
-    title: "Дизайн",
-    desc: "создан AI",
+    alt: "Дизайн и графика",
+    title: "Дизайн и графика",
+    desc: "Gemini и Nano Banana",
   },
   {
     icon: "/icons/code.png",
-    alt: "Код",
-    title: "Код",
-    desc: "полностью сгенерирован через Gemini CLI",
-  },
-  {
-    icon: "/icons/deploy.png",
-    alt: "Деплой",
-    title: "Деплой",
-    desc: "Railway",
+    alt: "Код и деплой",
+    title: "Код и деплой",
+    desc: "Gemini CLI и GLM (Claude Code)",
   },
 ];
 
