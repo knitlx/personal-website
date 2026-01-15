@@ -9,7 +9,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/ai-ticket.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T22:19:21.585Z'
+updateDate: '2026-01-15T21:11:26.931Z'
 seoTitle: 'AI-обработка обращений: автоматическое создание тикетов'
 seoDescription: >-
   Автоматизация обработки входящих обращений: AI разбирает текст, определяет
@@ -20,7 +20,7 @@ seoTags: >-
   создание тикетов, обработка заявок, ai для поддержки, тикеты jira, тикеты
   google sheets, n8n автоматизация
 canonicalUrl: /projects/ai-ticket-processing
-openGraphImage: ''
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: Service
 sortOrder: 5
 introDescription: >-

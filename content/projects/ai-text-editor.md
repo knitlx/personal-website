@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/ai-redactor.png
 trylink: ''
 creationDate: ''
-updateDate: '2025-12-31T22:18:33.370Z'
+updateDate: '2026-01-15T21:10:15.599Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
   AI-редактор для работы с черновиками и рабочими текстами. Анализирует
@@ -22,7 +22,7 @@ seoTags: >-
   редактура с ai, улучшение текстов ai, tone of voice ai, автоматизация
   редактуры, n8n ai
 canonicalUrl: /projects/ai-text-editor
-openGraphImage: ''
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: SoftwareApplication
 sortOrder: 2
 introDescription: >-
