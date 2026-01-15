@@ -6,9 +6,9 @@ shortDescriptionProjectsPage: >-
   Инструмент для конвертации HTML в PDF с сохранением внешнего вида и
   предпросмотром результата.
 projectIcon: /uploads/html-pdf.png
-trylink: https://html-document-converter-production.up.railway.app
+trylink: 'https://html-document-converter-production.up.railway.app'
 creationDate: ''
-updateDate: '2026-01-02T08:55:18.521Z'
+updateDate: '2026-01-15T21:11:06.714Z'
 seoTitle: HTML to PDF конвертер с сохранением верстки
 seoDescription: >-
   Конвертация HTML в PDF с сохранением верстки, стилей и фонов. Предпросмотр
@@ -17,7 +17,7 @@ seoTags: >-
   html to pdf, конвертация html в pdf, html pdf конвертер, генерация pdf из
   html, pdf из html, puppeteer pdf, server-side pdf
 canonicalUrl: /projects/html-to-pdf-converter
-openGraphImage: ''
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: SoftwareApplication
 sortOrder: 3
 introDescription: >-
