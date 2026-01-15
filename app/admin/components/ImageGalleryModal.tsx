@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Image from "next/image"; // Добавлен импорт Image
 import { API_ROUTES } from "@/lib/routes";
 
 interface ImageGalleryModalProps {
@@ -153,13 +152,10 @@ export default function ImageGalleryModal({
                   className="w-full h-full cursor-pointer"
                   aria-label={`Выбрать изображение: ${url.split("/").pop()}`}
                 >
-                  <Image
+                  <img
                     src={url}
-                    alt={`Галерея: ${url.split("/").pop()}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: "contain" }}
-                    className="rounded-md"
+                    alt="Галерея"
+                    className="w-full h-full object-contain rounded-md"
                   />
                 </button>
                 <button
