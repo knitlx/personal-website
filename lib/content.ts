@@ -168,8 +168,9 @@ export function getAllContent(
   collection: string,
   options?: GetAllContentOptions,
 ) {
-  // Get metadata from cache (much faster than reading all files)
-  const cachedItems = getCachedMetadata(collection as "blog" | "projects");
+  // Get full items from cache (not just metadata)
+  const cache = loadCache();
+  const cachedItems = collection === "blog" ? cache.blogs : cache.projects;
   let allContent: ContentItem[] = [...cachedItems] as ContentItem[];
 
   // Apply search (only searches metadata, not full content)

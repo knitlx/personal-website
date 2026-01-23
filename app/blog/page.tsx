@@ -1,6 +1,15 @@
 import { getAllContent, getAllTags } from "@/lib/content";
 import InfiniteScrollBlog from "./components/InfiniteScrollBlog";
 import { PAGINATION } from "@/lib/constants";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Блог про автоматизацию, AI и цифровые процессы | NoChaos",
+  description:
+    "Заметки и статьи про автоматизацию, n8n, систематизацию процессов и использование ИИ в реальных рабочих задачах",
+  keywords:
+    "блог автоматизация, статьи ai, цифровые процессы, систематизация информации, автоматизация работы",
+};
 
 interface BlogPageProps {
   searchParams: { [key: string]: string | string[] | undefined };

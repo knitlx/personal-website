@@ -8,12 +8,10 @@ function AiCreatedSiteSection() {
     <section className="bg-[#F9FAFB] py-16 text-center mb-[50px]">
       <div className="container">
         <h2 className="font-unbounded-fix text-[32px] font-medium leading-tight text-[#333333] mb-[15px]">
-          Этот сайт создан с помощью AI — от структуры до кода
+          Этот сайт — пример того, как я использую AI
         </h2>
         <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
-          AI использован на каждом этапе разработки: структура, тексты, визуал и
-          весь код. Это рабочий пример того, как я применяю промт-инженерию в
-          практических задачах.
+          ИИ использован на всех этапах разработки: от структуры и текстов до дизайна и кода.
         </p>
 
         <div className="flex flex-wrap items-stretch justify-center gap-6 mt-[40px]">

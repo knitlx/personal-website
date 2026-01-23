@@ -4,6 +4,15 @@ import ContactModalWrapper from "../components/ContactModalWrapper";
 import BentoButton from "../components/BentoButton";
 import CheckIcon from "../components/icons/CheckIcon";
 import whatIDoStyles from "../components/WhatIDoSection.module.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Воронова Александра — автоматизация процессов и ИИ-инструменты | NoChaos",
+  description:
+    "Помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать AI-инструменты и автоматизации под реальные процессы",
+  keywords:
+    "автоматизация процессов, ai инструменты, ии инструменты, системное мышление, цифровые задачи бизнеса, разработка автоматизаций",
+};
 
 export default function AboutPage() {
   return (
