@@ -427,7 +427,7 @@ export default function AboutPage() {
               Есть задача или идея?
             </h2>
             <p className="text-[18px] text-[#555] max-w-2xl mx-auto mb-10 leading-normal">
-              Давайте разберёмся вместе и найдём рабочее решение.
+              Давайте разберёмся вместе и найдём рабочее решение
             </p>
             <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
               <ContactModalWrapper

@@ -12,7 +12,7 @@ function WhatIDoSection() {
         </h2>
         <p className="text-base text-[#666] max-w-[800px] mx-auto mb-[30px]">
           Помогаю навести цифровой порядок: создаю автоматизации и настраиваю
-          AI-инструменты под задачи бизнеса.
+          AI-инструменты под задачи бизнеса
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
           {whatIDo.map((item) => (

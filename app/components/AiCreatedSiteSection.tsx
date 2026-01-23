@@ -11,7 +11,7 @@ function AiCreatedSiteSection() {
           Этот сайт — пример того, как я использую AI
         </h2>
         <p className="text-[18px] text-[#666] max-w-[800px] mx-auto mb-[50px]">
-          ИИ использован на всех этапах разработки: от структуры и текстов до дизайна и кода.
+          ИИ использован на всех этапах разработки: от структуры и текстов до дизайна и кода
         </p>
 
         <div className="flex flex-wrap items-stretch justify-center gap-6 mt-[40px]">

@@ -107,7 +107,7 @@ const servicesData = [
 export default function ServicesPage() {
   return (
     <div className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center mb-16">
+      <div className="max-w-7xl mx-auto text-center mb-12 sm:mb-16">
         <h1 className="sr-only">
           Услуги по систематизации, оптимизации процессов и цифровым решениям
         </h1>
@@ -123,7 +123,7 @@ export default function ServicesPage() {
       </div>
 
       <LazySection rootMargin="200px">
-        <div className="max-w-7xl mx-auto space-y-12">
+        <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
           {servicesData.map((service, index) => (
             <div
               key={index}
@@ -139,7 +139,7 @@ export default function ServicesPage() {
               </div>
               {/* Правая колонка с контентом */}
               <div className="max-w-4xl">
-                <div className="h-32 flex flex-col justify-center">
+                <div className="flex flex-col justify-center md:h-32 md:justify-center md:mb-4">
                   <h2 className="text-3xl font-semibold font-unbounded-fix text-gray-900">
                     {service.title}
                   </h2>
@@ -148,7 +148,7 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                <div className="mt-0 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-6">
+                <div className="mt-4 md:mt-0 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-6">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">
                       Когда это нужно:

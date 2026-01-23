@@ -21,7 +21,7 @@ export default async function PortfolioSection() {
             Мои проекты
           </h2>
           <p className="text-[18px] text-[#666] max-w-[700px] mx-auto mb-[50px]">
-            Примеры проектов, которые я собрала с помощью AI.
+            Примеры проектов, которые я собрала с помощью AI
           </p>
           <PortfolioClient projects={allProjects} />
         </div>
