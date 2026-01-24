@@ -31,7 +31,7 @@ export default function YandexMetrika() {
         function () {
           (m[i].a = m[i].a || []).push(arguments);
         };
-      m[i].l = 1 * new Date();
+      (m[i] as any).l = 1 * new Date();
       for (var j = 0; j < document.scripts.length; j++) {
         if (document.scripts[j].src === r) {
           return;
