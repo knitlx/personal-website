@@ -35,7 +35,7 @@ const nextConfig = {
       "img-src 'self' data: https: blob: https://ui-avatars.com https://cdn-icons-png.flaticon.com https://mc.yandex.ru;",
       "font-src 'self' data: https://fonts.gstatic.com;",
       // Expanded connect-src for external APIs
-      "connect-src 'self' https://ui-avatars.com https://cdn-icons-png.flaticon.com https://www.google-analytics.com https://mc.yandex.ru;",
+      "connect-src 'self' https://ui-avatars.com https://cdn-icons-png.flaticon.com https://www.google-analytics.com https://mc.yandex.ru wss://mc.yandex.ru;",
       "frame-src 'none';",
       "object-src 'none';",
       "base-uri 'self';",

@@ -27,19 +27,19 @@ export default function GoogleAnalytics() {
     const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    script.onload = () => {
+      // Инициализируем gtag ПОСЛЕ загрузки скрипта
+      window.gtag("js", new Date());
+      window.gtag("config", gaId);
+
+      if (pathname && !pathname.startsWith("/admin")) {
+        window.gtag("event", "page_view", {
+          page_path: pathname,
+        });
+      }
+    };
     document.head.appendChild(script);
-
-    // Инициализируем gtag
-    window.gtag("js", new Date());
-    window.gtag("config", gaId);
-
-    // Отслеживаем просмотр страницы при инициализации
-    if (pathname && !pathname.startsWith("/admin")) {
-      window.gtag("event", "page_view", {
-        page_path: pathname,
-      });
-    }
-  }, [gaId]);
+  }, [gaId, pathname]);
 
   // Отслеживаем SPA-переходы
   useEffect(() => {
