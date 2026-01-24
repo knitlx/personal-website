@@ -60,6 +60,13 @@
   Стилизация body и .container
 */
 /* ПРИМЕНЯЕМ К ОСНОВЕ */
+html,
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100%;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -96,9 +103,11 @@ body {
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 1200px; /* Ограничиваем ширину контента */
   margin: 0 auto; /* Центрируем контейнер */
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @keyframes move-background {

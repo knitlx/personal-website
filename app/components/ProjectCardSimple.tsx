@@ -16,7 +16,7 @@ interface ProjectCardSimpleProps {
 
 function ProjectCardSimple({ project }: ProjectCardSimpleProps) {
   return (
-    <div className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full">
+    <div className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full w-full max-w-sm mx-auto">
       <div className="flex-grow">
         <Link href={project.link ?? `/projects/${project.slug}`}>
           {project.projectIcon && (

@@ -30,7 +30,7 @@ export default function PortfolioClient({ projects }: PortfolioClientProps) {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-4 lg:gap-8 max-w-5xl mx-auto px-4 sm:px-0">
         {visibleProjects.map((project) => (
           <ProjectCardSimple key={project.slug} project={project} />
         ))}

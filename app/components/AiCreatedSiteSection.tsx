@@ -18,7 +18,7 @@ function AiCreatedSiteSection() {
           {aiFeatures.map((feature) => (
             <div
               key={feature.title}
-              className={`${styles.aiFeatureItem} bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]`}
+              className={`${styles.aiFeatureItem} bg-white rounded-xl px-5 py-[30px] transition-all duration-300 ease-in-out text-center min-h-[200px] flex flex-col justify-between w-full sm:w-[calc(33.333%-16px)]`}
             >
               <Image
                 src={feature.icon}
