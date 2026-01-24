@@ -9,6 +9,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import ModalManager from "./components/ModalManager";
+import YandexMetrika from "./components/YandexMetrika";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 
 const fontInter = FontInter({
   subsets: ["latin"],
@@ -105,6 +107,8 @@ export default function RootLayout({
         className={`${fontInter.variable} ${fontUnbounded.variable} antialiased min-h-screen flex flex-col`}
       >
         <Providers>
+          <YandexMetrika />
+          <GoogleAnalytics />
           <ErrorBoundary>
             <div className="relative flex-grow">
               {/* <TracerCanvas /> */}
