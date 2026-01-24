@@ -43,7 +43,7 @@ export default function GoogleAnalytics() {
 
   // Отслеживаем SPA-переходы
   useEffect(() => {
-    if (typeof window !== "undefined" && pathname && !pathname.startsWith("/admin") && gaId) {
+    if (typeof window !== "undefined" && pathname && !pathname.startsWith("/admin") && gaId && window.gtag) {
       window.gtag("event", "page_view", {
         page_path: pathname,
       });
