@@ -25,7 +25,7 @@ export default function YandexMetrika() {
 
   useEffect(() => {
     // Загружаем код Яндекс Метрики
-    (function (m: any, e: any, t: any, r: any, i: any, k: any, a: any) {
+    (function (m: any, e: any, t: any, r: any, i: any) {
       m[i] =
         m[i] ||
         function () {
@@ -37,8 +37,8 @@ export default function YandexMetrika() {
           return;
         }
       }
-      k = e.createElement(t);
-      a = e.getElementsByTagName(t)[0];
+      const k: any = e.createElement(t);
+      const a: any = e.getElementsByTagName(t)[0];
       k.async = 1;
       k.src = r;
       a.parentNode!.insertBefore(k, a);
