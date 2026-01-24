@@ -9,7 +9,7 @@ export default function CtaSection() {
   return (
     <section className="py-8">
       <div className="container">
-        <div className="max-w-5xl mx-auto bg-transparent text-center backdrop-blur-sm border border-gray-200 shadow-[0_0_50px_rgba(123,104,238,0.1)] rounded-2xl p-8">
+        <div className="max-w-[910px] mx-auto bg-transparent text-center backdrop-blur-sm border border-gray-200 shadow-[0_0_50px_rgba(123,104,238,0.1)] rounded-2xl p-8">
           <h2 className="font-unbounded-fix text-[38px] font-medium text-[#333333] mb-[15px]">
             Есть задача или идея?
           </h2>

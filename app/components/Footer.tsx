@@ -10,9 +10,9 @@ const Footer = () => {
     <footer className="main-footer bg-[#1a1a2e] text-[#f0f0f0] pt-[15px] pb-[10px] text-[15px]">
       <div className="container px-4">
         <div className="footer-top relative flex flex-col sm:flex-row items-center justify-between pb-2 border-b border-b-[rgba(255,255,255,0.1)] gap-3">
-          <div className="footer-brand w-full sm:w-auto sm:max-w-[280px] text-center sm:text-left order-1">
+          <div className="footer-brand max-w-[280px] w-auto text-center sm:text-left order-1 mx-auto sm:mx-0">
             <p className="footer-tagline text-[#b0b0b0] text-sm sm:text-base">
-              AI-системы и автоматизация процессов
+              <span className="whitespace-nowrap">AI-системы и</span><br className="hidden sm:inline" /> <span className="whitespace-nowrap">автоматизация процессов</span>
             </p>
           </div>
 
