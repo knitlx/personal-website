@@ -21,7 +21,7 @@ export function getServerSideUrl() {
 export function formatDate(
   dateString: string,
   locale: string = "ru-RU",
-  options?: Intl.DateTimeFormatOptions,
+  options?: Intl.DateTimeFormatOptions
 ): string {
   try {
     const date = new Date(dateString);

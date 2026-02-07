@@ -16,19 +16,13 @@ export function useFormState<T extends object>({
   onSubmit,
 }: UseFormStateOptions<T>) {
   const [formData, setFormData] = useState<Partial<T>>(initialValues);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {},
-  );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [loading, setLoading] = useState(false);
   const [isSlugTouched, setIsSlugTouched] = useState(false);
 
   // Обработчик изменения поля
   const handleChange = useCallback(
-    (
-      e: React.ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >,
-    ) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -41,7 +35,7 @@ export function useFormState<T extends object>({
         });
       }
     },
-    [validationErrors],
+    [validationErrors]
   );
 
   // Обработчик изменения slug
@@ -50,7 +44,7 @@ export function useFormState<T extends object>({
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       generateSlug: (title: string) => string,
       baseUrl: string,
-      slugPrefix = "",
+      slugPrefix = ""
     ) => {
       const { name, value } = e.target;
 
@@ -72,7 +66,7 @@ export function useFormState<T extends object>({
         return newFormData;
       });
     },
-    [isSlugTouched],
+    [isSlugTouched]
   );
 
   // Валидация формы
@@ -105,7 +99,7 @@ export function useFormState<T extends object>({
         setLoading(false);
       }
     },
-    [formData, validateForm, onSubmit],
+    [formData, validateForm, onSubmit]
   );
 
   // Обновление нескольких полей одновременно
@@ -120,7 +114,7 @@ export function useFormState<T extends object>({
       setValidationErrors({});
       setIsSlugTouched(false);
     },
-    [initialValues],
+    [initialValues]
   );
 
   // Установка ошибки валидации

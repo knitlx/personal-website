@@ -10,6 +10,7 @@ import { projectSchema } from "@/lib/validations/project";
 import { deleteSchema } from "@/lib/validations/common";
 import { execa } from "execa";
 
+const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
 const contentDirectory = path.join(projectRoot, "content", "projects");
 
@@ -26,8 +27,7 @@ export async function POST(req: NextRequest) {
     // Convert localhost URLs to relative paths for production compatibility
     const processUrl = (url: string | undefined): string => {
       if (!url) return "";
-      const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
       return url.replace(siteUrl, "");
     };
 
@@ -49,13 +49,12 @@ export async function POST(req: NextRequest) {
           message: "Ошибки валидации",
           errors,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const validatedData = validationResult.data;
-    const { slug, introDescription, fullDescription, ...frontmatterData } =
-      validatedData;
+    const { slug, introDescription, fullDescription, ...frontmatterData } = validatedData;
 
     // FIXED: fullDescription as content, introDescription in frontmatter
     const fullMarkdown = matter.stringify(fullDescription || "", {
@@ -89,7 +88,7 @@ export async function POST(req: NextRequest) {
         {
           message: `Project saved, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -104,33 +103,42 @@ export async function POST(req: NextRequest) {
       const { stdout, stderr } = await execa(
         "node",
         [path.join(projectRoot, "scripts", "generate-content-cache.ts")],
-        { cwd: projectRoot },
+        { cwd: projectRoot }
       );
-      if (stdout) console.log("Cache generation stdout:", stdout);
-      if (stderr) console.error("Cache generation stderr:", stderr);
-      console.log("Content cache regenerated successfully.");
+      if (stdout && isDevelopment) {
+        console.log("Cache generation stdout:", stdout);
+      }
+      if (stderr && isDevelopment) {
+        console.error("Cache generation stderr:", stderr);
+      }
+      if (isDevelopment) {
+        console.log("Content cache regenerated successfully.");
+      }
     } catch (cacheError) {
-      console.error("Failed to regenerate content cache:", cacheError);
+      if (isDevelopment) {
+        console.error("Failed to regenerate content cache:", cacheError);
+      }
       return NextResponse.json(
         { message: "Project saved, but failed to regenerate content cache." },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
     return NextResponse.json(
       { message: "Project saved and committed successfully!", slug },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Error saving or committing project:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    if (isDevelopment) {
+      console.error("Error saving or committing project:", error);
+    }
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         message: "Failed to save project or commit to Git",
         error: errorMessage,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -159,7 +167,7 @@ export async function DELETE(req: NextRequest) {
           message: "Ошибки валидации",
           errors,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -170,10 +178,7 @@ export async function DELETE(req: NextRequest) {
     try {
       await fs.access(filePath);
     } catch {
-      return NextResponse.json(
-        { message: "Project not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ message: "Project not found" }, { status: 404 });
     }
 
     // Delete file from file system (async)
@@ -192,7 +197,7 @@ export async function DELETE(req: NextRequest) {
         {
           message: `Project deleted, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -203,18 +208,19 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Project deleted and committed successfully!" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting or committing project:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    if (isDevelopment) {
+      console.error("Error deleting or committing project:", error);
+    }
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         message: "Failed to delete project or commit to Git",
         error: errorMessage,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

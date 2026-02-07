@@ -7,9 +7,7 @@ interface SeoFieldsProps {
   seoDescription: string;
   seoTags: string;
   openGraphImage: string;
-  onFieldChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  onFieldChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onOpenGraphFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onOpenGraphUpload: () => void;
   onOpenGraphSelectFromGallery: () => void;

@@ -30,7 +30,7 @@ describe("BentoButton", () => {
     render(
       <BentoButton onClick={handleClick} disabled>
         Неактивная кнопка
-      </BentoButton>,
+      </BentoButton>
     );
 
     const buttonElement = screen.getByRole("button", {
@@ -49,7 +49,7 @@ describe("BentoButton", () => {
     render(
       <BentoButton variant="outline" size="small">
         Маленькая кнопка
-      </BentoButton>,
+      </BentoButton>
     );
 
     const buttonElement = screen.getByRole("button", {

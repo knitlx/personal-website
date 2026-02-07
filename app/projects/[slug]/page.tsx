@@ -9,9 +9,7 @@ interface ProjectDetailPageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: ProjectDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const projectFile = getMarkdownFile("projects", slug);
 
@@ -26,8 +24,7 @@ export async function generateMetadata({
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const canonicalUrl = project.canonicalUrl ?? `${baseUrl}/projects/${slug}`;
   const title = project.seoTitle ?? project.title;
-  const description =
-    project.seoDescription ?? project.shortDescriptionHomepage ?? "";
+  const description = project.seoDescription ?? project.shortDescriptionHomepage ?? "";
 
   return {
     title,
@@ -42,9 +39,7 @@ export async function generateMetadata({
       siteName: "Личный сайт",
       locale: "ru_RU",
       type: "website",
-      images: project.openGraphImage
-        ? [{ url: project.openGraphImage }]
-        : undefined,
+      images: project.openGraphImage ? [{ url: project.openGraphImage }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -111,9 +106,7 @@ const generateProjectSchema = (project: ContentItem, baseUrl: string) => {
   }
 };
 
-export default async function ProjectDetailPage({
-  params,
-}: ProjectDetailPageProps) {
+export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = await params;
 
   const projectFile = getMarkdownFile("projects", slug);
@@ -126,8 +119,7 @@ export default async function ProjectDetailPage({
   let project: ContentItem = {
     ...projectFile.data,
     introDescription: (projectFile.data.introDescription as string) ?? "",
-    fullDescription:
-      (projectFile.data.fullDescription as string) ?? projectFile.content ?? "", // Fix: Conditionally assign fullDescription
+    fullDescription: (projectFile.data.fullDescription as string) ?? projectFile.content ?? "", // Fix: Conditionally assign fullDescription
     slug: projectFile.slug,
   };
   // Ensure the projectIcon field matches the expected name in ProjectDetailClient

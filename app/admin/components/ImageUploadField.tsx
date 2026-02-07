@@ -71,9 +71,7 @@ export default function ImageUploadField({
             onClick={onUpload}
             disabled={isUploading || !hasFile}
             className={`inline-flex justify-start py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 ${
-              isUploading || !hasFile
-                ? "cursor-pointer"
-                : "disabled:cursor-not-allowed"
+              isUploading || !hasFile ? "cursor-pointer" : "disabled:cursor-not-allowed"
             }`}
           >
             {isUploading ? "Загрузка..." : "Загрузить"}
@@ -87,15 +85,11 @@ export default function ImageUploadField({
           Выбрать из галереи
         </button>
       </div>
-      {uploadError && (
-        <p className="text-red-500 text-sm mt-1">{uploadError}</p>
-      )}
+      {uploadError && <p className="text-red-500 text-sm mt-1">{uploadError}</p>}
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
       {previewUrl && (
         <div className="mt-2">
-          <p className="text-sm font-medium text-gray-700">
-            {previewLabel ?? "Предпросмотр:"}
-          </p>
+          <p className="text-sm font-medium text-gray-700">{previewLabel ?? "Предпросмотр:"}</p>
           <Image // Changed from img to Image
             src={previewUrl}
             alt="Preview"

@@ -1,6 +1,27 @@
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const validateEnvVars = () => {
+  const requiredVars = ["GITHUB_ID", "GITHUB_SECRET"];
+  const missingVars = requiredVars.filter((varName) => !process.env[varName]);
+
+  if (missingVars.length > 0) {
+    throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
+  }
+
+  if (!isDevelopment && (!process.env.NEXTAUTH_SECRET || process.env.NEXTAUTH_SECRET.length < 32)) {
+    throw new Error("NEXTAUTH_SECRET must be set and be at least 32 characters in production");
+  }
+
+  if (isDevelopment && !process.env.NEXTAUTH_SECRET && !process.env.NEXTAUTH_URL) {
+    console.warn("NEXTAUTH_SECRET not set. Using temporary secret for development only.");
+  }
+};
+
+validateEnvVars();
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
@@ -15,16 +36,17 @@ export const authOptions: NextAuthOptions = {
         .map((email) => email.trim().toLowerCase())
         .filter(Boolean);
 
-      if (
-        profile?.email &&
-        allowedGithubEmails.includes(profile.email.toLowerCase())
-      ) {
-        console.log(`Авторизация разрешена для GitHub email: ${profile.email}`);
+      if (profile?.email && allowedGithubEmails.includes(profile.email.toLowerCase())) {
+        if (isDevelopment) {
+          console.log(`Авторизация разрешена для GitHub email: ${profile.email}`);
+        }
         return true;
       } else {
-        console.warn(
-          `Авторизация отклонена для GitHub email: ${profile?.email}. Несанкционированная попытка входа.`,
-        );
+        if (isDevelopment) {
+          console.warn(
+            `Авторизация отклонена для GitHub email: ${profile?.email}. Несанкционированная попытка входа.`
+          );
+        }
         return false;
       }
     },

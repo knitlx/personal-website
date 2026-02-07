@@ -1,6 +1,29 @@
 import { execa } from "execa";
 import path from "path";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const validateGitEnvVars = () => {
+  if (isDevelopment && !process.env.GITHUB_PAT) {
+    console.warn("GITHUB_PAT not set. Git operations will fail in development.");
+    return false;
+  }
+
+  if (!isDevelopment && !process.env.GITHUB_PAT) {
+    throw new Error("GITHUB_PAT environment variable is required for git operations in production");
+  }
+
+  if (!isDevelopment && !process.env.GITHUB_USERNAME) {
+    throw new Error(
+      "GITHUB_USERNAME environment variable is required for git operations in production"
+    );
+  }
+
+  return true;
+};
+
+validateGitEnvVars();
+
 interface GitOptions {
   cwd?: string;
   filePath?: string;
@@ -43,8 +66,7 @@ function validateFilePath(filePath: string): boolean {
   // Pattern: content/blog/slug.md or content/projects/slug.md
   // Also allow: public/uploads/image.jpg, png, gif, webp, svg
   const contentPathPattern = /^content\/(blog|projects)\/[a-zA-Z0-9._/-]+\.md$/;
-  const uploadsPathPattern =
-    /^public\/uploads\/[a-zA-Z0-9._-]+\.(jpg|jpeg|png|gif|webp|svg)$/i;
+  const uploadsPathPattern = /^public\/uploads\/[a-zA-Z0-9._-]+\.(jpg|jpeg|png|gif|webp|svg)$/i;
   return contentPathPattern.test(filePath) || uploadsPathPattern.test(filePath);
 }
 
@@ -73,90 +95,77 @@ export async function commitAndPush({
     const gitUserName = process.env.GIT_USER_NAME ?? "Admin Panel";
     const gitUserEmail = process.env.GIT_USER_EMAIL ?? "admin@example.com";
     const githubPat = process.env.GITHUB_PAT;
+    const githubUsername = process.env.GITHUB_USERNAME; // You need to set this on your server
 
-    if (!githubPat) {
-      console.error(
-        "GITHUB_PAT environment variable is not set. Git push will not work.",
-      );
+    if (!githubPat || !githubUsername) {
+      const errorMessage =
+        "GITHUB_PAT or GITHUB_USERNAME environment variables are not set. Git push will not work.";
+      console.error(errorMessage);
       return {
         success: false,
-        error: "GITHUB_PAT is not set",
+        error: errorMessage,
       };
     }
 
-    const repoOwner =
-      process.env.VERCEL_GIT_REPO_OWNER ?? process.env.GITHUB_REPO_OWNER;
-    const repoSlug =
-      process.env.VERCEL_GIT_REPO_SLUG ?? process.env.GITHUB_REPO_SLUG;
+    const repoOwner = process.env.VERCEL_GIT_REPO_OWNER ?? process.env.GITHUB_REPO_OWNER;
+    const repoSlug = process.env.VERCEL_GIT_REPO_SLUG ?? process.env.GITHUB_REPO_SLUG;
 
-    if (!repoOwner || !repoSlug) {
-      console.error(
-        "Repository owner or slug environment variables are not set. Git push will not work.",
-      );
+    if (!isDevelopment && (!repoOwner || !repoSlug)) {
+      const errorMessage =
+        "Repository owner or slug environment variables are not set. Git push will not work.";
+      if (!isDevelopment) {
+        console.error(errorMessage);
+      }
       return {
         success: false,
-        error: "Repository owner/slug is not set",
+        error: errorMessage,
       };
     }
 
-    // Validate inputs to prevent command injection
+    // Validate inputs
     if (filePath && !validateFilePath(filePath)) {
-      return {
-        success: false,
-        error: "Invalid file path",
-      };
+      return { success: false, error: "Invalid file path" };
     }
-
     if (!validateCommitMessage(commitMessage)) {
-      return {
-        success: false,
-        error: "Invalid commit message",
-      };
+      return { success: false, error: "Invalid commit message" };
     }
 
-    // Configure Git user using array arguments (SAFE)
-    await execa("git", ["config", "user.name", gitUserName], { cwd });
-    await execa("git", ["config", "user.email", gitUserEmail], { cwd });
+    // Define environment for execa to disable interactive prompts and secure credentials
+    const gitEnv = {
+      GIT_TERMINAL_PROMPT: "0",
+      GIT_ASKPASS: "/bin/echo",
+      GIT_PASSWORD: githubPat,
+      GIT_USERNAME: githubUsername,
+    };
 
-    // Add or remove file using array arguments (SAFE - no shell injection)
-    if (operation === "add" && filePath) {
-      await execa("git", ["add", filePath], { cwd });
-    } else if (operation === "rm" && filePath) {
-      // Use -f to force remove even if file already deleted from filesystem
-      await execa("git", ["rm", "-f", filePath], { cwd });
-    }
-
-    // Commit with validated message using array arguments (SAFE)
-    await execa("git", ["commit", "-m", commitMessage], { cwd });
-
-    // Get current remote URL
-    const { stdout: currentUrl } = await execa(
-      "git",
-      ["remote", "get-url", "origin"],
-      { cwd },
-    );
-
-    // Create authenticated URL
-    const authenticatedUrl = `https://${githubPat}@github.com/${repoOwner}/${repoSlug}.git`;
-
-    // Temporarily set remote URL with credentials
-    await execa("git", ["remote", "set-url", "origin", authenticatedUrl], {
+    // Configure Git user
+    await execa("git", ["config", "user.name", gitUserName], {
       cwd,
+      env: gitEnv,
+    });
+    await execa("git", ["config", "user.email", gitUserEmail], {
+      cwd,
+      env: gitEnv,
     });
 
-    try {
-      // Push with authenticated URL
-      await execa("git", ["push", "origin", "main"], { cwd });
-    } finally {
-      // Restore original remote URL (security: remove credentials from git config)
-      await execa("git", ["remote", "set-url", "origin", currentUrl], { cwd });
+    // Add or remove file
+    if (operation === "add" && filePath) {
+      await execa("git", ["add", filePath], { cwd, env: gitEnv });
+    } else if (operation === "rm" && filePath) {
+      await execa("git", ["rm", "-f", filePath], { cwd, env: gitEnv });
     }
+
+    // Commit
+    await execa("git", ["commit", "-m", commitMessage], { cwd, env: gitEnv });
+
+    // Push using credential helper environment variables instead of URL-embedded token
+    const remoteUrl = `https://github.com/${repoOwner}/${repoSlug}.git`;
+    await execa("git", ["push", remoteUrl, "main"], { cwd, env: gitEnv });
 
     return { success: true };
   } catch (error) {
     console.error("Git operation failed:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return {
       success: false,
       error: errorMessage,

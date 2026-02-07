@@ -5,13 +5,7 @@ import Header from "./Header";
 // Mock the ContactModal to isolate the Header component's functionality
 jest.mock("./ContactModal", () => {
   // A simple mock that renders based on the isOpen prop
-  return function MockContactModal({
-    isOpen,
-    onClose,
-  }: {
-    isOpen: boolean;
-    onClose: () => void;
-  }) {
+  return function MockContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     if (!isOpen) return null;
     return (
       <div role="dialog" aria-modal="true">

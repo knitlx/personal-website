@@ -24,13 +24,10 @@ export default function InfiniteScrollProjects({
   initialProjects,
   totalProjects,
 }: InfiniteScrollProjectsProps) {
-  const [visibleProjects, setVisibleProjects] =
-    useState<Project[]>(initialProjects);
+  const [visibleProjects, setVisibleProjects] = useState<Project[]>(initialProjects);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(
-    initialProjects.length < totalProjects,
-  );
+  const [hasMore, setHasMore] = useState(initialProjects.length < totalProjects);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const [modalContext, setModalContext] = useState<{
     isOpen: boolean;
@@ -47,7 +44,7 @@ export default function InfiniteScrollProjects({
       setLoading(true);
       try {
         const response = await fetch(
-          `/api/content/projects?page=${pageNum}&limit=${PAGINATION.PROJECTS_GRID_PER_PAGE}`,
+          `/api/content/projects?page=${pageNum}&limit=${PAGINATION.PROJECTS_GRID_PER_PAGE}`
         );
         const data = await response.json();
 
@@ -64,7 +61,7 @@ export default function InfiniteScrollProjects({
         setLoading(false);
       }
     },
-    [loading, hasMore],
+    [loading, hasMore]
   );
 
   useEffect(() => {
@@ -79,7 +76,7 @@ export default function InfiniteScrollProjects({
       {
         rootMargin: INTERSECTION_OBSERVER.ROOT_MARGIN,
         threshold: INTERSECTION_OBSERVER.THRESHOLD,
-      },
+      }
     );
 
     const currentRef = loadMoreRef.current;
@@ -101,19 +98,14 @@ export default function InfiniteScrollProjects({
           <ProjectCard
             key={project.slug}
             project={project}
-            onOrderClick={(title) =>
-              setModalContext({ isOpen: true, projectTitle: title })
-            }
+            onOrderClick={(title) => setModalContext({ isOpen: true, projectTitle: title })}
           />
         ))}
       </div>
 
       {/* Триггер для подгрузки */}
       {hasMore && (
-        <div
-          ref={loadMoreRef}
-          className="w-full h-20 flex items-center justify-center"
-        >
+        <div ref={loadMoreRef} className="w-full h-20 flex items-center justify-center">
           {loading ? (
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />

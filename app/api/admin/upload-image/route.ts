@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import { commitAndPush } from "@/lib/git";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
 
+const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
 const uploadDirectory = path.join(projectRoot, "public", "uploads");
 
@@ -22,27 +23,18 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File;
 
     if (!file) {
-      return NextResponse.json(
-        { message: "No file uploaded." },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: "No file uploaded." }, { status: 400 });
     }
 
     // Basic file validation
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { message: "Unsupported file type." },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: "Unsupported file type." }, { status: 400 });
     }
 
     const maxSize = 10 * 1024 * 1024; // 10MB limit for original file
     if (file.size > maxSize) {
-      return NextResponse.json(
-        { message: "File size exceeds 10MB limit." },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: "File size exceeds 10MB limit." }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -57,15 +49,19 @@ export async function POST(req: NextRequest) {
     const filePath = path.join(uploadDirectory, newFilename);
     const publicPath = `/uploads/${newFilename}`; // Publicly accessible URL
 
+    // Ensure upload directory exists (fix race condition)
+    try {
+      await fs.mkdir(uploadDirectory, { recursive: true });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+        throw error;
+      }
+    }
+
     await sharp(buffer)
       .resize(1200, null, { withoutEnlargement: true }) // Resize width to 1200px max, no upscale
       .webp({ quality: 80 }) // Convert to webp with 80% quality
       .toFile(filePath);
-
-    // Ensure upload directory exists
-    if (!fs.existsSync(uploadDirectory)) {
-      fs.mkdirSync(uploadDirectory, { recursive: true });
-    }
 
     // --- Git Operations ---
     const relativeFilePath = path.relative(projectRoot, filePath);
@@ -80,7 +76,7 @@ export async function POST(req: NextRequest) {
         {
           message: `File uploaded, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -88,18 +84,19 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "File uploaded and committed successfully!", url: publicPath },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Error uploading or committing file:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    if (isDevelopment) {
+      console.error("Error uploading or committing file:", error);
+    }
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         message: "Failed to upload file or commit to Git",
         error: errorMessage,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

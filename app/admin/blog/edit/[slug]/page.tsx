@@ -32,9 +32,7 @@ export default async function BlogEditPage({ params }: BlogEditPageProps) {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">
-        {slug === "new"
-          ? "Создать новую статью"
-          : `Редактировать статью: ${blogPost?.data.title}`}
+        {slug === "new" ? "Создать новую статью" : `Редактировать статью: ${blogPost?.data.title}`}
       </h1>
       <BlogForm initialData={initialData} baseUrl={baseUrl} />
     </div>

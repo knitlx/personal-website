@@ -8,13 +8,10 @@ export default function NotFound() {
           404
         </h1>
 
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Страница не найдена
-        </h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Страница не найдена</h2>
 
         <p className="text-gray-600 mb-8 text-lg">
-          Извините, но страница, которую вы ищете, не существует или была
-          перемещена.
+          Извините, но страница, которую вы ищете, не существует или была перемещена.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -42,16 +39,10 @@ export default function NotFound() {
             >
               → Услуги
             </Link>
-            <Link
-              href="/blog"
-              className="text-[#7a68ee] hover:text-[#9137df] transition-colors"
-            >
+            <Link href="/blog" className="text-[#7a68ee] hover:text-[#9137df] transition-colors">
               → Блог
             </Link>
-            <Link
-              href="/about"
-              className="text-[#7a68ee] hover:text-[#9137df] transition-colors"
-            >
+            <Link href="/about" className="text-[#7a68ee] hover:text-[#9137df] transition-colors">
               → Обо мне
             </Link>
           </div>

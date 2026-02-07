@@ -14,10 +14,7 @@ export default function YandexMetrika() {
 
   return (
     <>
-      <Script
-        id="yandex-metrika"
-        strategy="afterInteractive"
-      >{`
+      <Script id="yandex-metrika" strategy="afterInteractive">{`
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();
         for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
@@ -34,7 +31,12 @@ export default function YandexMetrika() {
       `}</Script>
       <noscript>
         <div>
-          <img src={`https://mc.yandex.ru/watch/${metrikaId}`} style={{position:"absolute", left:"-9999px"}} alt="" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://mc.yandex.ru/watch/${metrikaId}`}
+            style={{ position: "absolute", left: "-9999px" }}
+            alt=""
+          />
         </div>
       </noscript>
     </>

@@ -5,10 +5,7 @@ export const projectSchema = z.object({
     .string()
     .min(1, "Slug обязателен")
     .max(200, "Slug слишком длинный")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Slug может содержать только строчные буквы, цифры и дефисы",
-    )
+    .regex(/^[a-z0-9-]+$/, "Slug может содержать только строчные буквы, цифры и дефисы")
     .trim(),
   title: z
     .string()
@@ -44,10 +41,7 @@ export const projectSchema = z.object({
   creationDate: z.string().optional(),
   updateDate: z.string().optional(),
   seoTitle: z.string().max(300, "SEO заголовок слишком длинный").optional(),
-  seoDescription: z
-    .string()
-    .max(500, "SEO описание слишком длинное")
-    .optional(),
+  seoDescription: z.string().max(500, "SEO описание слишком длинное").optional(),
   seoTags: z.string().max(500, "SEO теги слишком длинные").optional(),
   canonicalUrl: z.string().optional(),
   openGraphImage: z

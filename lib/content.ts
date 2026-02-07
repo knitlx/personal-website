@@ -88,9 +88,7 @@ function loadCache(): ContentCache {
   const cachePath = path.join(process.cwd(), "public", "content-cache.json");
 
   if (!fs.existsSync(cachePath)) {
-    console.warn(
-      "Content cache file not found. Generate it with: npm run cache:generate",
-    );
+    console.warn("Content cache file not found. Generate it with: npm run cache:generate");
     return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
   }
 
@@ -107,16 +105,12 @@ function loadCache(): ContentCache {
 // Get all unique tags from blog posts
 export function getAllTags(): string[] {
   const cache = loadCache();
-  const allTags = cache.blogs.flatMap(
-    (post) => (post.tags as string[]) ?? [],
-  );
+  const allTags = cache.blogs.flatMap((post) => (post.tags as string[]) ?? []);
   return [...new Set(allTags)];
 }
 
 // Get cached metadata for a collection
-export function getCachedMetadata(
-  collection: "blog" | "projects",
-): CacheItem[] {
+export function getCachedMetadata(collection: "blog" | "projects"): CacheItem[] {
   const cache = loadCache();
   return collection === "blog" ? cache.blogs : cache.projects;
 }
@@ -164,10 +158,7 @@ export interface GetAllContentResult {
   limit: number;
 }
 
-export function getAllContent(
-  collection: string,
-  options?: GetAllContentOptions,
-) {
+export function getAllContent(collection: string, options?: GetAllContentOptions) {
   // Get full items from cache (not just metadata)
   const cache = loadCache();
   const cachedItems = collection === "blog" ? cache.blogs : cache.projects;
@@ -181,15 +172,13 @@ export function getAllContent(
         item.title?.toLowerCase().includes(searchTerm) ??
         item.description?.toLowerCase().includes(searchTerm) ??
         item.shortDescription?.toLowerCase().includes(searchTerm) ??
-        false,
+        false
     );
   }
 
   // Filter by tag
   if (collection === "blog" && options?.tag) {
-    allContent = allContent.filter((item) =>
-      (item.tags as string[])?.includes(options.tag!),
-    );
+    allContent = allContent.filter((item) => (item.tags as string[])?.includes(options.tag!));
   }
 
   // Apply filtering (more generic, could be extended)
@@ -227,10 +216,7 @@ export function getAllContent(
 }
 
 // Get full content for a single item (includes body content)
-export function getFullContent(
-  collection: string,
-  slug: string,
-): ContentItem | null {
+export function getFullContent(collection: string, slug: string): ContentItem | null {
   const file = getMarkdownFile(collection, slug);
   if (!file) {
     return null;

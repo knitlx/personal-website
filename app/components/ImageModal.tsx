@@ -37,7 +37,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
         onClose();
       }
     },
-    [onClose],
+    [onClose]
   );
 
   return (

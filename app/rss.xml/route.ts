@@ -21,9 +21,7 @@ export async function GET() {
           : new Date(post.creationDate ?? "").toUTCString();
         const description =
           post.description ??
-          (post.articleBody
-            ? post.articleBody.substring(0, 200) + "..."
-            : undefined) ??
+          (post.articleBody ? post.articleBody.substring(0, 200) + "..." : undefined) ??
           "Нет описания"; // Use description or a snippet of articleBody
 
         return `

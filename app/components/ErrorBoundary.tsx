@@ -51,12 +51,9 @@ export class ErrorBoundary extends React.Component<Props, State> {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Что-то пошло не так
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Что-то пошло не так</h2>
             <p className="text-gray-600 mb-6">
-              При загрузке страницы произошла ошибка. Попробуйте обновить
-              страницу.
+              При загрузке страницы произошла ошибка. Попробуйте обновить страницу.
             </p>
             {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mb-6 text-left">

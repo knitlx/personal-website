@@ -50,7 +50,7 @@ export default function InfiniteScrollBlog({
       try {
         const tagQuery = activeTag ? `&tag=${activeTag}` : "";
         const response = await fetch(
-          `/api/content/blog?page=${pageNum}&limit=${PAGINATION.BLOG_POSTS_PER_PAGE}${tagQuery}`,
+          `/api/content/blog?page=${pageNum}&limit=${PAGINATION.BLOG_POSTS_PER_PAGE}${tagQuery}`
         );
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export default function InfiniteScrollBlog({
         setLoading(false);
       }
     },
-    [loading, hasMore, activeTag],
+    [loading, hasMore, activeTag]
   );
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function InfiniteScrollBlog({
       {
         rootMargin: INTERSECTION_OBSERVER.ROOT_MARGIN,
         threshold: INTERSECTION_OBSERVER.THRESHOLD,
-      },
+      }
     );
 
     const currentRef = loadMoreRef.current;
@@ -110,18 +110,11 @@ export default function InfiniteScrollBlog({
     <>
       {/* Tag Filter UI */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
-        <Link
-          href="/blog"
-          className={getTagClass(activeTag === undefined ? "Все" : "")}
-        >
+        <Link href="/blog" className={getTagClass(activeTag === undefined ? "Все" : "")}>
           Все
         </Link>
         {allTags.map((tag) => (
-          <Link
-            href={`/blog?tag=${tag}`}
-            key={tag}
-            className={getTagClass(tag)}
-          >
+          <Link href={`/blog?tag=${tag}`} key={tag} className={getTagClass(tag)}>
             {tag}
           </Link>
         ))}
@@ -136,10 +129,7 @@ export default function InfiniteScrollBlog({
       </div>
 
       {hasMore && (
-        <div
-          ref={loadMoreRef}
-          className="w-full h-20 flex items-center justify-center mt-8"
-        >
+        <div ref={loadMoreRef} className="w-full h-20 flex items-center justify-center mt-8">
           {loading ? (
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
@@ -153,9 +143,7 @@ export default function InfiniteScrollBlog({
 
       {!hasMore && visiblePosts.length === 0 && (
         <div className="text-center mt-12">
-          <p className="text-gray-500 text-lg">
-            Статей с тегом "{activeTag}" не найдено.
-          </p>
+          <p className="text-gray-500 text-lg">Статей с тегом "{activeTag}" не найдено.</p>
         </div>
       )}
     </>

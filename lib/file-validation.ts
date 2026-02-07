@@ -1,3 +1,5 @@
+import { FILE_SIZE_LIMITS } from "./constants";
+
 // Allowed file extensions for uploads
 export const ALLOWED_EXTENSIONS = [
   // Images
@@ -51,11 +53,8 @@ export const ALLOWED_DOCUMENT_EXTENSIONS = [
   ".rtf",
 ];
 
-// File size limits (in bytes)
-export const FILE_SIZE_LIMITS = {
-  MAX_IMAGE_SIZE: 5 * 1024 * 1024, // 5MB
-  MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
-};
+// Re-export FILE_SIZE_LIMITS for backward compatibility
+export { FILE_SIZE_LIMITS };
 
 /**
  * Check if file extension is allowed

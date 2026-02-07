@@ -28,12 +28,8 @@ function AiCreatedSiteSection() {
                 sizes="70px"
                 className="ai-feature-icon w-[70px] h-[70px] flex items-center justify-center mx-auto mb-[15px] relative"
               />
-              <h3 className="text-[18px] font-semibold text-[#333333] mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-[#888] leading-tight mt-auto">
-                {feature.desc}
-              </p>
+              <h3 className="text-[18px] font-semibold text-[#333333] mb-2">{feature.title}</h3>
+              <p className="text-sm text-[#888] leading-tight mt-auto">{feature.desc}</p>
             </div>
           ))}
         </div>

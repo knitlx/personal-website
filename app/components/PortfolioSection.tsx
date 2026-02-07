@@ -2,14 +2,11 @@ import { getAllContent } from "@/lib/content"; // Import getAllContent
 import PortfolioClient from "./PortfolioClient"; // Import the new Client Component
 
 export default async function PortfolioSection() {
-  const allProjects = (
-    await getAllContent("projects", { limit: 999 })
-  ).data.map((project) => ({
+  const allProjects = (await getAllContent("projects", { limit: 999 })).data.map((project) => ({
     slug: project.slug,
     title: project.title,
     projectIcon: project.projectIcon ?? project.icon, // Use projectIcon, fallback to icon for old data
-    shortDescriptionHomepage:
-      project.shortDescriptionHomepage ?? project.description, // Use shortDescriptionHomepage, fallback to description
+    shortDescriptionHomepage: project.shortDescriptionHomepage ?? project.description, // Use shortDescriptionHomepage, fallback to description
     link: `/projects/${project.slug}`, // Construct the link
   }));
 

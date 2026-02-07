@@ -21,19 +21,11 @@ const CloseIcon = () => (
     stroke="currentColor"
     className="w-6 h-6"
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M6 18 18 6M6 6l12 12"
-    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
   </svg>
 );
 
-const ContactModalImpl: React.FC<ContactModalProps> = ({
-  isOpen,
-  onClose,
-  projectTitle,
-}) => {
+const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projectTitle }) => {
   const [view, setView] = useState<"main" | "form" | "success">("main");
   const [formData, setFormData] = useState({
     name: "",
@@ -84,9 +76,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
     setStatusMessage("");
   };
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -95,13 +85,11 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       const fileName = selectedFile.name;
-      const fileExtension = fileName
-        .substring(fileName.lastIndexOf("."))
-        .toLowerCase();
+      const fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
 
       if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
         setFileError(
-          `Недопустимый тип файла: ${fileExtension}. Разрешены: ${ALLOWED_EXTENSIONS.join(", ")}`,
+          `Недопустимый тип файла: ${fileExtension}. Разрешены: ${ALLOWED_EXTENSIONS.join(", ")}`
         );
         setFile(null);
         e.target.value = ""; // Clear file input
@@ -227,11 +215,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
             >
               Написать боту-ассистенту
             </BentoButton> */}
-            <BentoButton
-              onClick={handleShowForm}
-              variant="outline"
-              className="w-full"
-            >
+            <BentoButton onClick={handleShowForm} variant="outline" className="w-full">
               Оставить заявку
             </BentoButton>
           </div>
@@ -244,21 +228,13 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
             </h2>
             {projectTitle && (
               <p className="text-center text-gray-600 mb-6">
-                Запрос по проекту:{" "}
-                <span className="font-semibold">{projectTitle}</span>
+                Запрос по проекту: <span className="font-semibold">{projectTitle}</span>
               </p>
             )}
             <form onSubmit={handleSubmit} aria-describedby="form-status">
-              <input
-                type="hidden"
-                name="projectTitle"
-                value={projectTitle ?? ""}
-              />
+              <input type="hidden" name="projectTitle" value={projectTitle ?? ""} />
               <div className="mb-4">
-                <label
-                  htmlFor="contact-name"
-                  className="block text-gray-700 font-semibold mb-2"
-                >
+                <label htmlFor="contact-name" className="block text-gray-700 font-semibold mb-2">
                   Ваше имя{" "}
                   <span className="text-red-500" aria-hidden="true">
                     *
@@ -277,10 +253,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="contact-info"
-                  className="block text-gray-700 font-semibold mb-2"
-                >
+                <label htmlFor="contact-info" className="block text-gray-700 font-semibold mb-2">
                   Telegram или WhatsApp{" "}
                   <span className="text-red-500" aria-hidden="true">
                     *
@@ -299,10 +272,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="contact-message"
-                  className="block text-gray-700 font-semibold mb-2"
-                >
+                <label htmlFor="contact-message" className="block text-gray-700 font-semibold mb-2">
                   Сообщение{" "}
                   <span className="text-red-500" aria-hidden="true">
                     *
@@ -342,11 +312,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({
                   aria-invalid={!!fileError}
                 />
                 {fileError && (
-                  <p
-                    id="file-error"
-                    className="text-red-500 text-xs mt-1"
-                    role="alert"
-                  >
+                  <p id="file-error" className="text-red-500 text-xs mt-1" role="alert">
                     {fileError}
                   </p>
                 )}

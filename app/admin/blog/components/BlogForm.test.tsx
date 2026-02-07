@@ -11,28 +11,20 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-jest.mock("../../components/SeoFields", () => () => (
-  <div data-testid="mock-seo-fields" />
-));
-jest.mock("../../../components/SeoPreview", () => () => (
-  <div data-testid="mock-seo-preview" />
-));
-jest.mock("@uiw/react-md-editor", () => () => (
-  <div data-testid="mock-md-editor" />
-));
+jest.mock("../../components/SeoFields", () => () => <div data-testid="mock-seo-fields" />);
+jest.mock("../../../components/SeoPreview", () => () => <div data-testid="mock-seo-preview" />);
+jest.mock("@uiw/react-md-editor", () => () => <div data-testid="mock-md-editor" />);
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({}),
-  }),
+  })
 ) as jest.Mock;
 
 describe("BlogForm", () => {
   const baseUrl = "http://localhost:3000";
-  const renderWithProviders = (
-    ui: React.ReactElement,
-  ): ReturnType<typeof render> => {
+  const renderWithProviders = (ui: React.ReactElement): ReturnType<typeof render> => {
     return render(<Providers>{ui}</Providers>);
   };
 
@@ -47,15 +39,11 @@ describe("BlogForm", () => {
       description: "Краткое описание статьи",
     };
 
-    renderWithProviders(
-      <BlogForm initialData={initialData} baseUrl={baseUrl} />,
-    );
+    renderWithProviders(<BlogForm initialData={initialData} baseUrl={baseUrl} />);
 
     expect(screen.getByLabelText("Заголовок")).toHaveValue(initialData.title);
     expect(screen.getByLabelText("ЧПУ (URL)")).toHaveValue(initialData.slug);
-    expect(screen.getByLabelText("Краткое описание")).toHaveValue(
-      initialData.description,
-    );
+    expect(screen.getByLabelText("Краткое описание")).toHaveValue(initialData.description);
   });
 
   it("should automatically generate a slug when typing a title", () => {

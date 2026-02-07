@@ -11,31 +11,21 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-jest.mock("../../components/ImageUploadField", () => () => (
-  <div data-testid="mock-image-upload" />
-));
-jest.mock("../../components/SeoFields", () => () => (
-  <div data-testid="mock-seo-fields" />
-));
-jest.mock("../../../components/SeoPreview", () => () => (
-  <div data-testid="mock-seo-preview" />
-));
-jest.mock("@uiw/react-md-editor", () => () => (
-  <div data-testid="mock-md-editor" />
-));
+jest.mock("../../components/ImageUploadField", () => () => <div data-testid="mock-image-upload" />);
+jest.mock("../../components/SeoFields", () => () => <div data-testid="mock-seo-fields" />);
+jest.mock("../../../components/SeoPreview", () => () => <div data-testid="mock-seo-preview" />);
+jest.mock("@uiw/react-md-editor", () => () => <div data-testid="mock-md-editor" />);
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({}),
-  }),
+  })
 ) as jest.Mock;
 
 describe("ProjectForm", () => {
   const baseUrl = "http://localhost:3000";
-  const renderWithProviders = (
-    ui: React.ReactElement,
-  ): ReturnType<typeof render> => {
+  const renderWithProviders = (ui: React.ReactElement): ReturnType<typeof render> => {
     return render(<Providers>{ui}</Providers>);
   };
 
@@ -52,15 +42,13 @@ describe("ProjectForm", () => {
       shortDescriptionHomepage: "Краткое описание",
     };
 
-    renderWithProviders(
-      <ProjectForm initialData={initialData} baseUrl={baseUrl} />,
-    );
+    renderWithProviders(<ProjectForm initialData={initialData} baseUrl={baseUrl} />);
 
     expect(screen.getByLabelText("Название")).toHaveValue(initialData.title);
     expect(screen.getByLabelText("ЧПУ (URL)")).toHaveValue(initialData.slug);
-    expect(
-      screen.getByLabelText("Краткое описание для главной страницы"),
-    ).toHaveValue(initialData.shortDescriptionHomepage);
+    expect(screen.getByLabelText("Краткое описание для главной страницы")).toHaveValue(
+      initialData.shortDescriptionHomepage
+    );
   });
 
   // Test 2: Automatically generates slug from title

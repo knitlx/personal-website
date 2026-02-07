@@ -16,9 +16,7 @@ export default function LoginPage() {
 
   if (status === "loading" || status === "authenticated") {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-600">
-        Загрузка...
-      </div>
+      <div className="flex items-center justify-center h-screen text-gray-600">Загрузка...</div>
     );
   }
 

@@ -19,10 +19,7 @@ interface ProjectCardProps {
 function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
   return (
     <div className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full">
-      <Link
-        href={`/projects/${project.slug}`}
-        className="flex items-center mb-4 group"
-      >
+      <Link href={`/projects/${project.slug}`} className="flex items-center mb-4 group">
         {project.projectIcon && (
           <Image // Changed from img to Image
             src={getImageUrl(project.projectIcon)}
@@ -36,12 +33,9 @@ function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
           {project.title ?? "Без названия"}
         </h2>
       </Link>
-      {(project.shortDescriptionProjectsPage ??
-        project.shortDescriptionHomepage) && (
+      {(project.shortDescriptionProjectsPage ?? project.shortDescriptionHomepage) && (
         <div className="text-gray-600 mb-6 flex-grow prose prose-sm max-w-none">
-          {project.shortDescriptionProjectsPage ??
-            project.shortDescriptionHomepage ??
-            ""}
+          {project.shortDescriptionProjectsPage ?? project.shortDescriptionHomepage ?? ""}
         </div>
       )}
       <div className="flex justify-start items-baseline mt-auto">

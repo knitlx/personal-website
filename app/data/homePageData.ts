@@ -15,7 +15,7 @@ export const aiFeatures = [
     icon: "/icons/code.png",
     alt: "Код и деплой",
     title: "Код и деплой",
-    desc: "Gemini CLI и GLM (Claude Code)",
+    desc: "Gemini CLI и GLM",
   },
 ];
 

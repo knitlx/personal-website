@@ -48,13 +48,11 @@ const servicesData = [
       "выстраиваю логику процессов",
       "подготавливаю основу для дальнейших автоматизаций",
     ],
-    result:
-      "Понятная и удобная структура, на которую можно опираться в работе и развитии.",
+    result: "Понятная и удобная структура, на которую можно опираться в работе и развитии.",
   },
   {
     title: "Мини-инструменты и прототипы",
-    description:
-      "Создаю небольшие инструменты под конкретные задачи — без лишней сложности.",
+    description: "Создаю небольшие инструменты под конкретные задачи — без лишней сложности.",
     when: [
       "нужен инструмент под одну конкретную задачу",
       "не хочется запускать большой проект",
@@ -65,13 +63,11 @@ const servicesData = [
       "создаю вспомогательные интерфейсы и утилиты",
       "адаптирую инструмент под реальный сценарий использования",
     ],
-    result:
-      "Рабочий инструмент, который решает конкретную задачу и не требует сложной поддержки.",
+    result: "Рабочий инструмент, который решает конкретную задачу и не требует сложной поддержки.",
   },
   {
     title: "Разобраться и навести порядок",
-    description:
-      "Подходит, если задача пока не сформулирована или всё выглядит слишком хаотично.",
+    description: "Подходит, если задача пока не сформулирована или всё выглядит слишком хаотично.",
     when: [
       "непонятно, с чего начать",
       "процессов много, но они не описаны",
@@ -88,7 +84,8 @@ const servicesData = [
   },
   {
     title: "Парт-тайм и сопровождение",
-    description: "Подключаюсь к проектам на постоянной основе и сопровождаю процессы и автоматизации.",
+    description:
+      "Подключаюсь к проектам на постоянной основе и сопровождаю процессы и автоматизации.",
     when: [
       "нужна регулярная работа с автоматизациями",
       "требуется поддержка и развитие процессов",
@@ -115,10 +112,9 @@ export default function ServicesPage() {
           Как я могу быть полезна
         </h2>
         <p className="mt-4 text-xl text-gray-600">
-          Я подключаюсь к задачам, где нужно навести цифровой порядок,
-          автоматизировать процессы или разобраться в хаосе. Можно прийти с
-          конкретным запросом или просто описать ситуацию — я помогу разложить
-          её и собрать рабочее решение.
+          Я подключаюсь к задачам, где нужно навести цифровой порядок, автоматизировать процессы или
+          разобраться в хаосе. Можно прийти с конкретным запросом или просто описать ситуацию — я
+          помогу разложить её и собрать рабочее решение.
         </p>
       </div>
 
@@ -143,16 +139,12 @@ export default function ServicesPage() {
                   <h2 className="text-3xl font-semibold font-unbounded-fix text-gray-900">
                     {service.title}
                   </h2>
-                  <p className="mt-2 text-lg text-gray-700 italic">
-                    {service.description}
-                  </p>
+                  <p className="mt-2 text-lg text-gray-700 italic">{service.description}</p>
                 </div>
 
                 <div className="mt-4 md:mt-0 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-6">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      Когда это нужно:
-                    </h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Когда это нужно:</h3>
                     <ul className="custom-list space-y-1 text-gray-600">
                       {service.when.map((item, i) => (
                         <li key={i}>{item}</li>
@@ -160,9 +152,7 @@ export default function ServicesPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      Что я делаю:
-                    </h3>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Что я делаю:</h3>
                     <ul className="custom-list space-y-1 text-gray-600">
                       {service.what.map((item, i) => (
                         <li key={i}>{item}</li>
@@ -173,9 +163,7 @@ export default function ServicesPage() {
 
                 <div className="h-[3px] w-full bg-[linear-gradient(to_right,#9137DF_0%,#7A68EE_100%)] my-5" />
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    Результат:
-                  </h3>
+                  <h3 className="text-xl font-semibold text-gray-800">Результат:</h3>
                   <p className="mt-2 text-gray-700">{service.result}</p>
                 </div>
               </div>

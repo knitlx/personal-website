@@ -12,9 +12,7 @@ export async function GET(request: NextRequest) {
 
     // Filter by tag if provided
     if (tag) {
-      allPosts = allPosts.filter((post) =>
-        (post.tags as string[])?.includes(tag),
-      );
+      allPosts = allPosts.filter((post) => (post.tags as string[])?.includes(tag));
     }
 
     const totalItems = allPosts.length;
@@ -36,9 +34,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching blog posts:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch blog posts" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to fetch blog posts" }, { status: 500 });
   }
 }

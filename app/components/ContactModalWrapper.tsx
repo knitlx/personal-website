@@ -8,9 +8,7 @@ interface ContactModalWrapperProps {
   button: React.ReactNode;
 }
 
-export default function ContactModalWrapper({
-  button,
-}: ContactModalWrapperProps) {
+export default function ContactModalWrapper({ button }: ContactModalWrapperProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Clone the button element and add onClick handler
@@ -18,16 +16,13 @@ export default function ContactModalWrapper({
     button as React.ReactElement,
     {
       onClick: () => setIsModalOpen(true),
-    } as React.HTMLAttributes<HTMLElement>,
+    } as React.HTMLAttributes<HTMLElement>
   );
 
   return (
     <>
       {buttonWithOnClick}
-      <ContactModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

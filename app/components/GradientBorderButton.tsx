@@ -12,12 +12,8 @@ type Props = {
   variant?: "gradient" | "border";
   externalHoveredState?: boolean; // New prop for external hover control
   size?: "xsmall" | "small" | "default"; // New prop for button size
-  onMouseEnter?: (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-  ) => void;
-  onMouseLeave?: (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-  ) => void;
+  onMouseEnter?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  onMouseLeave?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
 } & ({ href: string; onClick?: never } | { href?: never; onClick: () => void });
 
 const GradientBorderButton = ({
@@ -36,9 +32,7 @@ const GradientBorderButton = ({
   // Determine the effective hovered state
   // If externalHoveredState is explicitly true or false, use it. Otherwise, use internalHovered.
   const isHovered =
-    typeof externalHoveredState === "boolean"
-      ? externalHoveredState
-      : internalHovered;
+    typeof externalHoveredState === "boolean" ? externalHoveredState : internalHovered;
 
   // Common base classes for the wrapper
   const baseOuterClasses =
@@ -48,8 +42,7 @@ const GradientBorderButton = ({
     : "";
 
   // Classes for the 'border' variant (outer wrapper acts as border)
-  const borderBgClasses =
-    "bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)]"; // For the frame
+  const borderBgClasses = "bg-[linear-gradient(135deg,#AB5EED_50%,#7A68EE_80%)]"; // For the frame
   // Classes for the 'gradient' variant (solid gradient button) - now uses the predefined class
   const gradientBgClasses = "button-gradient"; // Using predefined class for better consistency and JIT handling
 
@@ -101,20 +94,14 @@ const GradientBorderButton = ({
       children
     );
 
-  const buttonContent = (
-    <span className={finalInnerSpanClasses}>{content}</span>
-  );
+  const buttonContent = <span className={finalInnerSpanClasses}>{content}</span>;
 
-  const handleMouseEnter = (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-  ) => {
+  const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     setInternalHovered(true);
     if (onMouseEnter) onMouseEnter(e);
   };
 
-  const handleMouseLeave = (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-  ) => {
+  const handleMouseLeave = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     setInternalHovered(false);
     if (onMouseLeave) onMouseLeave(e);
   };

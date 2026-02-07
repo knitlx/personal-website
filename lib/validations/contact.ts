@@ -14,8 +14,7 @@ export const contactFormSchema = z.object({
     .refine((val) => {
       // Проверка на telegram username или номер телефона
       const telegramRegex = /^@?[a-zA-Z0-9_]{5,32}$/;
-      const phoneRegex =
-        /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
+      const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
       return telegramRegex.test(val) || phoneRegex.test(val);
     }, "Укажите корректный Telegram (@username) или номер телефона (+79991234567)"),
   message: z

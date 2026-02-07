@@ -8,19 +8,10 @@ interface StickyCtaButtonProps {
   text: string;
 }
 
-const StickyCtaButton: React.FC<StickyCtaButtonProps> = ({
-  href,
-  onClick,
-  text,
-}) => {
+const StickyCtaButton: React.FC<StickyCtaButtonProps> = ({ href, onClick, text }) => {
   return (
     <div className="">
-      <BentoButton
-        variant="primary"
-        size="default"
-        onClick={onClick}
-        href={href}
-      >
+      <BentoButton variant="primary" size="default" onClick={onClick} href={href}>
         {text}
       </BentoButton>
     </div>

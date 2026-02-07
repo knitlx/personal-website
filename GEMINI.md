@@ -1,48 +1,48 @@
-### **Project: Personal Website**
+### **Проект: Персональный сайт**
 
-A personal website built with Next.js.
-
----
-
-### **Tech Stack**
-
-- **Framework:** Next.js (App Router)
-- **Language:** TypeScript
-- **UI Library:** React
-- **Styling:** Tailwind CSS
-- **Linting:** ESLint
+Это персональный сайт, созданный на Next.js.
 
 ---
 
-### **Key Files & Folders**
+### **Технологический стек**
 
-- `app/page.tsx`: The main entry point for the homepage.
-- `public/`: Static assets (images, fonts, etc.).
-- `next.config.ts`: Next.js configuration.
-- `package.json`: Project dependencies and scripts.
-
----
-
-### **Common Commands**
-
-- **Run development server:** `npm run dev`
-- **Build for production:** `npm run build`
-- **Start production server:** `npm run start`
-- **Lint the code:** `npm run lint`
+- **Фреймворк:** Next.js (App Router)
+- **Язык:** TypeScript
+- **UI-библиотека:** React
+- **Стилизация:** Tailwind CSS
+- **Линтинг:** ESLint
+- **Тестирование:** Jest
 
 ---
 
-### **Architecture & Styling Philosophy (Post-Refactor)**
+### **Ключевые файлы и папки**
 
-This is a Next.js (App Router) project styled with Tailwind CSS. The main page (`app/page.tsx`) has been refactored for clarity and maintainability.
+- `app/page.tsx`: Основная точка входа для главной страницы.
+- `app/components/`: Содержит переиспользуемые React-компоненты.
+- `app/layout.tsx`: Корневой макет приложения.
+- `content/blog/`: Markdown-файлы для постов в блоге.
+- `content/projects/`: Markdown-файлы для проектов.
+- `public/`: Статические ассеты (изображения, шрифты и т.д.).
+- `next.config.mjs`: Конфигурация Next.js.
+- `package.json`: Зависимости проекта и скрипты.
+- `tailwind.config.mjs`: Конфигурация Tailwind CSS.
 
-- **Component-Based Structure:** `app/page.tsx` is broken down into smaller, self-contained section components located in `app/components/` (e.g., `HeroSection.tsx`, `PortfolioPreviewSection.tsx`).
-- **Styling Strategy:**
-  - To avoid server restart/caching issues, complex and repeated styles (gradients, custom shadows) are **not** defined in `tailwind.config.ts`.
-  - Instead, they are defined as utility classes in `app/globals.css` using `@apply` (e.g., `.gradient-hero-ai`, `.shadow-button-cta`).
-  - JSX/TSX files use these stable utility classes, not arbitrary `[...]` values.
-- **Key Reusable Component:** `app/components/GradientBorderButton.tsx` is a crucial component for handling buttons with a gradient border and hover effects.
-- **Key Files (Post-Refactor):**
-  - `app/page.tsx`: Entry point, composes the page from section components.
-  - `app/components/`: Contains all section and reusable components.
-  - `app/globals.css`: Defines global styles and custom `@apply` utilities.
+---
+
+### **Основные команды**
+
+- **Запуск сервера для разработки:** `npm run dev`
+- **Сборка для продакшена:** `npm run build`
+- **Запуск продакшен-сервера:** `npm run start`
+- **Проверка кода линтером:** `npm run lint`
+- **Запуск тестов:** `npm run test`
+
+---
+
+### **Архитектура и стилизация**
+
+Проект использует Next.js с App Router. Основная страница (`app/page.tsx`) собирается из более мелких, самодостаточных секционных компонентов, расположенных в `app/components/` (например, `HeroSection.tsx`, `PortfolioSection.tsx`).
+
+Для оптимизации производительности используется компонент `LazySection`, который откладывает загрузку секций до тех пор, пока они не появятся в области видимости пользователя.
+
+Стилизация реализована с помощью Tailwind CSS. Глобальные стили и кастомные утилиты определены в `app/globals.css`.

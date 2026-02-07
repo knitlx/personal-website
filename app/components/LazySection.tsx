@@ -32,7 +32,7 @@ export default function LazySection({
       {
         rootMargin,
         threshold,
-      },
+      }
     );
 
     const currentRef = ref.current;

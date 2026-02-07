@@ -29,14 +29,11 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     data: undefined,
   });
 
-  const openModal = useCallback(
-    (type: ModalType, data?: ModalState["data"]) => {
-      setModalState({ type, data });
-      // Блокируем скролл при открытии модалки
-      document.body.style.overflow = "hidden";
-    },
-    [],
-  );
+  const openModal = useCallback((type: ModalType, data?: ModalState["data"]) => {
+    setModalState({ type, data });
+    // Блокируем скролл при открытии модалки
+    document.body.style.overflow = "hidden";
+  }, []);
 
   const closeModal = useCallback(() => {
     setModalState({ type: null, data: undefined });
@@ -52,9 +49,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     closeModal,
   };
 
-  return (
-    <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
-  );
+  return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
 }
 
 export function useModal() {
@@ -73,7 +68,7 @@ export function useContactModal() {
     (projectTitle?: string) => {
       openModal("contact", { projectTitle: projectTitle ?? null });
     },
-    [openModal],
+    [openModal]
   );
 
   return {
@@ -90,7 +85,7 @@ export function useImageModal() {
     (imageUrl: string) => {
       openModal("image", { imageUrl });
     },
-    [openModal],
+    [openModal]
   );
 
   return {
@@ -106,7 +101,7 @@ export function useGalleryModal() {
     (onImageSelect: (url: string) => void) => {
       openModal("gallery", { onImageSelect });
     },
-    [openModal],
+    [openModal]
   );
 
   return {

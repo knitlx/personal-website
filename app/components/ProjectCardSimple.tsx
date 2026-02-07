@@ -40,10 +40,7 @@ function ProjectCardSimple({ project }: ProjectCardSimpleProps) {
         )}
       </div>
       <div className="flex justify-start items-baseline mt-auto">
-        <Link
-          href={project.link ?? `/projects/${project.slug}`}
-          className="gradient-link"
-        >
+        <Link href={project.link ?? `/projects/${project.slug}`} className="gradient-link">
           Подробнее
         </Link>
       </div>

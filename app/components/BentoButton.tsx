@@ -40,9 +40,7 @@ export default function BentoButton({
     custom: "", // Allows for fully custom styling via className
   };
 
-  const className = `${baseClass} ${sizes[size]} ${
-    variants[variant]
-  } ${extraClassName ?? ""}`;
+  const className = `${baseClass} ${sizes[size]} ${variants[variant]} ${extraClassName ?? ""}`;
 
   if (onClick) {
     return (

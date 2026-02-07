@@ -25,9 +25,7 @@ interface ProjectDetailClientProps {
   };
 }
 
-export default function ProjectDetailClient({
-  project,
-}: ProjectDetailClientProps) {
+export default function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
   const [contactModal, setContactModal] = useState<{
     isOpen: boolean;
@@ -55,9 +53,7 @@ export default function ProjectDetailClient({
                 className="rounded-xl mr-6"
               />
             )}
-            <h1 className="text-5xl font-bold font-unbounded-fix">
-              {project.title}
-            </h1>
+            <h1 className="text-5xl font-bold font-unbounded-fix">{project.title}</h1>
           </div>
           <div className="prose lg:prose-xl max-w-4xl">
             {/* Render the intro description using ReactMarkdown */}
@@ -65,9 +61,7 @@ export default function ProjectDetailClient({
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
               components={{
-                img: ({ ...props }) => (
-                  <MarkdownImage {...props} onImageClick={setModalImageUrl} />
-                ),
+                img: ({ ...props }) => <MarkdownImage {...props} onImageClick={setModalImageUrl} />,
               }}
             >
               {project.introDescription ?? ""}
@@ -96,9 +90,7 @@ export default function ProjectDetailClient({
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
               components={{
-                img: ({ ...props }) => (
-                  <MarkdownImage {...props} onImageClick={setModalImageUrl} />
-                ),
+                img: ({ ...props }) => <MarkdownImage {...props} onImageClick={setModalImageUrl} />,
               }}
             >
               {project.fullDescription ?? ""}
@@ -108,11 +100,7 @@ export default function ProjectDetailClient({
           {/* --- Button at the end of the content --- */}
           <div className="mt-12 flex justify-start">
             {project.trylink ? (
-              <BentoButton
-                href={project.trylink}
-                variant="primary"
-                size="default"
-              >
+              <BentoButton href={project.trylink} variant="primary" size="default">
                 Попробовать
               </BentoButton>
             ) : (
@@ -132,9 +120,7 @@ export default function ProjectDetailClient({
           </div>
         </div>
 
-        {modalImageUrl && (
-          <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />
-        )}
+        {modalImageUrl && <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />}
       </main>
       <ContactModal
         isOpen={contactModal.isOpen}

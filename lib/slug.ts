@@ -73,9 +73,7 @@ export function generateSlug(title: string): string {
 
   // Transliterate Cyrillic first (before lowercase)
   processedTitle = Array.from(processedTitle)
-    .map((char) =>
-      char in cyrillicToLatinMap ? cyrillicToLatinMap[char] : char,
-    )
+    .map((char) => (char in cyrillicToLatinMap ? cyrillicToLatinMap[char] : char))
     .join("");
 
   // Convert to lowercase

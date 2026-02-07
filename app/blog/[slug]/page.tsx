@@ -13,9 +13,7 @@ interface PostPageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: PostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const postFile = getMarkdownFile("blog", slug);
 

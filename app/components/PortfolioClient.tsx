@@ -18,9 +18,7 @@ interface PortfolioClientProps {
 }
 
 export default function PortfolioClient({ projects }: PortfolioClientProps) {
-  const [visibleCount, setVisibleCount] = useState<number>(
-    PAGINATION.PROJECTS_PER_PAGE,
-  );
+  const [visibleCount, setVisibleCount] = useState<number>(PAGINATION.PROJECTS_PER_PAGE);
 
   const handleLoadMore = () => {
     setVisibleCount((prevCount) => prevCount + PAGINATION.PROJECTS_PER_PAGE);

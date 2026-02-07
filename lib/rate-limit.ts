@@ -1,5 +1,12 @@
 // Simple in-memory rate limiter for development
-// For production, consider using Redis or Upstash Redis
+// WARNING: This will NOT work correctly in serverless environments (Vercel, AWS Lambda, etc.)
+// because the Map is recreated on each invocation.
+// For production/serverless, use Redis, Upstash Ratelimit, or Vercel KV:
+//
+// Example with Upstash:
+// import { Ratelimit } from "@upstash/ratelimit";
+// import { Redis } from "@upstash/redis";
+// const ratelimit = new Ratelimit({ redis: Redis.fromEnv(), limiter: Ratelimit.slidingWindow(3, "10m") });
 
 interface RateLimitStore {
   count: number;
@@ -15,7 +22,7 @@ export interface RateLimitOptions {
 
 export function rateLimit(
   identifier: string,
-  options: RateLimitOptions,
+  options: RateLimitOptions
 ): { success: boolean; resetTime?: number } {
   const now = Date.now();
   const record = store.get(identifier);

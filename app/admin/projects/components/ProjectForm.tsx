@@ -48,10 +48,7 @@ interface ValidationError {
   message: string;
 }
 
-export default function ProjectForm({
-  initialData,
-  baseUrl,
-}: ProjectFormProps) {
+export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) {
   const router = useRouter();
   const fileInputIntroRef = useRef<HTMLInputElement>(null);
   const fileInputFullRef = useRef<HTMLInputElement>(null);
@@ -72,8 +69,7 @@ export default function ProjectForm({
       slug: initialData?.slug ?? "",
       title: initialData?.title ?? "",
       shortDescriptionHomepage: initialData?.shortDescriptionHomepage ?? "",
-      shortDescriptionProjectsPage:
-        initialData?.shortDescriptionProjectsPage ?? "",
+      shortDescriptionProjectsPage: initialData?.shortDescriptionProjectsPage ?? "",
       projectIcon: initialData?.projectIcon ?? "",
       trylink: initialData?.trylink ?? "",
       introDescription: initialData?.introDescription ?? "",
@@ -99,10 +95,7 @@ export default function ProjectForm({
       if (!data.fullDescription.trim()) {
         errors.fullDescription = "Полное описание обязательно.";
       }
-      if (
-        data.shortDescriptionHomepage.length > 0 &&
-        data.shortDescriptionHomepage.length < 10
-      ) {
+      if (data.shortDescriptionHomepage.length > 0 && data.shortDescriptionHomepage.length < 10) {
         errors.shortDescriptionHomepage =
           "Краткое описание для главной страницы должно быть не менее 10 символов.";
       }
@@ -125,11 +118,7 @@ export default function ProjectForm({
         }
       };
 
-      if (
-        data.projectIcon &&
-        !data.projectIcon.startsWith("/") &&
-        !isValidUrl(data.projectIcon)
-      ) {
+      if (data.projectIcon && !data.projectIcon.startsWith("/") && !isValidUrl(data.projectIcon)) {
         errors.projectIcon =
           "Неверный формат URL для иконки проекта. Используйте полный URL (http/https) или относительный путь (начинающийся с /).";
       }
@@ -217,65 +206,56 @@ export default function ProjectForm({
   }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
 
   // Обработчик загрузки изображения из MDEditor
-  const handleMDEditorImageUpload = useCallback(
-    async (file: File): Promise<string> => {
-      const formDataToUpload = new FormData();
-      formDataToUpload.append("file", file);
+  const handleMDEditorImageUpload = useCallback(async (file: File): Promise<string> => {
+    const formDataToUpload = new FormData();
+    formDataToUpload.append("file", file);
 
-      try {
-        const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
-          method: "POST",
-          body: formDataToUpload,
-        });
+    try {
+      const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
+        method: "POST",
+        body: formDataToUpload,
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message ?? "Ошибка загрузки файла.");
-        }
-
-        const result = await response.json();
-        return result.url;
-      } catch (err) {
-        const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-        toast.error(`Ошибка загрузки изображения: ${error}`);
-        throw err;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message ?? "Ошибка загрузки файла.");
       }
-    },
-    [],
-  );
+
+      const result = await response.json();
+      return result.url;
+    } catch (err) {
+      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
+      toast.error(`Ошибка загрузки изображения: ${error}`);
+      throw err;
+    }
+  }, []);
 
   // Handler for rich text editor changes
   const handleRichTextChange = useCallback(
-    (
-      field: "introDescription" | "fullDescription",
-      value: string | undefined,
-    ) => {
+    (field: "introDescription" | "fullDescription", value: string | undefined) => {
       setFormData((prev) => ({ ...prev, [field]: value ?? "" }));
     },
-    [setFormData],
+    [setFormData]
   );
 
   const handleImageSelected = useCallback(
     async (
       event: React.ChangeEvent<HTMLInputElement>,
-      field: "introDescription" | "fullDescription",
+      field: "introDescription" | "fullDescription"
     ) => {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
         try {
           const imageUrl = await handleMDEditorImageUpload(file);
           const currentContent = formData[field] ?? "";
-          handleRichTextChange(
-            field,
-            `${currentContent}\n![image](${imageUrl})\n`,
-          );
+          handleRichTextChange(field, `${currentContent}\n![image](${imageUrl})\n`);
           event.target.value = "";
         } catch {
           // Ошибка уже обработана
         }
       }
     },
-    [handleMDEditorImageUpload, formData, handleRichTextChange],
+    [handleMDEditorImageUpload, formData, handleRichTextChange]
   );
 
   // Обертка для handleSubmit с вызовом handleFormSubmit
@@ -284,16 +264,12 @@ export default function ProjectForm({
       e.preventDefault();
       await handleFormSubmit(e);
     },
-    [handleFormSubmit],
+    [handleFormSubmit]
   );
 
   // Единый обработчик изменений в форме
   const handleFormChange = useCallback(
-    (
-      e: React.ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >,
-    ) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       handleChange(e); // Обновляем состояние поля
       const { name } = e.target;
       if (name === "title" || name === "slug") {
@@ -301,16 +277,15 @@ export default function ProjectForm({
           e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
           generateSlug,
           baseUrl,
-          "projects/",
+          "projects/"
         );
       }
     },
-    [handleChange, handleSlugChange, baseUrl],
+    [handleChange, handleSlugChange, baseUrl]
   );
 
   const projectIconPreviewUrl = previewUrls.projectIcon ?? formData.projectIcon;
-  const openGraphImagePreviewUrl =
-    previewUrls.openGraphImage ?? formData.openGraphImage;
+  const openGraphImagePreviewUrl = previewUrls.openGraphImage ?? formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -345,10 +320,7 @@ export default function ProjectForm({
 
       {/* SchemaType Dropdown */}
       <div className="flex flex-col space-y-1">
-        <label
-          htmlFor="schemaType"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="schemaType" className="block text-sm font-medium text-gray-700">
           Тип схемы (Schema.org)
         </label>
         <select
@@ -363,9 +335,7 @@ export default function ProjectForm({
           <option value="Service">Service</option>
           <option value="CreativeWork">Creative Work (Общее)</option>
         </select>
-        <p className="text-xs text-gray-500">
-          Выберите тип разметки для поисковых систем.
-        </p>
+        <p className="text-xs text-gray-500">Выберите тип разметки для поисковых систем.</p>
       </div>
 
       <FormInput
@@ -427,10 +397,7 @@ export default function ProjectForm({
 
       {/* Rich Text Editor for Intro Description */}
       <div data-color-mode="light">
-        <label
-          htmlFor="introDescription"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
+        <label htmlFor="introDescription" className="block text-sm font-medium text-gray-700 mb-1">
           Вводный абзац для подробной страницы проекта (Markdown)
         </label>
         <MDEditor
@@ -439,9 +406,7 @@ export default function ProjectForm({
           height={MD_EDITOR_HEIGHT.INTRO}
         />
         {validationErrors.introDescription && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.introDescription}
-          </p>
+          <p className="text-red-500 text-sm mt-1">{validationErrors.introDescription}</p>
         )}
         <input
           type="file"
@@ -473,9 +438,7 @@ export default function ProjectForm({
           height={MD_EDITOR_HEIGHT.FULL}
         />
         {validationErrors.fullDescription && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.fullDescription}
-          </p>
+          <p className="text-red-500 text-sm mt-1">{validationErrors.fullDescription}</p>
         )}
         <input
           type="file"

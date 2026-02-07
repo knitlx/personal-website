@@ -22,29 +22,20 @@ export async function GET() {
       return NextResponse.json({ images: [] });
     }
     console.error("Ошибка при чтении папки uploads:", error);
-    return NextResponse.json(
-      { message: "Ошибка при получении изображений" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Ошибка при получении изображений" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return NextResponse.json(
-      { message: "Неавторизованный доступ" },
-      { status: 401 },
-    );
+    return NextResponse.json({ message: "Неавторизованный доступ" }, { status: 401 });
   }
 
   const { filename } = await request.json();
 
   if (!filename) {
-    return NextResponse.json(
-      { message: "Имя файла не указано" },
-      { status: 400 },
-    );
+    return NextResponse.json({ message: "Имя файла не указано" }, { status: 400 });
   }
 
   const uploadsDirectory = path.join(projectRoot, "public", "uploads"); // Use projectRoot
@@ -52,10 +43,7 @@ export async function DELETE(request: Request) {
 
   // Проверка на безопасность: убедиться, что файл находится внутри uploadsDirectory
   if (!filePath.startsWith(uploadsDirectory)) {
-    return NextResponse.json(
-      { message: "Недопустимый путь к файлу" },
-      { status: 400 },
-    );
+    return NextResponse.json({ message: "Недопустимый путь к файлу" }, { status: 400 });
   }
 
   try {
@@ -74,7 +62,7 @@ export async function DELETE(request: Request) {
         {
           message: `File deleted, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -90,7 +78,7 @@ export async function DELETE(request: Request) {
       {
         message: `Ошибка при удалении файла ${filename} или фиксации изменения в Git`,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

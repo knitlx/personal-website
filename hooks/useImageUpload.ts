@@ -25,12 +25,9 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
   const previewUrlRefs = useRef<Record<string, string | null>>({});
 
   // Обновление refs при изменении previewUrls
-  const updatePreviewUrlRef = useCallback(
-    (field: string, url: string | null) => {
-      previewUrlRefs.current[field] = url;
-    },
-    [],
-  );
+  const updatePreviewUrlRef = useCallback((field: string, url: string | null) => {
+    previewUrlRefs.current[field] = url;
+  }, []);
 
   // Обработчик выбора файла
   const handleFileChange = useCallback(
@@ -65,7 +62,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
         }));
       }
     },
-    [state.previewUrls, updatePreviewUrlRef],
+    [state.previewUrls, updatePreviewUrlRef]
   );
 
   // Обработчик загрузки файла
@@ -134,7 +131,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
         return null;
       }
     },
-    [state.selectedFiles, state.previewUrls, updatePreviewUrlRef, options],
+    [state.selectedFiles, state.previewUrls, updatePreviewUrlRef, options]
   );
 
   // Очистка при размонтировании
@@ -176,7 +173,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
         uploadError: { ...prev.uploadError, [field]: null },
       }));
     },
-    [state.previewUrls, updatePreviewUrlRef],
+    [state.previewUrls, updatePreviewUrlRef]
   );
 
   return {

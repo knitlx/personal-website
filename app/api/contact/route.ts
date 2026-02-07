@@ -8,6 +8,8 @@ import {
   ALLOWED_IMAGE_EXTENSIONS,
 } from "@/lib/file-validation";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 interface MailOptions {
   from: string;
   to: string | undefined;
@@ -31,7 +33,7 @@ export async function POST(request: NextRequest) {
   if (!rateLimitResult.success) {
     return NextResponse.json(
       { message: "Слишком много сообщений. Попробуйте позже." },
-      { status: 429 },
+      { status: 429 }
     );
   }
 
@@ -43,13 +45,17 @@ export async function POST(request: NextRequest) {
       message: formData.get("message") as string,
       projectTitle: formData.get("projectTitle") as string | null,
     };
-    console.log("Received rawData for validation:", rawData); // DEBUG LOG
+    if (isDevelopment) {
+      console.log("Received rawData for validation:", rawData);
+    }
 
     // Валидация с помощью zod
     const validationResult = contactFormSchema.safeParse(rawData);
 
     if (!validationResult.success) {
-      console.error("Zod validation failed:", validationResult.error); // DEBUG LOG
+      if (isDevelopment) {
+        console.error("Zod validation failed:", validationResult.error);
+      }
       const errors = validationResult.error.issues.map((err) => ({
         field: err.path.join("."),
         message: err.message,
@@ -60,7 +66,7 @@ export async function POST(request: NextRequest) {
           message: "Ошибки валидации",
           errors,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -69,16 +75,11 @@ export async function POST(request: NextRequest) {
 
     if (attachment) {
       const fileName = attachment.name;
-      const fileExtension = fileName
-        .substring(fileName.lastIndexOf("."))
-        .toLowerCase();
+      const fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
 
       // Check file extension
       if (!ALLOWED_EXTENSIONS.includes(fileExtension)) {
-        return NextResponse.json(
-          { message: "Недопустимый тип файла." },
-          { status: 400 },
-        );
+        return NextResponse.json({ message: "Недопустимый тип файла." }, { status: 400 });
       }
 
       // Check file size - different limits for images vs other files
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
           {
             message: `Файл слишком большой. Максимальный размер: ${maxSizeMB}MB.`,
           },
-          { status: 400 },
+          { status: 400 }
         );
       }
     }
@@ -134,15 +135,12 @@ export async function POST(request: NextRequest) {
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json(
-      { message: "Сообщение успешно отправлено!" },
-      { status: 200 },
-    );
+    return NextResponse.json({ message: "Сообщение успешно отправлено!" }, { status: 200 });
   } catch (error) {
     console.error("Error sending email:", error);
     return NextResponse.json(
       { message: "Произошла ошибка при отправке сообщения." },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

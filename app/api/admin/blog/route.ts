@@ -9,6 +9,7 @@ import { commitAndPush } from "@/lib/git";
 import { blogPostSchema } from "@/lib/validations/blog";
 import { deleteSchema } from "@/lib/validations/common";
 
+const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
 const contentDirectory = path.join(projectRoot, "content", "blog");
 
@@ -25,8 +26,7 @@ export async function POST(req: NextRequest) {
     // Convert localhost URLs to relative paths for production compatibility
     const processUrl = (url: string | undefined): string => {
       if (!url) return "";
-      const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
       return url.replace(siteUrl, "");
     };
 
@@ -47,13 +47,12 @@ export async function POST(req: NextRequest) {
           message: "Ошибки валидации",
           errors,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const validatedData = validationResult.data;
-    const { slug, description, articleBody, tags, ...restOfFrontmatter } =
-      validatedData;
+    const { slug, description, articleBody, tags, ...restOfFrontmatter } = validatedData;
 
     // Parse the tags string into an array
     const tagsArray = tags
@@ -97,28 +96,31 @@ export async function POST(req: NextRequest) {
         {
           message: `Blog post saved, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
     // Revalidate the dashboard path to show new/updated content
-    console.log("revalidatePath('/admin/dashboard') called for blog post");
+    if (isDevelopment) {
+      console.log("revalidatePath('/admin/dashboard') called for blog post");
+    }
     revalidatePath("/admin/dashboard");
 
     return NextResponse.json(
       { message: "Blog post saved and committed successfully!", slug },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Error saving or committing blog post:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    if (isDevelopment) {
+      console.error("Error saving or committing blog post:", error);
+    }
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         message: "Failed to save blog post or commit to Git",
         error: errorMessage,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -147,7 +149,7 @@ export async function DELETE(req: NextRequest) {
           message: "Ошибки валидации",
           errors,
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -158,10 +160,7 @@ export async function DELETE(req: NextRequest) {
     try {
       await fs.access(filePath);
     } catch {
-      return NextResponse.json(
-        { message: "Blog post not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ message: "Blog post not found" }, { status: 404 });
     }
 
     // Delete file from file system (async)
@@ -180,7 +179,7 @@ export async function DELETE(req: NextRequest) {
         {
           message: `Blog post deleted, but Git push failed: ${gitResult.error}`,
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -191,18 +190,17 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Blog post deleted and committed successfully!" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error deleting or committing blog post:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         message: "Failed to delete blog post or commit to Git",
         error: errorMessage,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Inter as FontInter,
-  Unbounded as FontUnbounded,
-} from "next/font/google";
+import { Inter as FontInter, Unbounded as FontUnbounded } from "next/font/google";
 
 import "./globals.css";
 import Header from "./components/Header";
@@ -26,9 +23,7 @@ const fontUnbounded = FontUnbounded({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   icons: {
     icon: [
       { url: "/icon.png", sizes: "32x32", type: "image/png" },

@@ -7,9 +7,7 @@ interface ProjectEditPageProps {
   };
 }
 
-export default async function ProjectEditPage({
-  params,
-}: ProjectEditPageProps) {
+export default async function ProjectEditPage({ params }: ProjectEditPageProps) {
   const { slug } = await params;
   let project = null;
 

@@ -32,14 +32,13 @@ export default function AboutPage() {
               </h1>
               <div className="text-base text-gray-700 space-y-2 text-left">
                 <p>
-                  Я помогаю бизнесу разбираться в цифровых задачах, наводить
-                  порядок и создавать AI-инструменты и автоматизации, которые
-                  действительно приносят пользу.
+                  Я помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать
+                  AI-инструменты и автоматизации, которые действительно приносят пользу.
                 </p>
                 <p>
-                  Работаю на стыке системного мышления и технологий: упрощаю
-                  процессы, проектирую и внедряю автоматизации, которые снимают
-                  ручную рутину и делают работу удобнее каждый день.
+                  Работаю на стыке системного мышления и технологий: упрощаю процессы, проектирую и
+                  внедряю автоматизации, которые снимают ручную рутину и делают работу удобнее
+                  каждый день.
                 </p>
               </div>
             </div>
@@ -76,20 +75,18 @@ export default function AboutPage() {
 
               <div className="text-base text-gray-700 space-y-2">
                 <p>
-                  Я начинаю с понимания сути: разбираю задачу, выделяю главное и
-                  убираю лишнее — и только потом создаю инструмент или
-                  автоматизацию под конкретный рабочий процесс.
+                  Я начинаю с понимания сути: разбираю задачу, выделяю главное и убираю лишнее — и
+                  только потом создаю инструмент или автоматизацию под конкретный рабочий процесс.
                 </p>
                 <p>
-                  AI для меня — не магия, а партнёр. Я использую его в проектах
-                  и в жизни: чтобы искать идеи, проверять гипотезы, ускорять
-                  рутинные действия и находить более простые способы решения
-                  задач. Он помогает смотреть шире и получать работающий
+                  AI для меня — не магия, а партнёр. Я использую его в проектах и в жизни: чтобы
+                  искать идеи, проверять гипотезы, ускорять рутинные действия и находить более
+                  простые способы решения задач. Он помогает смотреть шире и получать работающий
                   результат.
                 </p>
                 <p>
-                  Для меня важно, чтобы инструменты и автоматизации были
-                  понятными — такими, которыми легко пользоваться каждый день.
+                  Для меня важно, чтобы инструменты и автоматизации были понятными — такими,
+                  которыми легко пользоваться каждый день.
                 </p>
               </div>
             </section>
@@ -110,32 +107,27 @@ export default function AboutPage() {
 
               <div className="text-base text-gray-700 space-y-2">
                 <ul className="custom-list space-y-1">
+                  <li>Вникаю в контекст. Собираю данные, уточняю вводные и нахожу главное.</li>
                   <li>
-                    Вникаю в контекст. Собираю данные, уточняю вводные и нахожу
-                    главное.
+                    Строю логику. Анализирую процессы и определяю, какие шаги можно упростить или
+                    автоматизировать, чтобы убрать ручную работу.
                   </li>
                   <li>
-                    Строю логику. Анализирую процессы и определяю, какие шаги
-                    можно упростить или автоматизировать, чтобы убрать ручную
-                    работу.
+                    Предлагаю варианты. От быстрых автоматизаций до более глубоких решений — в
+                    зависимости от задачи и ресурсов.
                   </li>
                   <li>
-                    Предлагаю варианты. От быстрых автоматизаций до более
-                    глубоких решений — в зависимости от задачи и ресурсов.
+                    Реализую. Собираю автоматизацию, прототип или структуру и адаптирую под реальные
+                    условия работы.
                   </li>
                   <li>
-                    Реализую. Собираю автоматизацию, прототип или структуру и
-                    адаптирую под реальные условия работы.
-                  </li>
-                  <li>
-                    Довожу до удобства. Убираю лишнее и проверяю, чтобы
-                    автоматизация действительно помогала, а не усложняла
-                    процесс.
+                    Довожу до удобства. Убираю лишнее и проверяю, чтобы автоматизация действительно
+                    помогала, а не усложняла процесс.
                   </li>
                 </ul>
                 <p>
-                  В результате вы получаете не идею «на бумаге», а рабочую
-                  автоматизацию или инструмент, встроенный в реальные процессы.
+                  В результате вы получаете не идею «на бумаге», а рабочую автоматизацию или
+                  инструмент, встроенный в реальные процессы.
                 </p>
               </div>
             </section>
@@ -157,6 +149,44 @@ export default function AboutPage() {
 
             <div className="text-base text-gray-700 mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-fit mx-auto">
+                <div className={whatIDoStyles.whatIDoItem}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Image
+                      src="/icons/web-infra.png"
+                      alt="Веб и инфраструктура"
+                      width={24}
+                      height={24}
+                      sizes="24px"
+                    />
+                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
+                      AI
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                        OpenCode
+                      </span>
+                    </span>
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                        GLM
+                      </span>
+                    </span>
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                        Gemini
+                      </span>
+                    </span>
+                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                        GPT
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
                 <div className={whatIDoStyles.whatIDoItem}>
                   <div className="flex items-center gap-3 mb-4">
                     <Image
@@ -189,65 +219,7 @@ export default function AboutPage() {
                     </span>
                     <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
                       <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Email / SMTP
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className={whatIDoStyles.whatIDoItem}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <Image
-                      src="/icons/web-infra.png"
-                      alt="Веб и инфраструктура"
-                      width={24}
-                      height={24}
-                      sizes="24px"
-                    />
-                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent mt-[-1px]">
-                      Веб и инфраструктура
-                    </h3>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        React
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Next.js
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        HTML / CSS
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        JavaScript
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Tailwind CSS
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Vercel
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Railway
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Git / GitHub
+                        Telegram
                       </span>
                     </span>
                   </div>
@@ -285,7 +257,7 @@ export default function AboutPage() {
                     </span>
                     <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
                       <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        PostgreSQL
+                        Git / GitHub
                       </span>
                     </span>
                   </div>
@@ -309,11 +281,6 @@ export default function AboutPage() {
                     <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
                       <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
                         Notion
-                      </span>
-                    </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Jira
                       </span>
                     </span>
                     <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
@@ -351,35 +318,32 @@ export default function AboutPage() {
                 <li className="flex items-start">
                   <CheckIcon />
                   <span className="text-base text-gray-700 leading-relaxed">
-                    У вас <strong>много задач, но мало ясности.</strong> Нужно
-                    навести цифровой порядок и снять с команды ручную рутину.
+                    У вас <strong>много задач, но мало ясности.</strong> Нужно навести цифровой
+                    порядок и снять с команды ручную рутину.
                   </span>
                 </li>
 
                 <li className="flex items-start">
                   <CheckIcon />
                   <span className="text-base text-gray-700 leading-relaxed">
-                    Вы — <strong>малый бизнес или небольшая команда.</strong>{" "}
-                    Вам важны простые, работающие автоматизации без сложного
-                    Enterprise-подхода.
+                    Вы — <strong>малый бизнес или небольшая команда.</strong> Вам важны простые,
+                    работающие автоматизации без сложного Enterprise-подхода.
                   </span>
                 </li>
 
                 <li className="flex items-start">
                   <CheckIcon />
                   <span className="text-base text-gray-700 leading-relaxed">
-                    Нужно <strong>разобрать хаос.</strong> Выстроить логику, где
-                    сейчас всё держится на «честном слове», и внедрить AI под
-                    реальные задачи.
+                    Нужно <strong>разобрать хаос.</strong> Выстроить логику, где сейчас всё держится
+                    на «честном слове», и внедрить AI под реальные задачи.
                   </span>
                 </li>
 
                 <li className="flex items-start">
                   <CheckIcon />
                   <span className="text-base text-gray-700 leading-relaxed">
-                    Вам нужен <strong>универсал.</strong> Специалист, который
-                    сам разберётся в процессах, предложит решение и своими
-                    руками доведёт его до результата.
+                    Вам нужен <strong>универсал.</strong> Специалист, который сам разберётся в
+                    процессах, предложит решение и своими руками доведёт его до результата.
                   </span>
                 </li>
               </ul>
@@ -401,19 +365,17 @@ export default function AboutPage() {
 
               <div className="text-base text-gray-700 space-y-2">
                 <p>
-                  Мне близка системность: я лучше работаю, когда информация,
-                  задачи и процессы организованы.
+                  Мне близка системность: я лучше работаю, когда информация, задачи и процессы
+                  организованы.
                 </p>
                 <p>
-                  AI — часть моей повседневной работы и жизни. Я обращаюсь к
-                  нему за идеями, планированием, обучением и бытовыми задачами —
-                  он помогает быстрее находить рабочие варианты и принимать
-                  решения.
+                  AI — часть моей повседневной работы и жизни. Я обращаюсь к нему за идеями,
+                  планированием, обучением и бытовыми задачами — он помогает быстрее находить
+                  рабочие варианты и принимать решения.
                 </p>
                 <p>
-                  По характеру я спокойная и внимательная. Предпочитаю не
-                  торопиться без смысла, а продумывать решения так, чтобы ими
-                  было удобно пользоваться каждый день.
+                  По характеру я спокойная и внимательная. Предпочитаю не торопиться без смысла, а
+                  продумывать решения так, чтобы ими было удобно пользоваться каждый день.
                 </p>
               </div>
             </section>
@@ -431,9 +393,7 @@ export default function AboutPage() {
             </p>
             <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
               <ContactModalWrapper
-                button={
-                  <BentoButton variant="primary">Написать мне</BentoButton>
-                }
+                button={<BentoButton variant="primary">Написать мне</BentoButton>}
               />
             </div>
           </div>

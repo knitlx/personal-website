@@ -83,10 +83,8 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       if (!data.title.trim()) errors.title = "Заголовок обязателен.";
       if (!data.slug.trim()) errors.slug = "ЧПУ обязательно.";
       if (!data.date.trim()) errors.date = "Дата публикации обязательна.";
-      if (!data.description.trim())
-        errors.description = "Краткое описание обязательно.";
-      if (!data.articleBody.trim())
-        errors.articleBody = "Тело статьи обязательно.";
+      if (!data.description.trim()) errors.description = "Краткое описание обязательно.";
+      if (!data.articleBody.trim()) errors.articleBody = "Тело статьи обязательно.";
       if (data.description.length > 0 && data.description.length < 10) {
         errors.description = "Описание должно быть не менее 10 символов.";
       }
@@ -150,34 +148,31 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     });
   }, [openGalleryModal, setImageValue, setFormData, setFieldError]);
 
-  const handleMDEditorImageUpload = useCallback(
-    async (file: File): Promise<string> => {
-      const formData = new FormData();
-      formData.append("file", file);
+  const handleMDEditorImageUpload = useCallback(async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
 
-      try {
-        const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
-          method: "POST",
-          body: formData,
-        });
+    try {
+      const response = await fetch(API_ROUTES.ADMIN_UPLOAD_IMAGE, {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({
-            message: "Ошибка загрузки файла.",
-          }));
-          throw new Error(errorData.message ?? "Ошибка загрузки файла.");
-        }
-
-        const result = await response.json();
-        return result.url;
-      } catch (err) {
-        const error = err instanceof Error ? err.message : "Неизвестная ошибка";
-        toast.error(`Ошибка загрузки изображения: ${error}`);
-        throw err;
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: "Ошибка загрузки файла.",
+        }));
+        throw new Error(errorData.message ?? "Ошибка загрузки файла.");
       }
-    },
-    [],
-  );
+
+      const result = await response.json();
+      return result.url;
+    } catch (err) {
+      const error = err instanceof Error ? err.message : "Неизвестная ошибка";
+      toast.error(`Ошибка загрузки изображения: ${error}`);
+      throw err;
+    }
+  }, []);
 
   const handleArticleBodyImageSelected = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +190,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         }
       }
     },
-    [handleMDEditorImageUpload, setFormData],
+    [handleMDEditorImageUpload, setFormData]
   );
 
   const handleSubmit = useCallback(
@@ -203,25 +198,24 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       e.preventDefault();
       await handleFormSubmit(e);
     },
-    [handleFormSubmit],
+    [handleFormSubmit]
   );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       handleSlugChange(e, generateSlug, baseUrl, "blog/");
     },
-    [handleSlugChange, baseUrl],
+    [handleSlugChange, baseUrl]
   );
 
   const handleRichTextChange = useCallback(
     (field: "articleBody", value: string | undefined) => {
       setFormData((prev) => ({ ...prev, [field]: value ?? "" }));
     },
-    [setFormData],
+    [setFormData]
   );
 
-  const openGraphImagePreviewUrl =
-    previewUrls.openGraphImage ?? formData.openGraphImage;
+  const openGraphImagePreviewUrl = previewUrls.openGraphImage ?? formData.openGraphImage;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -295,10 +289,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
       />
 
       <div data-color-mode="light">
-        <label
-          htmlFor="articleBody"
-          className="block text-sm font-medium text-gray-700 mb-1 mt-4"
-        >
+        <label htmlFor="articleBody" className="block text-sm font-medium text-gray-700 mb-1 mt-4">
           Тело статьи (Markdown)
         </label>
         <MDEditor
@@ -307,9 +298,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           height={MD_EDITOR_HEIGHT.FULL}
         />
         {validationErrors.articleBody && (
-          <p className="text-red-500 text-sm mt-1">
-            {validationErrors.articleBody}
-          </p>
+          <p className="text-red-500 text-sm mt-1">{validationErrors.articleBody}</p>
         )}
         <input
           type="file"

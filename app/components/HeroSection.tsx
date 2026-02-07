@@ -31,10 +31,7 @@ export default function HeroSection() {
           </BentoButton>
         </div>
       </section>
-      <ContactModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

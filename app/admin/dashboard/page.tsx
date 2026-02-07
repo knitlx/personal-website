@@ -22,9 +22,7 @@ export default async function DashboardPage({
 
   // Извлечение параметров пагинации и поиска для проектов и статей
   const projectsPage = params?.projectsPage ? Number(params.projectsPage) : 1;
-  const projectsSearch = params?.projectsSearch
-    ? String(params.projectsSearch)
-    : undefined;
+  const projectsSearch = params?.projectsSearch ? String(params.projectsSearch) : undefined;
   const blogPage = params?.blogPage ? Number(params.blogPage) : 1;
   const blogSearch = params?.blogSearch ? String(params.blogSearch) : undefined;
   const limit = params?.limit ? Number(params.limit) : 10; // Может быть общим или отдельным

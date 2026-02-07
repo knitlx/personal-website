@@ -30,9 +30,7 @@ function BlogPostCard({ post }: BlogPostCardProps) {
     <article className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 overflow-hidden">
       <Link href={`/blog/${post.slug}`}>
         <div className="p-6">
-          <h2 className="text-3xl font-semibold text-[#333333]">
-            {post.title ?? "Без названия"}
-          </h2>
+          <h2 className="text-3xl font-semibold text-[#333333]">{post.title ?? "Без названия"}</h2>
           {(post.creationDate ?? post.date) && (
             <p className="text-sm text-gray-500 mb-4">
               {formatDate(post.creationDate ?? post.date ?? "")}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import { API_ROUTES } from "@/lib/routes";
 
@@ -53,9 +54,7 @@ export default function ImageGalleryModal({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.message ?? "Не удалось загрузить изображения.",
-        );
+        throw new Error(errorData.message ?? "Не удалось загрузить изображения.");
       }
       const data = await response.json();
       console.log("Received images:", data);
@@ -72,9 +71,7 @@ export default function ImageGalleryModal({
 
   const handleDeleteImage = async (imageUrl: string) => {
     if (
-      !window.confirm(
-        "Вы уверены, что хотите удалить это изображение? Это действие необратимо.",
-      )
+      !window.confirm("Вы уверены, что хотите удалить это изображение? Это действие необратимо.")
     ) {
       return;
     }
@@ -152,11 +149,7 @@ export default function ImageGalleryModal({
                   className="w-full h-full cursor-pointer"
                   aria-label={`Выбрать изображение: ${url.split("/").pop()}`}
                 >
-                  <img
-                    src={url}
-                    alt="Галерея"
-                    className="w-full h-full object-contain rounded-md"
-                  />
+                  <Image src={url} alt="Галерея" fill className="object-contain rounded-md" />
                 </button>
                 <button
                   type="button"

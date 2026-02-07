@@ -29,18 +29,14 @@ export default function DashboardClient({
 
   // Separate states for search queries and current pages for projects and blog posts
   const [projectSearchQuery, setProjectSearchQuery] = useState(
-    currentSearchParams?.get("projectsSearch") ?? "",
+    currentSearchParams?.get("projectsSearch") ?? ""
   );
   const [blogSearchQuery, setBlogSearchQuery] = useState(
-    currentSearchParams?.get("blogSearch") ?? "",
+    currentSearchParams?.get("blogSearch") ?? ""
   );
 
   // Function to update URL with new query parameters
-  const updateUrl = (
-    collection: "projects" | "blog",
-    newPage: number,
-    newSearchQuery: string,
-  ) => {
+  const updateUrl = (collection: "projects" | "blog", newPage: number, newSearchQuery: string) => {
     const params = new URLSearchParams(currentSearchParams?.toString() || "");
 
     if (collection === "projects") {
@@ -78,9 +74,7 @@ export default function DashboardClient({
   };
 
   // Handle search input change for projects
-  const handleProjectSearchChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleProjectSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectSearchQuery(e.target.value);
   };
 
@@ -102,10 +96,7 @@ export default function DashboardClient({
   };
 
   // Handle pagination change
-  const handlePageChange = (
-    collection: "projects" | "blog",
-    newPage: number,
-  ) => {
+  const handlePageChange = (collection: "projects" | "blog", newPage: number) => {
     if (collection === "projects") {
       updateUrl("projects", newPage, projectSearchQuery);
     } else {
@@ -118,7 +109,7 @@ export default function DashboardClient({
     totalPages: number,
     currentPage: number,
     // Add current search query to pass through URL updates
-    _currentSearch: string,
+    _currentSearch: string
   ) => {
     if (totalPages <= 1) return null;
 
@@ -155,23 +146,14 @@ export default function DashboardClient({
     );
   };
 
-  const handleDelete = async (
-    type: "projects" | "blog",
-    slug: string,
-    title: string,
-  ) => {
-    if (
-      !window.confirm(
-        `Вы уверены, что хотите удалить "${title}"? Это действие необратимо.`,
-      )
-    ) {
+  const handleDelete = async (type: "projects" | "blog", slug: string, title: string) => {
+    if (!window.confirm(`Вы уверены, что хотите удалить "${title}"? Это действие необратимо.`)) {
       return;
     }
 
     setDeleting(true);
     try {
-      const apiUrl =
-        type === "projects" ? API_ROUTES.ADMIN_PROJECTS : API_ROUTES.ADMIN_BLOG;
+      const apiUrl = type === "projects" ? API_ROUTES.ADMIN_PROJECTS : API_ROUTES.ADMIN_BLOG;
       const response = await fetch(apiUrl, {
         method: "DELETE",
         headers: {
@@ -188,8 +170,7 @@ export default function DashboardClient({
       toast.success(`${title} успешно удален!`);
       router.refresh();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Неизвестная ошибка";
+      const errorMessage = error instanceof Error ? error.message : "Неизвестная ошибка";
       toast.error(`Ошибка при удалении: ${errorMessage}`);
     } finally {
       setDeleting(false);
@@ -276,11 +257,7 @@ export default function DashboardClient({
                       </Link>
                       <button
                         onClick={() =>
-                          handleDelete(
-                            "projects",
-                            project.slug,
-                            project.title ?? "Проект",
-                          )
+                          handleDelete("projects", project.slug, project.title ?? "Проект")
                         }
                         disabled={deleting}
                         className="ml-2 px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
@@ -296,7 +273,7 @@ export default function DashboardClient({
               "projects",
               projects.totalPages,
               projects.currentPage,
-              projectSearchQuery,
+              projectSearchQuery
             )}
           </div>
         )}
@@ -350,13 +327,7 @@ export default function DashboardClient({
                         Редактировать
                       </Link>
                       <button
-                        onClick={() =>
-                          handleDelete(
-                            "blog",
-                            post.slug,
-                            post.title ?? "Статья",
-                          )
-                        }
+                        onClick={() => handleDelete("blog", post.slug, post.title ?? "Статья")}
                         disabled={deleting}
                         className="ml-2 px-3 py-1 bg-gray-700 text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
                       >
@@ -367,12 +338,7 @@ export default function DashboardClient({
                 ))
               )}
             </ul>
-            {renderPagination(
-              "blog",
-              blogPosts.totalPages,
-              blogPosts.currentPage,
-              blogSearchQuery,
-            )}
+            {renderPagination("blog", blogPosts.totalPages, blogPosts.currentPage, blogSearchQuery)}
           </div>
         )}
       </div>

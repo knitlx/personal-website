@@ -33,9 +33,7 @@ export default function BlogClientPage({ posts }: BlogClientPageProps) {
             </h2>
           </Link>
           {post.shortDescription && (
-            <p className="text-gray-600 mt-4 text-lg flex-grow">
-              {post.shortDescription}
-            </p>
+            <p className="text-gray-600 mt-4 text-lg flex-grow">{post.shortDescription}</p>
           )}
           <div className="mt-6">
             <Link href={`/blog/${post.slug}`} className="gradient-link">

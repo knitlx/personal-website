@@ -13,11 +13,7 @@ export default function ModalManager() {
   return (
     <>
       {modalType === "contact" && (
-        <ContactModal
-          isOpen={isOpen}
-          onClose={closeModal}
-          projectTitle={modalData?.projectTitle}
-        />
+        <ContactModal isOpen={isOpen} onClose={closeModal} projectTitle={modalData?.projectTitle} />
       )}
 
       {modalType === "image" && modalData?.imageUrl && (

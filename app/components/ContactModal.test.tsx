@@ -8,14 +8,12 @@ global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({ message: "Сообщение успешно отправлено!" }),
-  }),
+  })
 ) as jest.Mock;
 
 jest.mock("next-auth/react", () => ({
   useSession: () => ({ data: null, status: "unauthenticated" }),
-  SessionProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
+  SessionProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe("ContactModal Full User Flow", () => {
@@ -29,7 +27,7 @@ describe("ContactModal Full User Flow", () => {
     render(
       <Providers>
         <ContactModal isOpen onClose={jest.fn()} />
-      </Providers>,
+      </Providers>
     );
 
     // 2. Navigate to the form view
@@ -55,9 +53,7 @@ describe("ContactModal Full User Flow", () => {
 
     expect(nameInput).toHaveValue("Тестовый Пользователь");
     expect(contactInput).toHaveValue("@testuser");
-    expect(messageTextarea).toHaveValue(
-      "Это тестовое сообщение для проверки формы.",
-    );
+    expect(messageTextarea).toHaveValue("Это тестовое сообщение для проверки формы.");
 
     // 4. Submit the form
     const submitButton = screen.getByRole("button", { name: "Отправить" });
@@ -74,9 +70,7 @@ describe("ContactModal Full User Flow", () => {
 
     // 6. Verify that the success message is shown
     const successTitle = await screen.findByText("Спасибо!");
-    const successMessage = await screen.findByText(
-      "Сообщение успешно отправлено!",
-    );
+    const successMessage = await screen.findByText("Сообщение успешно отправлено!");
 
     expect(successTitle).toBeInTheDocument();
     expect(successMessage).toBeInTheDocument();
