@@ -158,9 +158,10 @@ export async function commitAndPush({
     // Commit
     await execa("git", ["commit", "-m", commitMessage], { cwd, env: gitEnv });
 
-    // Push using credential helper environment variables instead of URL-embedded token
-    const remoteUrl = `https://github.com/${repoOwner}/${repoSlug}.git`;
-    await execa("git", ["push", remoteUrl, "main"], { cwd, env: gitEnv });
+    // Push with embedded credentials in URL
+    // GitHub format: https://USERNAME:TOKEN@github.com/owner/repo.git
+    const authUrl = `https://${githubUsername}:${githubPat}@github.com/${repoOwner}/${repoSlug}.git`;
+    await execa("git", ["push", authUrl, "main"], { cwd, env: gitEnv });
 
     return { success: true };
   } catch (error) {

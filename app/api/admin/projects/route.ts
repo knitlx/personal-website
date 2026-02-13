@@ -9,6 +9,7 @@ import { commitAndPush } from "@/lib/git";
 import { projectSchema } from "@/lib/validations/project";
 import { deleteSchema } from "@/lib/validations/common";
 import { execa } from "execa";
+import { regenerateCache } from "@/lib/content";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
@@ -97,32 +98,8 @@ export async function POST(req: NextRequest) {
     revalidatePath("/projects");
     revalidatePath(`/projects/${validatedData.slug}`);
 
-    // Regenerate content cache after successful save and commit
-    try {
-      // Use execa to run the cache generation script
-      const { stdout, stderr } = await execa(
-        "node",
-        [path.join(projectRoot, "scripts", "generate-content-cache.ts")],
-        { cwd: projectRoot }
-      );
-      if (stdout && isDevelopment) {
-        console.log("Cache generation stdout:", stdout);
-      }
-      if (stderr && isDevelopment) {
-        console.error("Cache generation stderr:", stderr);
-      }
-      if (isDevelopment) {
-        console.log("Content cache regenerated successfully.");
-      }
-    } catch (cacheError) {
-      if (isDevelopment) {
-        console.error("Failed to regenerate content cache:", cacheError);
-      }
-      return NextResponse.json(
-        { message: "Project saved, but failed to regenerate content cache." },
-        { status: 500 }
-      );
-    }
+    // Regenerate content cache
+    await regenerateCache();
 
     return NextResponse.json(
       { message: "Project saved and committed successfully!", slug },
@@ -205,6 +182,9 @@ export async function DELETE(req: NextRequest) {
     revalidatePath("/admin/dashboard");
     revalidatePath("/projects");
     revalidatePath(`/projects/${slug}`);
+
+    // Regenerate content cache
+    await regenerateCache();
 
     return NextResponse.json(
       { message: "Project deleted and committed successfully!" },

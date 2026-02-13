@@ -6,6 +6,7 @@ import path from "path";
 import { commitAndPush } from "@/lib/git";
 import { revalidatePath } from "next/cache";
 import sharp from "sharp";
+import { regenerateCache } from "@/lib/content";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
@@ -81,6 +82,9 @@ export async function POST(req: NextRequest) {
     }
 
     revalidatePath("/admin/dashboard");
+
+    // Regenerate content cache
+    await regenerateCache();
 
     return NextResponse.json(
       { message: "File uploaded and committed successfully!", url: publicPath },

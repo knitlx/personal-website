@@ -78,6 +78,13 @@ interface GetAllContentOptions {
 
 const contentDirectory = path.join(process.cwd(), "content");
 
+// Regenerate cache (call this after content changes)
+export async function regenerateCache(): Promise<void> {
+  const { generateCache } = await import("../scripts/generate-content-cache");
+  memoryCache = null; // Clear in-memory cache
+  await generateCache();
+}
+
 // Load cache from JSON file (with in-memory caching)
 function loadCache(): ContentCache {
   // Return in-memory cache if available

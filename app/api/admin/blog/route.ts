@@ -8,6 +8,7 @@ import matter from "gray-matter";
 import { commitAndPush } from "@/lib/git";
 import { blogPostSchema } from "@/lib/validations/blog";
 import { deleteSchema } from "@/lib/validations/common";
+import { regenerateCache } from "@/lib/content";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
@@ -106,6 +107,9 @@ export async function POST(req: NextRequest) {
     }
     revalidatePath("/admin/dashboard");
 
+    // Regenerate content cache
+    await regenerateCache();
+
     return NextResponse.json(
       { message: "Blog post saved and committed successfully!", slug },
       { status: 200 }
@@ -187,6 +191,9 @@ export async function DELETE(req: NextRequest) {
     revalidatePath("/admin/dashboard");
     revalidatePath("/blog");
     revalidatePath(`/blog/${slug}`);
+
+    // Regenerate content cache
+    await regenerateCache();
 
     return NextResponse.json(
       { message: "Blog post deleted and committed successfully!" },
