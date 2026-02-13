@@ -2,7 +2,7 @@
 title: Новая статья
 date: '2026-02-13'
 creationDate: '2026-02-13T12:08:31.655Z'
-updateDate: '2026-02-13T12:29:38.772Z'
+updateDate: '2026-02-13T12:30:05.137Z'
 seoTitle: ''
 seoDescription: ''
 seoTags: ''
@@ -14,3 +14,4 @@ description: Привет! Это новая статья!
 tags: []
 ---
 Привет! Это новая статья!
+СОВСЕМ НОВАЯ СТАТЬЯ!
