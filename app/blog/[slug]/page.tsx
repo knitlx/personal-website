@@ -68,7 +68,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const post: ContentItem = {
     ...postFile.data,
     slug: postFile.slug,
-    articleBody: postFile.data.articleBody ?? "", // Ensure articleBody is available
+    articleBody: postFile.content ?? postFile.data.articleBody ?? "", // Use content (markdown body) first
   };
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
