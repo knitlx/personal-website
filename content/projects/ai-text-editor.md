@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /uploads/ai-redactor.png
 trylink: ''
 creationDate: ''
-updateDate: '2026-01-15T21:10:15.599Z'
+updateDate: '2026-02-13T10:28:11.875Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-
   AI-редактор для работы с черновиками и рабочими текстами. Анализирует
