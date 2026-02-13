@@ -24,6 +24,15 @@ export async function POST(req: NextRequest) {
   try {
     const blogPostData = await req.json();
 
+    if (isDevelopment) {
+      console.log("POST /api/admin/blog - Received data:", {
+        slug: blogPostData.slug,
+        title: blogPostData.title,
+        hasArticleBody: !!blogPostData.articleBody,
+        articleBodyLength: blogPostData.articleBody?.length || 0,
+      });
+    }
+
     // Convert localhost URLs to relative paths for production compatibility
     const processUrl = (url: string | undefined): string => {
       if (!url) return "";

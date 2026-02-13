@@ -24,7 +24,7 @@ export default async function BlogEditPage({ params }: BlogEditPageProps) {
   const initialData = blogPost
     ? {
         ...blogPost.data,
-        articleBody: blogPost.data.articleBody ?? "", // Ensure articleBody is there
+        articleBody: blogPost.content ?? blogPost.data.articleBody ?? "", // Use content (markdown body) first, fallback to frontmatter
         slug: blogPost.slug, // Explicitly pass slug from file name
       }
     : undefined;
