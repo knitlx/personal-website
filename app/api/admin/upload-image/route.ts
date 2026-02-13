@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
     }
 
     revalidatePath("/admin/dashboard");
+    revalidatePath("/api/content/projects");
 
     // Regenerate content cache
     await regenerateCache();

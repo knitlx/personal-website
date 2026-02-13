@@ -97,6 +97,7 @@ export async function POST(req: NextRequest) {
     revalidatePath("/admin/dashboard");
     revalidatePath("/projects");
     revalidatePath(`/projects/${validatedData.slug}`);
+    revalidatePath("/api/content/projects");
 
     // Regenerate content cache
     await regenerateCache();
@@ -182,6 +183,7 @@ export async function DELETE(req: NextRequest) {
     revalidatePath("/admin/dashboard");
     revalidatePath("/projects");
     revalidatePath(`/projects/${slug}`);
+    revalidatePath("/api/content/projects");
 
     // Regenerate content cache
     await regenerateCache();
