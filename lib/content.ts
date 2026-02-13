@@ -81,14 +81,15 @@ const contentDirectory = path.join(process.cwd(), "content");
 // Regenerate cache (call this after content changes)
 export async function regenerateCache(): Promise<void> {
   const { generateCache } = await import("../scripts/generate-content-cache");
-  memoryCache = null; // Clear in-memory cache
-  await generateCache();
+  memoryCache = null; // Clear in-memory cache FIRST
+  await generateCache(); // Then regenerate (this updates the file)
+  memoryCache = null; // Clear again to force reload on next loadCache() call
 }
 
 // Load cache from JSON file (with in-memory caching)
-function loadCache(): ContentCache {
-  // Return in-memory cache if available
-  if (memoryCache) {
+function loadCache(forceReload = false): ContentCache {
+  // Return in-memory cache if available and not forcing reload
+  if (memoryCache && !forceReload) {
     return memoryCache;
   }
 
