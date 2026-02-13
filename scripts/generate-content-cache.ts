@@ -81,4 +81,8 @@ function generateCache() {
   console.log(`   - Projects: ${cache.projects.length}`);
 }
 
+// Export for use in other modules
+export { generateCache };
+
+// Run if called directly
 generateCache();
