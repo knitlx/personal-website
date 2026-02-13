@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
 creationDate: ''
-updateDate: '2026-01-15T20:10:04.940Z'
+updateDate: '2026-02-13T10:28:00.856Z'
 seoTitle: Финансовый Telegram-бот для учёта доходов и расходов
 seoDescription: >-
   Telegram-бот для учёта личных финансов. Доходы и расходы добавляются через чат
@@ -22,7 +22,7 @@ seoTags: >-
   telegram mini app, финансовый бот, личные финансы telegram, учет расходов
   telegram, финансовый дашборд, автоматизация учета финансов, n8n автоматизация
 canonicalUrl: /projects/financial-telegram-bot
-openGraphImage: /uploads/og-image-1767384016058.webp
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: SoftwareApplication
 sortOrder: 1
 introDescription: >-
