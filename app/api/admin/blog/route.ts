@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         slug: blogPostData.slug,
         title: blogPostData.title,
         hasArticleBody: !!blogPostData.articleBody,
-        articleBodyLength: blogPostData.articleBody?.length || 0,
+        articleBodyLength: blogPostData.articleBody?.length ?? 0,
       });
     }
 

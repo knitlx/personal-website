@@ -69,26 +69,28 @@ export default function ProjectsClientPage({ projects }: ProjectsClientPageProps
                 </ReactMarkdownComp>
               </div>
             )}
-            <div className="flex justify-start items-baseline mt-auto">
-              {project.trylink ? (
-                <BentoButton href={project.trylink} variant="primary" size="small">
-                  Попробовать
-                </BentoButton>
-              ) : (
-                <BentoButton
-                  onClick={() =>
-                    setModalContext({
-                      isOpen: true,
-                      projectTitle: project.title ?? null,
-                    })
-                  }
-                  variant="primary"
-                  size="small"
-                >
-                  Заказать настройку
-                </BentoButton>
-              )}
-            </div>
+            {project.slug !== "financial-telegram-bot" && (
+              <div className="flex justify-start items-baseline mt-auto">
+                {project.trylink ? (
+                  <BentoButton href={project.trylink} variant="primary" size="small">
+                    Попробовать
+                  </BentoButton>
+                ) : (
+                  <BentoButton
+                    onClick={() =>
+                      setModalContext({
+                        isOpen: true,
+                        projectTitle: project.title ?? null,
+                      })
+                    }
+                    variant="primary"
+                    size="small"
+                  >
+                    Заказать настройку
+                  </BentoButton>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

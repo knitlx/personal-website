@@ -8,7 +8,6 @@ import matter from "gray-matter";
 import { commitAndPush } from "@/lib/git";
 import { projectSchema } from "@/lib/validations/project";
 import { deleteSchema } from "@/lib/validations/common";
-import { execa } from "execa";
 import { regenerateCache } from "@/lib/content";
 
 const isDevelopment = process.env.NODE_ENV === "development";

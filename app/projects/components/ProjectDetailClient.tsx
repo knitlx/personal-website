@@ -98,26 +98,28 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
           </div>
 
           {/* --- Button at the end of the content --- */}
-          <div className="mt-12 flex justify-start">
-            {project.trylink ? (
-              <BentoButton href={project.trylink} variant="primary" size="default">
-                Попробовать
-              </BentoButton>
-            ) : (
-              <BentoButton
-                onClick={() =>
-                  setContactModal({
-                    isOpen: true,
-                    projectTitle: project.title ?? null,
-                  })
-                }
-                variant="primary"
-                size="default"
-              >
-                Заказать настройку
-              </BentoButton>
-            )}
-          </div>
+          {project.slug !== "financial-telegram-bot" && (
+            <div className="mt-12 flex justify-start">
+              {project.trylink ? (
+                <BentoButton href={project.trylink} variant="primary" size="default">
+                  Попробовать
+                </BentoButton>
+              ) : (
+                <BentoButton
+                  onClick={() =>
+                    setContactModal({
+                      isOpen: true,
+                      projectTitle: project.title ?? null,
+                    })
+                  }
+                  variant="primary"
+                  size="default"
+                >
+                  Заказать настройку
+                </BentoButton>
+              )}
+            </div>
+          )}
         </div>
 
         {modalImageUrl && <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />}
