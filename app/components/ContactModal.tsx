@@ -36,6 +36,9 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
   const [fileError, setFileError] = useState<string | null>(null); // New state for file error
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [validationErrors, setValidationErrors] = useState<{ field: string; message: string }[]>(
+    []
+  );
 
   // Reset view and states when the modal is closed
   useEffect(() => {
@@ -43,6 +46,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
       setTimeout(() => {
         setView("main");
         setStatusMessage("");
+        setValidationErrors([]);
         setFormData({ name: "", contact: "", message: "" });
         setFile(null);
         setFileError(null); // Reset file error
@@ -79,6 +83,8 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear validation errors for this field when user starts typing
+    setValidationErrors((prev) => prev.filter((error) => error.field !== name));
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +113,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
     e.preventDefault();
     setIsSubmitting(true);
     setStatusMessage("");
+    setValidationErrors([]);
 
     if (fileError) {
       // Prevent submission if there's a file error
@@ -138,6 +145,10 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
         setView("success");
       } else {
         setStatusMessage(result.message ?? "Произошла ошибка.");
+        // Store validation errors if present
+        if (result.errors && Array.isArray(result.errors)) {
+          setValidationErrors(result.errors);
+        }
       }
     } catch {
       setStatusMessage("Ошибка сети. Попробуйте снова.");
@@ -326,6 +337,16 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
                 >
                   {statusMessage}
                 </p>
+              )}
+              {validationErrors.length > 0 && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-600 font-semibold mb-2">Исправьте следующие ошибки:</p>
+                  <ul className="text-red-500 text-sm list-disc list-inside">
+                    {validationErrors.map((error, index) => (
+                      <li key={index}>{error.message}</li>
+                    ))}
+                  </ul>
+                </div>
               )}
               <button
                 type="submit"

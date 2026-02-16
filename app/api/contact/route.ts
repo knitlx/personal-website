@@ -40,10 +40,10 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const rawData = {
-      name: formData.get("name") as string,
-      contact: formData.get("contact") as string,
-      message: formData.get("message") as string,
-      projectTitle: formData.get("projectTitle") as string | null,
+      name: (formData.get("name") as string) ?? "",
+      contact: (formData.get("contact") as string) ?? "",
+      message: (formData.get("message") as string) ?? "",
+      projectTitle: (formData.get("projectTitle") as string) || undefined,
     };
     if (isDevelopment) {
       console.log("Received rawData for validation:", rawData);
