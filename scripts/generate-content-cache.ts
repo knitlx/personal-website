@@ -71,7 +71,7 @@ function generateCache() {
     generatedAt: new Date().toISOString(),
   };
 
-  const cachePath = path.join(process.cwd(), "public", "content-cache.json");
+  const cachePath = path.join(process.cwd(), ".content-cache.json");
   fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2));
 
   console.log(`\n✅ Cache generated successfully!`);

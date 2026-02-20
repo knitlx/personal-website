@@ -93,7 +93,7 @@ function loadCache(forceReload = false): ContentCache {
     return memoryCache;
   }
 
-  const cachePath = path.join(process.cwd(), "public", "content-cache.json");
+  const cachePath = path.join(process.cwd(), ".content-cache.json");
 
   if (!fs.existsSync(cachePath)) {
     console.warn("Content cache file not found. Generate it with: npm run cache:generate");
