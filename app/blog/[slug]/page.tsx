@@ -3,8 +3,9 @@ import { getMarkdownFile, ContentItem } from "@/lib/content";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw"; // Import rehypeRaw
-import MarkdownImage from "../../components/MarkdownImage"; // Import MarkdownImage
+import rehypeRaw from "rehype-raw";
+import MarkdownImage from "../../components/MarkdownImage";
+import PromptBlock from "../../components/PromptBlock";
 import { Metadata } from "next";
 
 interface PostPageProps {
@@ -134,9 +135,23 @@ export default async function PostPage({ params }: PostPageProps) {
           <article className="prose lg:prose-xl max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]} // Add rehypeRaw to handle raw HTML
+              rehypePlugins={[rehypeRaw]}
               components={{
                 img: ({ ...props }) => <MarkdownImage {...props} />,
+                code: (props: any) => {
+                  const className = props.className || "";
+                  const isInline = !className;
+
+                  if (className.includes("language-prompt") && !isInline) {
+                    return <PromptBlock>{props.children}</PromptBlock>;
+                  }
+
+                  return (
+                    <code className={className} {...props}>
+                      {props.children}
+                    </code>
+                  );
+                },
               }}
             >
               {post.articleBody}
