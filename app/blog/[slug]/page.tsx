@@ -113,7 +113,7 @@ export default async function PostPage({ params }: PostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="bg-white py-16">
-        <div className="container mx-auto max-w-3xl px-4">
+        <div className="container mx-auto max-w-4xl px-4">
           <h1 className="text-4xl md:text-5xl font-bold font-unbounded-fix mb-4">
             {postFile.data.title}
           </h1>
@@ -134,7 +134,7 @@ export default async function PostPage({ params }: PostPageProps) {
             </div>
           )}
 
-          <article className="prose lg:prose-xl max-w-none">
+          <article className="prose lg:prose-xl max-w-4xl">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
