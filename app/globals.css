@@ -16,6 +16,15 @@
   --text-color: #333333; /* Темный текст */
 }
 
+/* Markdown typography styles for .prose */
+.prose h2 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
 /* Custom CSS for Logo Hover Effect */
 .logo {
   transition:

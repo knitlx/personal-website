@@ -2,24 +2,25 @@
 title: >-
   Почему Claude Code, Cursor и OpenCode не понимают собственную архитектуру и не
   используют skills автоматически
-date: '2026-02-20'
-creationDate: '2026-02-20T13:38:46.580Z'
-updateDate: '2026-02-20T13:41:56.745Z'
-seoTitle: 'Почему Claude Code, Cursor и OpenCode не используют skills автоматически'
+date: "2026-02-20"
+creationDate: "2026-02-20T13:38:46.580Z"
+updateDate: "2026-02-20T13:41:56.745Z"
+seoTitle: "Почему Claude Code, Cursor и OpenCode не используют skills автоматически"
 seoDescription: >
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
   работают автоматически и как правильно их настроить.
-seoTags: 'opencode, cursor, claude code, skills, vibe-coding'
+seoTags: "opencode, cursor, claude code, skills, vibe-coding"
 canonicalUrl: /blog/claude-code-cursor-opencode-skills-ne-ispolzuyutsya
-openGraphImage: ''
+openGraphImage: ""
 sortOrder: 1
-slug: claude-code-cursor-opencode-skills-ne-ispolzuyutsya
+slug: "claude-code-cursor-opencode-skills-ne-ispolzuyutsya"
 description: >-
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
   работают автоматически и как правильно их настроить.
 tags:
   - opencode
 ---
+
 Агентные среды разработки, такие как Claude Code, Cursor, OpenCode и другие, создают ощущение, что модель понимает систему, внутри которой работает. На практике это не так.
 
 Я столкнулась с этим, когда пыталась настроить OpenCode под свои задачи и обнаружила, что модель не понимает собственную конфигурацию.
@@ -62,9 +63,7 @@ tags:
 
 Вот его ключевая часть:
 
-
-
-```
+```prompt
 ---
 name: using-superpowers
 description: Establishes how to find and use skills. Requires invoking skills before any response.
