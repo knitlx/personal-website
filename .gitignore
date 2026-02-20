@@ -52,4 +52,4 @@ logs/
 next-env.d.ts
 
 node_modules
-.env
+.envAGENTS.md
