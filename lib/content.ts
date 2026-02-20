@@ -33,8 +33,8 @@ interface ContentCache {
   generatedAt: string;
 }
 
-// In-memory cache to avoid reading JSON file on every request
-let memoryCache: ContentCache | null = null;
+// Note: No in-memory cache - Next.js runs multiple processes on production
+// Each process would have its own cache, causing stale data issues
 
 // Define a more comprehensive ContentItem interface
 export interface ContentItem {
@@ -81,34 +81,24 @@ const contentDirectory = path.join(process.cwd(), "content");
 // Regenerate cache (call this after content changes)
 export async function regenerateCache(): Promise<void> {
   const { generateCache } = await import("../scripts/generate-content-cache");
-  memoryCache = null; // Clear in-memory cache FIRST
-  await generateCache(); // Then regenerate (this updates the file)
-  loadCache(true); // Force reload the updated cache into memory
+  await generateCache();
 }
 
-// Load cache from JSON file (with in-memory caching)
-function loadCache(forceReload = false): ContentCache {
-  // Return in-memory cache if available and not forcing reload
-  if (memoryCache && !forceReload) {
-    return memoryCache;
-  }
-
+// Load cache from JSON file (reads fresh on every call)
+function loadCache(): ContentCache {
   const cachePath = path.join(process.cwd(), ".content-cache.json");
 
   if (!fs.existsSync(cachePath)) {
     console.warn("Content cache file not found. Generate it with: npm run cache:generate");
-    memoryCache = { blogs: [], projects: [], generatedAt: new Date().toISOString() };
-    return memoryCache;
+    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
   }
 
   try {
     const cacheContent = fs.readFileSync(cachePath, "utf-8");
-    memoryCache = JSON.parse(cacheContent) as ContentCache;
-    return memoryCache!;
+    return JSON.parse(cacheContent) as ContentCache;
   } catch (error) {
     console.error("Error loading content cache:", error);
-    memoryCache = { blogs: [], projects: [], generatedAt: new Date().toISOString() };
-    return memoryCache!;
+    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
   }
 }
 
