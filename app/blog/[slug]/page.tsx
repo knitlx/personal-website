@@ -8,6 +8,8 @@ import MarkdownImage from "../../components/MarkdownImage";
 import PromptBlock from "../../components/PromptBlock";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 interface PostPageProps {
   params: {
     slug: string;
@@ -138,8 +140,8 @@ export default async function PostPage({ params }: PostPageProps) {
               rehypePlugins={[rehypeRaw]}
               components={{
                 img: ({ ...props }) => <MarkdownImage {...props} />,
-                code: (props: any) => {
-                  const className = props.className || "";
+                code: (props: React.HTMLAttributes<HTMLElement>) => {
+                  const className = props.className ?? "";
                   const isInline = !className;
 
                   if (className.includes("language-prompt") && !isInline) {

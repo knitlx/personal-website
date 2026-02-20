@@ -1,7 +1,9 @@
 import { getMarkdownFile, ContentItem } from "@/lib/content";
 import { notFound } from "next/navigation";
-import ProjectDetailClient from "../components/ProjectDetailClient"; // Import the new Client Component
+import ProjectDetailClient from "../components/ProjectDetailClient";
 import { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 interface ProjectDetailPageProps {
   params: {

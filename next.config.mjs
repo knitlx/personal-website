@@ -1,5 +1,3 @@
-import typography from "@tailwindcss/typography";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {

@@ -2,6 +2,8 @@ import { getAllContent } from "@/lib/content";
 import InfiniteScrollProjects from "./components/InfiniteScrollProjects";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Проекты и кейсы автоматизации и AI-решений | NoChaos",
   description:

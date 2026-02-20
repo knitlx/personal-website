@@ -3,6 +3,8 @@ import InfiniteScrollBlog from "./components/InfiniteScrollBlog";
 import { PAGINATION } from "@/lib/constants";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Блог про автоматизацию, AI и цифровые процессы | NoChaos",
   description:
