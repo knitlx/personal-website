@@ -83,7 +83,7 @@ export async function regenerateCache(): Promise<void> {
   const { generateCache } = await import("../scripts/generate-content-cache");
   memoryCache = null; // Clear in-memory cache FIRST
   await generateCache(); // Then regenerate (this updates the file)
-  memoryCache = null; // Clear again to force reload on next loadCache() call
+  loadCache(true); // Force reload the updated cache into memory
 }
 
 // Load cache from JSON file (with in-memory caching)
@@ -97,7 +97,8 @@ function loadCache(forceReload = false): ContentCache {
 
   if (!fs.existsSync(cachePath)) {
     console.warn("Content cache file not found. Generate it with: npm run cache:generate");
-    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+    memoryCache = { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+    return memoryCache;
   }
 
   try {
@@ -106,7 +107,8 @@ function loadCache(forceReload = false): ContentCache {
     return memoryCache!;
   } catch (error) {
     console.error("Error loading content cache:", error);
-    return { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+    memoryCache = { blogs: [], projects: [], generatedAt: new Date().toISOString() };
+    return memoryCache!;
   }
 }
 
