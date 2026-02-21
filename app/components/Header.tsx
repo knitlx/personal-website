@@ -5,6 +5,11 @@ import Link from "next/link";
 import ContactModal from "./ContactModal";
 import BentoButton from "./BentoButton";
 
+const navLinkClass =
+  "no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100";
+
+const mobileNavLinkClass = "block text-[#333333] text-lg font-medium py-2 no-underline";
+
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,42 +29,22 @@ function Header() {
           <nav className="hidden lg:flex main-nav mx-auto">
             <ul className="list-none flex items-center">
               <li className="ml-[25px]">
-                <Link
-                  href="/services"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
-                                                 after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px]
-                                                                                                  after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-                >
+                <Link href="/services" className={navLinkClass}>
                   Услуги
                 </Link>
               </li>
               <li className="ml-[25px]">
-                <Link
-                  href="/projects"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
-                                           after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px]
-                                                                                            after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-                >
+                <Link href="/projects" className={navLinkClass}>
                   Проекты
                 </Link>
               </li>
               <li className="ml-[25px]">
-                <Link
-                  href="/about"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
-                                             after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px]
-                                                                                              after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-                >
+                <Link href="/about" className={navLinkClass}>
                   Обо мне
                 </Link>
               </li>
               <li className="ml-[25px]">
-                <Link
-                  href="/blog"
-                  className="no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent
-                                           after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px]
-                                                                                            after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100"
-                >
+                <Link href="/blog" className={navLinkClass}>
                   Блог
                 </Link>
               </li>
@@ -111,7 +96,7 @@ function Header() {
                 <li>
                   <Link
                     href="/services"
-                    className="block text-[#333333] text-lg font-medium py-2 no-underline"
+                    className={mobileNavLinkClass}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Услуги
@@ -120,7 +105,7 @@ function Header() {
                 <li>
                   <Link
                     href="/projects"
-                    className="block text-[#333333] text-lg font-medium py-2 no-underline"
+                    className={mobileNavLinkClass}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Проекты
@@ -129,7 +114,7 @@ function Header() {
                 <li>
                   <Link
                     href="/about"
-                    className="block text-[#333333] text-lg font-medium py-2 no-underline"
+                    className={mobileNavLinkClass}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Обо мне
@@ -138,7 +123,7 @@ function Header() {
                 <li>
                   <Link
                     href="/blog"
-                    className="block text-[#333333] text-lg font-medium py-2 no-underline"
+                    className={mobileNavLinkClass}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Блог
