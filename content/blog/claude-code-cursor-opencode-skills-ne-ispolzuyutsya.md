@@ -4,7 +4,7 @@ title: >-
   используют skills автоматически
 date: '2026-02-20'
 creationDate: '2026-02-20T13:38:46.580Z'
-updateDate: '2026-02-22T09:20:05.376Z'
+updateDate: '2026-02-22T09:21:15.277Z'
 seoTitle: 'Почему Claude Code, Cursor и OpenCode не используют skills автоматически'
 seoDescription: >
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
@@ -86,19 +86,14 @@ description: Establishes how to find and use skills. Requires invoking skills be
 <EXTREMELY-IMPORTANT>
 
 If there is even a 1% chance a skill might apply, you MUST invoke it.
-
 If a relevant skill exists, you DO NOT have a choice. You MUST use it.
-
 This rule applies BEFORE any response, including clarifying questions.
 
 </EXTREMELY-IMPORTANT>
 
 ## The Rule
-
 Invoke relevant skills before taking any action.
-
 Do not answer, explore, or gather information until you have checked for applicable skills.
-
 If a skill applies, follow it exactly.
 ```
 
