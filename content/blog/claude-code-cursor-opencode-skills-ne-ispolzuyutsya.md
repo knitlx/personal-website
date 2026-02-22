@@ -4,7 +4,7 @@ title: >-
   используют skills автоматически
 date: '2026-02-20'
 creationDate: '2026-02-20T13:38:46.580Z'
-updateDate: '2026-02-22T09:41:10.366Z'
+updateDate: '2026-02-22T09:41:22.630Z'
 seoTitle: 'Почему Claude Code, Cursor и OpenCode не используют skills автоматически'
 seoDescription: >
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
@@ -17,8 +17,7 @@ slug: claude-code-cursor-opencode-skills-ne-ispolzuyutsya
 description: >-
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
   работают автоматически и как правильно их настроить.
-tags:
-  - opencode
+tags: []
 ---
 Агентные среды разработки, такие как Claude Code, Cursor, OpenCode и другие, создают ощущение, что модель понимает систему, внутри которой работает. На практике это не так.
 
