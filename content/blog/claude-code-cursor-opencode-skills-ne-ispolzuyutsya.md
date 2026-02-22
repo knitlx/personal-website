@@ -4,7 +4,7 @@ title: >-
   используют skills автоматически
 date: '2026-02-20'
 creationDate: '2026-02-20T13:38:46.580Z'
-updateDate: '2026-02-22T09:17:30.458Z'
+updateDate: '2026-02-22T09:19:22.610Z'
 seoTitle: 'Почему Claude Code, Cursor и OpenCode не используют skills автоматически'
 seoDescription: >
   Практическое объяснение, почему skills в Claude Code, Cursor и OpenCode не
@@ -69,7 +69,8 @@ tags:
 
 ## Как я решила проблему
 
-В качестве основы я использовала архитектуру из проекта Superpowers: https://github.com/obra/superpowers 
+В качестве основы я использовала архитектуру из проекта Superpowers:
+https://github.com/obra/superpowers 
 
 Superpowers — это open-source набор skills и правил работы для агентных сред разработки. Ключевой элемент — отдельный стартовый скилл, который загружается в начале сессии и определяет правила использования всех остальных.
 
