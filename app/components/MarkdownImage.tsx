@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useMemo } from "react";
+import { ComponentProps } from "react";
 
 interface MarkdownImageProps extends ComponentProps<"img"> {
   src?: string | Blob;
@@ -16,18 +16,7 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
   onImageClick,
   ...props
 }) => {
-  const objectUrl = useMemo(() => {
-    if (src instanceof Blob) return URL.createObjectURL(src);
-    return null;
-  }, [src]);
-
-  useEffect(() => {
-    return () => {
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
-  }, [objectUrl]);
-
-  const imageSrc = objectUrl ?? (typeof src === "string" ? src : undefined);
+  const imageSrc = typeof src === "string" ? src : undefined;
 
   if (!imageSrc || typeof imageSrc !== "string") return null;
 
