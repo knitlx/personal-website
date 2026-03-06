@@ -1,5 +1,3 @@
-import Image from "next/image"; // Add this import
-
 interface ImageUploadFieldProps {
   id: string;
   label: string;
@@ -90,11 +88,13 @@ export default function ImageUploadField({
       {previewUrl && (
         <div className="mt-2">
           <p className="text-sm font-medium text-gray-700">{previewLabel ?? "Предпросмотр:"}</p>
-          <Image // Changed from img to Image
+          <img
             src={previewUrl}
             alt="Preview"
             width={previewWidth}
             height={previewHeight}
+            loading="lazy"
+            decoding="async"
             className="rounded-md object-cover border border-gray-200"
           />
         </div>
