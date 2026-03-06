@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
 creationDate: ''
-updateDate: '2026-03-06T06:09:32.204Z'
+updateDate: '2026-03-06T07:40:16.570Z'
 seoTitle: Финансовый Telegram-бот для учёта доходов и расходов
 seoDescription: >-
   Telegram-бот для учёта личных финансов. Доходы и расходы добавляются через чат
@@ -50,8 +50,6 @@ introDescription: >-
 * иметь наглядную сводку по данным
 
 Проект изначально делался для личного использования, поэтому упор был на практичность и устойчивую работу.
-
-![image](/uploads/______________2569-03-06___13_05_27-1772777255304.webp)
 
 ### Как устроено решение
 
