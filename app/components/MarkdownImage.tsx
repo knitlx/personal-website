@@ -23,8 +23,8 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
   const parseSizeHint = (value: string | undefined): { width?: string; height?: string } => {
     if (!value) return {};
 
-    const widthMatch = value.match(/\b(?:w|width)\s*=\s*([0-9]+%?)\b/i);
-    const heightMatch = value.match(/\b(?:h|height)\s*=\s*([0-9]+%?)\b/i);
+    const widthMatch = value.match(/(?:^|\s)(?:w|width)\s*=\s*([0-9]+(?:%)?)(?=\s|$)/i);
+    const heightMatch = value.match(/(?:^|\s)(?:h|height)\s*=\s*([0-9]+(?:%)?)(?=\s|$)/i);
 
     const toCssSize = (raw: string | undefined): string | undefined => {
       if (!raw) return undefined;
@@ -83,7 +83,7 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
     <button
       type="button"
       onClick={handleClick}
-      className="block p-0 border-none bg-transparent cursor-pointer"
+      className="inline-block p-0 border-none bg-transparent cursor-pointer align-top"
       aria-label={alt ? `Открыть изображение: ${alt}` : "Открыть изображение"}
     >
       {image}

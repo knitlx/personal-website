@@ -17,4 +17,20 @@ describe("MarkdownImage", () => {
     const image = screen.getByAltText("Sized image");
     expect(image).toHaveStyle({ width: "420px", height: "240px" });
   });
+
+  it("keeps percent-based width as percent", () => {
+    render(<MarkdownImage src="/uploads/test.webp" alt="Percent image" title="w=60%" />);
+
+    const image = screen.getByAltText("Percent image");
+    expect(image).toHaveStyle({ width: "60%" });
+  });
+
+  it("uses inline wrapper when image is clickable", () => {
+    render(
+      <MarkdownImage src="/uploads/test.webp" alt="Clickable image" onImageClick={jest.fn()} />
+    );
+
+    const button = screen.getByRole("button", { name: "Открыть изображение: Clickable image" });
+    expect(button).toHaveClass("inline-block");
+  });
 });
