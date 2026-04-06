@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useEffect, useCallback } from "react"; // Add useCallback
-import Image from "next/image";
 
 interface ImageModalProps {
   imageUrl: string;
@@ -78,13 +77,12 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
           &times;
         </button>
         <div className="relative h-full w-full overflow-hidden">
-          <Image
+          <img
             src={imageUrl}
             alt="Просмотр изображения в полном размере"
-            fill
-            sizes="(max-width: 1024px) 100vw, 1024px" // Adjust sizes based on your layout
-            style={{ objectFit: "contain" }}
-            className="select-none"
+            loading="eager"
+            decoding="async"
+            className="h-full w-full select-none object-contain"
           />
         </div>
       </div>
