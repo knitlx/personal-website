@@ -42,7 +42,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 flex justify-center items-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
       // Modify onClick to only close if the actual overlay is clicked
       onClick={(e) => {
         if (e.target === e.currentTarget) {
@@ -56,7 +56,8 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
       tabIndex={0} // Changed to 0 so it's focusable by keyboard for onKeyDown, or -1 as before if only Escape is global
     >
       <div
-        className="relative p-4 bg-white rounded-lg shadow-lg"
+        data-testid="image-modal-frame"
+        className="relative h-[min(88vh,900px)] w-[min(96vw,1200px)] rounded-lg bg-white p-4 shadow-lg"
         // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed
         role="document"
       >
@@ -76,7 +77,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
         >
           &times;
         </button>
-        <div className="relative w-full h-full">
+        <div className="relative h-full w-full overflow-hidden rounded-md">
           <Image
             src={imageUrl}
             alt="Просмотр изображения в полном размере"
