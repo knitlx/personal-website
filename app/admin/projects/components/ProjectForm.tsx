@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { generateSlug } from "@/lib/slug";
+import { appendMarkdownImage } from "@/lib/markdown";
 import { useFormState } from "@/hooks/useFormState";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useGalleryModal } from "@/contexts/ModalContext";
@@ -248,7 +249,7 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
         try {
           const imageUrl = await handleMDEditorImageUpload(file);
           const currentContent = formData[field] ?? "";
-          handleRichTextChange(field, `${currentContent}\n![image](${imageUrl})\n`);
+          handleRichTextChange(field, appendMarkdownImage(currentContent, imageUrl));
           event.target.value = "";
         } catch {
           // Ошибка уже обработана
@@ -256,6 +257,18 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
       }
     },
     [handleMDEditorImageUpload, formData, handleRichTextChange]
+  );
+
+  const handleInsertImageFromGallery = useCallback(
+    (field: "introDescription" | "fullDescription") => {
+      openGalleryModal((url: string) => {
+        setFormData((prev) => ({
+          ...prev,
+          [field]: appendMarkdownImage((prev[field] as string | undefined) ?? "", url),
+        }));
+      });
+    },
+    [openGalleryModal, setFormData]
   );
 
   // Обертка для handleSubmit с вызовом handleFormSubmit
@@ -422,6 +435,13 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
         >
           Загрузить изображение
         </button>
+        <button
+          type="button"
+          onClick={() => handleInsertImageFromGallery("introDescription")}
+          className="mt-2 ml-2 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Вставить из галереи
+        </button>
       </div>
 
       {/* Rich Text Editor for Full Description */}
@@ -453,6 +473,13 @@ export default function ProjectForm({ initialData, baseUrl }: ProjectFormProps) 
           className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Загрузить изображение
+        </button>
+        <button
+          type="button"
+          onClick={() => handleInsertImageFromGallery("fullDescription")}
+          className="mt-2 ml-2 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Вставить из галереи
         </button>
       </div>
 

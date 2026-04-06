@@ -57,7 +57,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
     >
       <div
         data-testid="image-modal-frame"
-        className="relative h-[min(88vh,900px)] w-[min(96vw,1200px)] rounded-lg bg-white p-4 shadow-lg"
+        className="relative h-[min(88vh,900px)] w-[min(96vw,1200px)]"
         // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed
         role="document"
       >
@@ -66,7 +66,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
         </h2>
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-black bg-white rounded-full p-1 text-2xl leading-none hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="absolute right-2 top-2 z-20 rounded-full bg-white/95 p-1 text-2xl leading-none text-black hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
           style={{
             width: "30px",
             height: "30px",
@@ -77,14 +77,14 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
         >
           &times;
         </button>
-        <div className="relative h-full w-full overflow-hidden rounded-md">
+        <div className="relative h-full w-full overflow-hidden">
           <Image
             src={imageUrl}
             alt="Просмотр изображения в полном размере"
             fill
             sizes="(max-width: 1024px) 100vw, 1024px" // Adjust sizes based on your layout
             style={{ objectFit: "contain" }}
-            className="rounded-lg" // Apply any existing styles if needed
+            className="select-none"
           />
         </div>
       </div>

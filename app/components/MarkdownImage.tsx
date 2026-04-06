@@ -20,6 +20,46 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
 
   if (!imageSrc || typeof imageSrc !== "string") return null;
 
+  const parseSizeHint = (value: string | undefined): { width?: string; height?: string } => {
+    if (!value) return {};
+
+    const widthMatch = value.match(/\b(?:w|width)\s*=\s*([0-9]+%?)\b/i);
+    const heightMatch = value.match(/\b(?:h|height)\s*=\s*([0-9]+%?)\b/i);
+
+    const toCssSize = (raw: string | undefined): string | undefined => {
+      if (!raw) return undefined;
+      return raw.endsWith("%") ? raw : `${raw}px`;
+    };
+
+    return {
+      width: toCssSize(widthMatch?.[1]),
+      height: toCssSize(heightMatch?.[1]),
+    };
+  };
+
+  const sizeFromTitle = parseSizeHint(title);
+  const widthFromProp =
+    typeof props.width === "number"
+      ? `${props.width}px`
+      : typeof props.width === "string"
+        ? props.width
+        : undefined;
+  const heightFromProp =
+    typeof props.height === "number"
+      ? `${props.height}px`
+      : typeof props.height === "string"
+        ? props.height
+        : undefined;
+
+  const hasExplicitWidth = Boolean(sizeFromTitle.width ?? widthFromProp);
+  const finalStyle = {
+    width: sizeFromTitle.width ?? widthFromProp,
+    height: sizeFromTitle.height ?? heightFromProp,
+  };
+  const imageClassName = hasExplicitWidth
+    ? "h-auto max-w-full"
+    : "h-auto w-full max-w-[min(100%,760px)]";
+
   const handleClick = () => {
     onImageClick?.(imageSrc);
   };
@@ -31,7 +71,8 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
       title={title}
       loading="lazy"
       decoding="async"
-      className="max-w-full h-auto"
+      className={imageClassName}
+      style={finalStyle}
       {...props}
     />
   );

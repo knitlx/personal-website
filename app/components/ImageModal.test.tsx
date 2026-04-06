@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import ImageModal from "./ImageModal";
 
 jest.mock("next/image", () => {
@@ -22,5 +22,13 @@ describe("ImageModal", () => {
     const frame = screen.getByTestId("image-modal-frame");
     expect(frame).toHaveClass("w-[min(96vw,1200px)]");
     expect(frame).toHaveClass("h-[min(88vh,900px)]");
+  });
+
+  it("closes when close button is clicked", () => {
+    const onClose = jest.fn();
+    render(<ImageModal imageUrl="/uploads/test.webp" onClose={onClose} />);
+
+    fireEvent.click(screen.getByLabelText("Закрыть просмотр изображения"));
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

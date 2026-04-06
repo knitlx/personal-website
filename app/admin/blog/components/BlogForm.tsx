@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { generateSlug } from "@/lib/slug";
+import { appendMarkdownImage } from "@/lib/markdown";
 import { useFormState } from "@/hooks/useFormState";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useGalleryModal } from "@/contexts/ModalContext";
@@ -182,7 +183,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           const imageUrl = await handleMDEditorImageUpload(file);
           setFormData((prev) => ({
             ...prev,
-            articleBody: `${prev.articleBody}\n![image](${imageUrl})\n`,
+            articleBody: appendMarkdownImage(prev.articleBody ?? "", imageUrl),
           }));
           event.target.value = "";
         } catch {
@@ -192,6 +193,15 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
     },
     [handleMDEditorImageUpload, setFormData]
   );
+
+  const handleInsertFromGalleryToArticleBody = useCallback(() => {
+    openGalleryModal((url: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        articleBody: appendMarkdownImage(prev.articleBody ?? "", url),
+      }));
+    });
+  }, [openGalleryModal, setFormData]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -313,6 +323,13 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
           className="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Загрузить изображение в статью
+        </button>
+        <button
+          type="button"
+          onClick={handleInsertFromGalleryToArticleBody}
+          className="mt-2 ml-2 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Вставить из галереи
         </button>
       </div>
 
