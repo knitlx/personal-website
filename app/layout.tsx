@@ -8,6 +8,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import ModalManager from "./components/ModalManager";
 import YandexMetrika from "./components/YandexMetrika";
 import GoogleAnalytics from "./components/GoogleAnalytics";
+import ChatWidgetDynamic from "./components/ChatWidgetDynamic";
 
 const fontInter = FontInter({
   subsets: ["latin"],
@@ -116,6 +117,7 @@ export default function RootLayout({
             </div>
           </ErrorBoundary>
           <ModalManager />
+          <ChatWidgetDynamic />
         </Providers>
       </body>
     </html>
