@@ -24,8 +24,13 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isGreetingTyping, setIsGreetingTyping] = useState(false);
   const [chatId, setChatId] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const storedChatId = localStorage.getItem(STORAGE_KEY);
@@ -148,6 +153,8 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <>
