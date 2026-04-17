@@ -49,7 +49,12 @@ export default function InfiniteScrollProjects({
         const data = await response.json();
 
         if (data.projects && data.projects.length > 0) {
-          setVisibleProjects((prev) => [...prev, ...data.projects]);
+          setVisibleProjects((prev) => {
+            // Filter out duplicates based on slug
+            const existingSlugs = new Set(prev.map((p) => p.slug));
+            const newProjects = data.projects.filter((p: Project) => !existingSlugs.has(p.slug));
+            return [...prev, ...newProjects];
+          });
           setPage(pageNum);
           setHasMore(data.pagination.hasNextPage);
         } else {

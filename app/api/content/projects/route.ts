@@ -8,6 +8,14 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") ?? "10", 10);
 
     const allProjects = getCachedMetadata("projects");
+
+    // Sort by sortOrder to ensure consistent pagination
+    allProjects.sort((a, b) => {
+      const orderA = (a.sortOrder as number | undefined) ?? Infinity;
+      const orderB = (b.sortOrder as number | undefined) ?? Infinity;
+      return orderA - orderB;
+    });
+
     const totalItems = allProjects.length;
     const totalPages = Math.ceil(totalItems / limit);
     const startIndex = (page - 1) * limit;
