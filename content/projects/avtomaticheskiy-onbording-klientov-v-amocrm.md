@@ -12,7 +12,7 @@ projectIcon: >-
   /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview________-1776439444367.webp
 trylink: ''
 creationDate: ''
-updateDate: '2026-04-17T15:29:41.543Z'
+updateDate: '2026-04-17T15:30:19.425Z'
 seoTitle: Автоматический онбординг клиентов в AmoCRM — автоматизация после продажи
 seoDescription: >-
   Автоматизация онбординга в AmoCRM: email клиенту при закрытии сделки, задача
@@ -22,7 +22,7 @@ seoTags: >-
   amocrm, онбординг, автоматизация, n8n, crm, постпродажа, обработка клиентов,
   вебхук, задачи в amocrm, воронки продаж
 canonicalUrl: /projects/avtomaticheskiy-onbording-klientov-v-amocrm
-openGraphImage: ''
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: ''
 sortOrder: 0
 introDescription: >-
