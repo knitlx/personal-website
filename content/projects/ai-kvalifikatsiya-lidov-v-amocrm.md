@@ -12,7 +12,7 @@ projectIcon: >-
   /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview-1776434210148.webp
 trylink: ''
 creationDate: ''
-updateDate: '2026-04-17T15:30:00.907Z'
+updateDate: '2026-04-17T15:30:11.060Z'
 seoTitle: AI-квалификация лидов в AmoCRM — автоматизация обработки заявок
 seoDescription: >-
   Автоматическая обработка входящих лидов в AmoCRM с помощью AI и n8n.
@@ -22,7 +22,7 @@ seoTags: >-
   amocrm, ai, автоматизация, лидогенерация, n8n, crm, обработка заявок,
   квалификация лидов, deepseek, dadata, вебхук, интеграция amocrm
 canonicalUrl: /projects/ai-kvalifikatsiya-lidov-v-amocrm
-openGraphImage: ''
+openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: Service
 sortOrder: 6
 introDescription: >-
