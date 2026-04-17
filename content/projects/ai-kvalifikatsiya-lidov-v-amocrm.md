@@ -8,10 +8,11 @@ shortDescriptionProjectsPage: >-
   AI квалифицирует лидов по категориям hot/warm/cold, система ищет данные
   компании через Dadata по корпоративному email и создаёт структурированную
   сделку с тегами и приоритетом без ручной работы менеджера.
-projectIcon: ''
+projectIcon: >-
+  /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview-1776434210148.webp
 trylink: ''
 creationDate: ''
-updateDate: '2026-04-17T13:57:54.493Z'
+updateDate: '2026-04-17T15:23:10.542Z'
 seoTitle: AI-квалификация лидов в AmoCRM — автоматизация обработки заявок
 seoDescription: >-
   Автоматическая обработка входящих лидов в AmoCRM с помощью AI и n8n.
