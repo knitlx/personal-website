@@ -12,7 +12,7 @@ projectIcon: >-
   /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview________-1776439444367.webp
 trylink: ''
 creationDate: ''
-updateDate: '2026-04-17T15:32:19.076Z'
+updateDate: '2026-04-17T15:34:01.943Z'
 seoTitle: Автоматический онбординг клиентов в AmoCRM — автоматизация после продажи
 seoDescription: >-
   Автоматизация онбординга в AmoCRM: email клиенту при закрытии сделки, задача
@@ -24,7 +24,7 @@ seoTags: >-
 canonicalUrl: /projects/avtomaticheskiy-onbording-klientov-v-amocrm
 openGraphImage: /uploads/og-image-1768508018434.webp
 schemaType: ''
-sortOrder: 0
+sortOrder: 10
 introDescription: >-
   Автоматизация запускается при закрытии сделки: клиенту отправляется email,
   менеджеру создаётся задача на звонок, а клиент переходит в отдельную воронку
