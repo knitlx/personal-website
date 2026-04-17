@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -49,13 +48,12 @@ export default function ProjectsClientPage({ projects }: ProjectsClientPageProps
           >
             <Link href={`/projects/${project.slug}`} className="flex items-center mb-4 group">
               {project.projectIcon && (
-                <Image
+                <img
                   src={project.projectIcon}
                   alt={project.title ?? "Project icon"}
                   width={40}
                   height={40}
-                  sizes="40px"
-                  className="rounded-lg mr-4"
+                  className="rounded-lg mr-4 object-cover"
                 />
               )}
               <h2 className="text-2xl font-semibold group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-primary group-hover:bg-clip-text group-hover:text-transparent transition-colors">

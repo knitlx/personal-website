@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import ImageModal from "../../components/ImageModal";
 import ContactModal from "../../components/ContactModal";
 import BentoButton from "../../components/BentoButton";
@@ -45,12 +44,12 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
         <div className="container mx-auto max-w-4xl">
           <div className="flex items-center mb-8">
             {project.projectIcon && (
-              <Image
+              <img
                 src={project.projectIcon}
                 alt={project.title ?? "Project icon"}
                 width={60}
                 height={60}
-                className="rounded-xl mr-6"
+                className="rounded-xl mr-6 object-cover"
               />
             )}
             <h1 className="text-5xl font-bold font-unbounded-fix">{project.title}</h1>

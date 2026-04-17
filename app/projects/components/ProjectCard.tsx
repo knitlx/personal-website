@@ -1,8 +1,6 @@
 import { memo } from "react";
 import Link from "next/link";
-import Image from "next/image"; // Add this import
 import BentoButton from "../../components/BentoButton";
-import { getImageUrl } from "@/lib/image";
 
 interface ProjectCardProps {
   project: {
@@ -21,12 +19,12 @@ function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
     <div className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full">
       <Link href={`/projects/${project.slug}`} className="flex items-center mb-4 group">
         {project.projectIcon && (
-          <Image // Changed from img to Image
-            src={getImageUrl(project.projectIcon)}
+          <img
+            src={project.projectIcon}
             alt={project.title ?? "Project icon"}
             width={40}
             height={40}
-            className="rounded-lg mr-4"
+            className="rounded-lg mr-4 object-cover"
           />
         )}
         <h2 className="text-2xl font-semibold group-hover:bg-gradient-to-r group-hover:from-[var(--accent-color)] group-hover:to-[var(--primary-color)] group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">

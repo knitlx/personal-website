@@ -24,11 +24,19 @@ export async function POST(req: NextRequest) {
   try {
     const projectData = await req.json();
 
-    // Convert localhost URLs to relative paths for production compatibility
+    // Convert full URLs to relative paths for production compatibility
     const processUrl = (url: string | undefined): string => {
       if (!url) return "";
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-      return url.replace(siteUrl, "");
+      // If it's already a relative path, return as is
+      if (url.startsWith("/")) return url;
+      // Convert full URLs to relative paths
+      try {
+        const urlObj = new URL(url);
+        return urlObj.pathname;
+      } catch {
+        // If not a valid URL, return as is (might be a relative path without leading /)
+        return url;
+      }
     };
 
     projectData.projectIcon = processUrl(projectData.projectIcon);
