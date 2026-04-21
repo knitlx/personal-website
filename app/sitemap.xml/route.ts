@@ -52,6 +52,12 @@ export async function GET() {
       changefreq: "monthly",
       file: "app/services/page.tsx",
     },
+    {
+      url: "/privacy",
+      priority: "0.3",
+      changefreq: "yearly",
+      file: "app/privacy/page.tsx",
+    },
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
