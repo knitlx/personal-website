@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
-    <div className="relative flex flex-col pt-8 pb-8 min-h-[calc(100vh-120px)]">
+    <main className="relative flex flex-col pt-8 pb-8 min-h-[calc(100vh-120px)]">
       {/* Subtle Background Shapes */}
       <div className="absolute top-10 left-0 w-80 h-80 bg-gradient-to-r from-purple-200 to-blue-200 rounded-full opacity-20 filter blur-3xl -z-10 animate-blob mix-blend-multiply" />
       <div className="absolute bottom-20 right-0 w-96 h-96 bg-gradient-to-r from-pink-200 to-yellow-200 rounded-full opacity-20 filter blur-3xl -z-10 animate-blob animation-delay-2000 mix-blend-multiply" />
@@ -36,6 +36,6 @@ export default function HomePage() {
           <CtaSection />
         </div>
       </LazySection>
-    </div>
+    </main>
   );
 }

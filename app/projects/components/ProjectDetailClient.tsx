@@ -49,6 +49,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 alt={project.title ?? "Project icon"}
                 width={60}
                 height={60}
+                style={{ width: "60px", height: "60px" }}
                 className="rounded-xl mr-6 object-cover"
               />
             )}

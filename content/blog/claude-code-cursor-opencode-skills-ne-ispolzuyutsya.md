@@ -11,7 +11,7 @@ seoDescription: >
   работают автоматически и как правильно их настроить.
 seoTags: 'opencode, cursor, claude code, skills, vibe-coding'
 canonicalUrl: /blog/claude-code-cursor-opencode-skills-ne-ispolzuyutsya
-openGraphImage: ''
+openGraphImage: /og-image.png
 sortOrder: 1
 slug: claude-code-cursor-opencode-skills-ne-ispolzuyutsya
 description: >-

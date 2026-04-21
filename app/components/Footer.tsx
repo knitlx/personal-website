@@ -122,10 +122,16 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="footer-bottom text-center pt-2">
+        <div className="footer-bottom text-center pt-2 flex flex-col items-center gap-1">
           <p className="footer-copyright text-[#888] text-[13px]">
             &copy; {currentYear} NoChaos. Все права защищены.
           </p>
+          <Link
+            href="/privacy"
+            className="text-[#666] text-[12px] hover:text-[#b0b0b0] transition-colors duration-300"
+          >
+            Политика конфиденциальности
+          </Link>
         </div>
       </div>
     </footer>

@@ -20,11 +20,14 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
 
   if (!imageSrc || typeof imageSrc !== "string") return null;
 
-  const parseSizeHint = (value: string | undefined): { width?: string; height?: string } => {
+  const parseSizeHint = (
+    value: string | undefined
+  ): { width?: string; height?: string; eager?: boolean } => {
     if (!value) return {};
 
     const widthMatch = value.match(/(?:^|\s)(?:w|width)\s*=\s*([0-9]+(?:%)?)(?=\s|$)/i);
     const heightMatch = value.match(/(?:^|\s)(?:h|height)\s*=\s*([0-9]+(?:%)?)(?=\s|$)/i);
+    const eagerMatch = /(?:^|\s)(?:eager|priority)\s*=\s*1(?=\s|$)/i.test(value ?? "");
 
     const toCssSize = (raw: string | undefined): string | undefined => {
       if (!raw) return undefined;
@@ -34,10 +37,12 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
     return {
       width: toCssSize(widthMatch?.[1]),
       height: toCssSize(heightMatch?.[1]),
+      eager: eagerMatch,
     };
   };
 
   const sizeFromTitle = parseSizeHint(title);
+  const loadingValue: "lazy" | "eager" = sizeFromTitle.eager ? "eager" : "lazy";
   const widthFromProp =
     typeof props.width === "number"
       ? `${props.width}px`
@@ -69,7 +74,7 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
       src={imageSrc}
       alt={alt ?? ""}
       title={title}
-      loading="lazy"
+      loading={loadingValue}
       decoding="async"
       className={imageClassName}
       style={finalStyle}

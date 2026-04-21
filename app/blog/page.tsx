@@ -8,9 +8,12 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Блог про автоматизацию, AI и цифровые процессы | NoChaos",
   description:
-    "Заметки и статьи про автоматизацию, n8n, систематизацию процессов и использование ИИ в реальных рабочих задачах",
+    "Заметки и статьи про автоматизацию, n8n, систематизацию процессов и использование ИИ в реальных рабочих задачах. Практический опыт без лишней теории.",
   keywords:
     "блог автоматизация, статьи ai, цифровые процессы, систематизация информации, автоматизация работы",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/blog`,
+  },
 };
 
 interface BlogPageProps {

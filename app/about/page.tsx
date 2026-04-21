@@ -12,11 +12,14 @@ export const metadata: Metadata = {
     "Помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать AI-инструменты и автоматизации под реальные процессы",
   keywords:
     "автоматизация процессов, ai инструменты, ии инструменты, системное мышление, цифровые задачи бизнеса, разработка автоматизаций",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/about`,
+  },
 };
 
 export default function AboutPage() {
   return (
-    <div className="relative min-h-[calc(100vh-120px)] flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
+    <main className="relative min-h-[calc(100vh-120px)] flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
       {/* Subtle Background Shapes */}
       <div className="absolute top-10 left-0 w-80 h-80 bg-gradient-to-r from-purple-200 to-blue-200 rounded-full opacity-20 filter blur-3xl z-0 animate-blob mix-blend-multiply" />
       <div className="absolute bottom-20 right-0 w-96 h-96 bg-gradient-to-r from-pink-200 to-yellow-200 rounded-full opacity-20 filter blur-3xl z-0 animate-blob animation-delay-2000 mix-blend-multiply" />
@@ -52,6 +55,7 @@ export default function AboutPage() {
                 height={256}
                 sizes="(max-width: 768px) 100vw, 256px"
                 className="rounded-lg object-cover"
+                priority
               />
             </div>
           </div>
@@ -399,6 +403,6 @@ export default function AboutPage() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

@@ -9,6 +9,7 @@ import ModalManager from "./components/ModalManager";
 import YandexMetrika from "./components/YandexMetrika";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import ChatWidgetDynamic from "./components/ChatWidgetDynamic";
+import CookieConsent from "./components/CookieConsent";
 
 const fontInter = FontInter({
   subsets: ["latin"],
@@ -23,8 +24,13 @@ const fontUnbounded = FontUnbounded({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteBaseUrl),
+  alternates: {
+    canonical: siteBaseUrl,
+  },
   icons: {
     icon: [
       { url: "/icon.png", sizes: "32x32", type: "image/png" },
@@ -111,13 +117,14 @@ export default function RootLayout({
               {/* <PlexusCanvas /> */}
               <div className="site-content relative z-10 flex flex-col flex-grow">
                 <Header />
-                <main className="flex-grow">{children}</main>
+                <div className="flex-grow">{children}</div>
                 <Footer />
               </div>
             </div>
           </ErrorBoundary>
           <ModalManager />
           <ChatWidgetDynamic />
+          <CookieConsent />
         </Providers>
       </body>
     </html>

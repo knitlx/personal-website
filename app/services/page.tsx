@@ -4,11 +4,14 @@ import BentoButton from "../components/BentoButton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Услуги по систематизации и оптимизации бизнес-процессов | NoChaos",
+  title: "Услуги по автоматизации и оптимизации бизнес-процессов | NoChaos",
   description:
     "Разбор и оптимизация бизнес-процессов, систематизация информации, базы знаний, регламенты, автоматизация и сопровождение проектов",
   keywords:
     "разбор бизнес процессов, оптимизация бизнес процессов, систематизация информации, база знаний для бизнеса, регламенты и инструкции, автоматизация процессов, сопровождение проектов",
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/services`,
+  },
 };
 
 const servicesData = [
@@ -103,7 +106,7 @@ const servicesData = [
 
 export default function ServicesPage() {
   return (
-    <div className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
+    <main className="bg-transparent py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center mb-12 sm:mb-16">
         <h1 className="sr-only">
           Услуги по систематизации, оптимизации процессов и цифровым решениям
@@ -188,6 +191,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
