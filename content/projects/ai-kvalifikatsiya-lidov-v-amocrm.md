@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: >-
   /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview-1776434210148.webp
 trylink: ''
-creationDate: ''
+creationDate: '2026-04-10T10:00:00.000Z'
 updateDate: '2026-04-17T15:44:32.477Z'
 seoTitle: AI-квалификация лидов в AmoCRM — автоматизация заявок
 seoDescription: >-

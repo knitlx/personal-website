@@ -10,7 +10,7 @@ shortDescriptionProjectsPage: >-
   дашборде с графиками и фильтрами.
 projectIcon: /icons/finance.png
 trylink: 'https://t.me/check_finance_bot'
-creationDate: ''
+creationDate: '2026-03-01T10:00:00.000Z'
 updateDate: '2026-04-06T16:36:13.030Z'
 seoTitle: Финансовый Telegram-бот для учёта доходов и расходов
 seoDescription: >-

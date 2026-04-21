@@ -7,7 +7,7 @@ shortDescriptionProjectsPage: >-
   предпросмотром результата.
 projectIcon: /uploads/html-pdf.png
 trylink: 'https://html-document-converter-production.up.railway.app'
-creationDate: ''
+creationDate: '2026-01-10T10:00:00.000Z'
 updateDate: '2026-01-15T21:11:06.714Z'
 seoTitle: HTML to PDF конвертер с сохранением верстки
 seoDescription: >-

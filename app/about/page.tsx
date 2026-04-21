@@ -7,7 +7,7 @@ import whatIDoStyles from "../components/WhatIDoSection.module.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Воронова Александра — автоматизация процессов и ИИ-инструменты | NoChaos",
+  title: "Воронова Александра — автоматизация процессов и ИИ | NoChaos",
   description:
     "Помогаю бизнесу разбираться в цифровых задачах, наводить порядок и создавать AI-инструменты и автоматизации под реальные процессы",
   keywords:

@@ -10,7 +10,7 @@ shortDescriptionProjectsPage: >-
   оценивается по критериям качества и сохраняется в Google Docs.
 projectIcon: /uploads/ai-redactor.png
 trylink: ''
-creationDate: ''
+creationDate: '2026-02-01T10:00:00.000Z'
 updateDate: '2026-02-13T10:28:11.875Z'
 seoTitle: AI-редактор текстов с контролем качества
 seoDescription: >-

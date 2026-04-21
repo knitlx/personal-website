@@ -8,7 +8,7 @@ shortDescriptionProjectsPage: >-
   уверенностью помечаются для проверки.
 projectIcon: /uploads/ai-ticket.png
 trylink: ''
-creationDate: ''
+creationDate: '2026-01-10T10:00:00.000Z'
 updateDate: '2026-01-15T21:11:26.931Z'
 seoTitle: 'AI-обработка обращений: автоматическое создание тикетов'
 seoDescription: >-

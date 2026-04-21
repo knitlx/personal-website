@@ -7,7 +7,7 @@ shortDescriptionProjectsPage: >-
   отдельным слайдом, результат доступен для предпросмотра
 projectIcon: /uploads/html-pptx.png
 trylink: 'https://html-document-converter-production.up.railway.app'
-creationDate: ''
+creationDate: '2026-01-10T10:00:00.000Z'
 updateDate: '2026-01-15T21:11:17.781Z'
 seoTitle: HTML to PowerPoint конвертер с предпросмотром
 seoDescription: >-

@@ -11,7 +11,7 @@ shortDescriptionProjectsPage: >-
 projectIcon: >-
   /uploads/Gemini_Generated_Image_szneahszneahszne-removebg-preview________-1776439444367.webp
 trylink: ''
-creationDate: ''
+creationDate: '2026-04-10T10:00:00.000Z'
 updateDate: '2026-04-17T15:44:39.911Z'
 seoTitle: Автоматический онбординг клиентов в AmoCRM — автоматизация после продажи
 seoDescription: >-
