@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #7b68ee;
+  --color-accent: #9137df;
+}
+
 /*
   Базовые переменные
 */
@@ -326,4 +331,31 @@ a:hover .gradient-link::before {
 a:hover .gradient-link::after {
   transform: translateX(3px);
   color: #9137df;
+}
+
+/* Utility classes for repeated gradient patterns */
+.gradient-text-primary {
+  background: linear-gradient(90deg, var(--accent-color) 0%, var(--primary-color) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-diagonal {
+  background: linear-gradient(135deg, var(--accent-color) 50%, var(--primary-color) 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-bg-diagonal {
+  background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+}
+
+.gradient-badge-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(145, 55, 223, 0.1) 0%,
+    rgba(123, 104, 238, 0.1) 100%
+  );
 }

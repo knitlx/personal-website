@@ -41,12 +41,6 @@ export const INTERSECTION_OBSERVER = {
   THRESHOLD: 0.1,
 } as const;
 
-// MDEditor heights
-export const MD_EDITOR_HEIGHT = {
-  INTRO: EDITOR_HEIGHTS.SHORT,
-  FULL: EDITOR_HEIGHTS.TALL,
-} as const;
-
 // Image preview sizes
 export const PREVIEW_SIZES = {
   PROJECT_ICON: { width: 64, height: 64 },

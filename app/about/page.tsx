@@ -1,7 +1,6 @@
 import Image from "next/image";
 import LazySection from "../components/LazySection";
-import ContactModalWrapper from "../components/ContactModalWrapper";
-import BentoButton from "../components/BentoButton";
+import CtaSection from "../components/CtaSection";
 import CheckIcon from "../components/icons/CheckIcon";
 import whatIDoStyles from "../components/WhatIDoSection.module.css";
 import type { Metadata } from "next";
@@ -165,31 +164,21 @@ export default function AboutPage() {
                       height={24}
                       sizes="24px"
                     />
-                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
-                      AI
-                    </h3>
+                    <h3 className="text-xl font-semibold gradient-text-primary">AI</h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        OpenCode
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">OpenCode</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        GLM
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">GLM</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Gemini
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Gemini</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        GPT
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">GPT</span>
                     </span>
                   </div>
                 </div>
@@ -203,31 +192,23 @@ export default function AboutPage() {
                       height={24}
                       sizes="24px"
                     />
-                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold gradient-text-primary">
                       Автоматизация и интеграции
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        n8n
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">n8n</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        API
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">API</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        webhooks
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">webhooks</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Telegram
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Telegram</span>
                     </span>
                   </div>
                 </div>
@@ -241,29 +222,25 @@ export default function AboutPage() {
                       height={24}
                       sizes="24px"
                     />
-                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold gradient-text-primary">
                       Данные и рабочая среда
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">
                         Google Workspace
                       </span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Airtable
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Airtable</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Supabase
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Supabase</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">
                         Git / GitHub
                       </span>
                     </span>
@@ -279,26 +256,20 @@ export default function AboutPage() {
                       height={24}
                       sizes="24px"
                     />
-                    <h3 className="text-xl font-semibold bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent">
+                    <h3 className="text-xl font-semibold gradient-text-primary">
                       Управление и документация
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Notion
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Notion</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Trello
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Trello</span>
                     </span>
-                    <span className="bg-[linear-gradient(90deg,rgba(145,55,223,0.1)_0%,rgba(123,104,238,0.1)_100%)] inline-block rounded-full border border-gray-200 px-3 py-1">
-                      <span className="bg-[linear-gradient(90deg,#9137DF_0%,#7B68EE_100%)] bg-clip-text text-transparent text-sm font-medium">
-                        Figma
-                      </span>
+                    <span className="gradient-badge-bg inline-block rounded-full border border-gray-200 px-3 py-1">
+                      <span className="gradient-text-primary text-sm font-medium">Figma</span>
                     </span>
                   </div>
                 </div>
@@ -389,22 +360,7 @@ export default function AboutPage() {
           </div>
         </LazySection>
 
-        {/* CTA Section adapted from CtaSection.tsx for design consistency */}
-        <section className="py-8">
-          <div className="mx-auto bg-transparent text-center backdrop-blur-sm border border-gray-200 shadow-[0_0_50px_rgba(123,104,238,0.1)] rounded-2xl p-8">
-            <h2 className="font-unbounded-fix text-[38px] font-medium text-[#333333] mb-[15px]">
-              Есть задача или идея?
-            </h2>
-            <p className="text-[18px] text-[#555] max-w-2xl mx-auto mb-10 leading-normal">
-              Давайте разберёмся вместе и найдём рабочее решение
-            </p>
-            <div className="flex justify-center gap-5 max-sm:flex-col max-sm:gap-[15px] max-w-md mx-auto">
-              <ContactModalWrapper
-                button={<BentoButton variant="primary">Написать мне</BentoButton>}
-              />
-            </div>
-          </div>
-        </section>
+        <CtaSection />
       </div>
     </main>
   );

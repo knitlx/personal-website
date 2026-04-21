@@ -162,7 +162,7 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
       <button
         onClick={toggleOpen}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-        style={{ backgroundColor: "#7B68EE" }}
+        style={{ backgroundColor: "var(--primary-color)" }}
         aria-label={isOpen ? "Закрыть чат" : "Открыть чат"}
       >
         {isOpen ? (
@@ -212,7 +212,8 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
           <div
             className="flex items-center justify-between px-4 py-3 shrink-0"
             style={{
-              background: "linear-gradient(135deg, #9137DF 0%, #7B68EE 100%)",
+              background:
+                "linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%)",
             }}
           >
             <span className="text-white font-semibold text-base">{title}</span>
@@ -252,7 +253,7 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
                       : "bg-gray-100 text-gray-800 rounded-2xl rounded-tl-sm"
                   }`}
                   style={{
-                    backgroundColor: message.role === "user" ? "#7B68EE" : undefined,
+                    backgroundColor: message.role === "user" ? "var(--primary-color)" : undefined,
                   }}
                 >
                   {message.text}
@@ -292,14 +293,14 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Введите сообщение..."
-                className="flex-1 px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent focus:ring-[#7B68EE]/30"
+                className="flex-1 px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-transparent focus:ring-primary/30"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSubmit}
                 disabled={!inputValue.trim() || isLoading}
                 className="px-4 py-2.5 rounded-xl text-white text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
-                style={{ backgroundColor: "#7B68EE" }}
+                style={{ backgroundColor: "var(--primary-color)" }}
                 aria-label="Отправить"
               >
                 <svg

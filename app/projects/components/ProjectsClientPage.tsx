@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import BentoButton from "../../components/BentoButton";
-import ContactModal from "../../components/ContactModal";
+import { useContactModal } from "@/contexts/ModalContext";
 
 // Dynamic import for ReactMarkdown with code-splitting
 const ReactMarkdownComp = dynamic(() => import("react-markdown"), {
@@ -30,13 +30,7 @@ interface ProjectsClientPageProps {
 }
 
 export default function ProjectsClientPage({ projects }: ProjectsClientPageProps) {
-  const [modalContext, setModalContext] = useState<{
-    isOpen: boolean;
-    projectTitle: string | null;
-  }>({
-    isOpen: false,
-    projectTitle: null,
-  });
+  const { openContactModal } = useContactModal();
 
   return (
     <>
@@ -48,7 +42,7 @@ export default function ProjectsClientPage({ projects }: ProjectsClientPageProps
           >
             <Link href={`/projects/${project.slug}`} className="flex items-center mb-4 group">
               {project.projectIcon && (
-                <img
+                <Image
                   src={project.projectIcon}
                   alt={project.title ?? "Project icon"}
                   width={40}
@@ -74,12 +68,7 @@ export default function ProjectsClientPage({ projects }: ProjectsClientPageProps
                 </BentoButton>
               ) : (
                 <BentoButton
-                  onClick={() =>
-                    setModalContext({
-                      isOpen: true,
-                      projectTitle: project.title ?? null,
-                    })
-                  }
+                  onClick={() => openContactModal(project.title)}
                   variant="primary"
                   size="small"
                 >
@@ -90,11 +79,6 @@ export default function ProjectsClientPage({ projects }: ProjectsClientPageProps
           </div>
         ))}
       </div>
-      <ContactModal
-        isOpen={modalContext.isOpen}
-        onClose={() => setModalContext({ isOpen: false, projectTitle: null })}
-        projectTitle={modalContext.projectTitle}
-      />
     </>
   );
 }

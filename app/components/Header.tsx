@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ContactModal from "./ContactModal";
 import BentoButton from "./BentoButton";
+import { useContactModal } from "@/contexts/ModalContext";
 
 const navLinkClass =
   "no-underline text-[#333333] text-base font-medium py-[5px] relative transition-colors duration-300 hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--primary-color)] hover:bg-clip-text hover:text-transparent after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-full after:h-[2px] after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100";
@@ -11,7 +11,7 @@ const navLinkClass =
 const mobileNavLinkClass = "block text-[#333333] text-lg font-medium py-2 no-underline";
 
 function Header() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { openContactModal } = useContactModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -53,7 +53,7 @@ function Header() {
 
           <div className="flex items-center gap-4">
             <BentoButton
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => openContactModal()}
               variant="primary"
               size="small"
               className="hidden sm:inline-block"
@@ -132,7 +132,7 @@ function Header() {
                 <li className="pt-4 border-t border-gray-200">
                   <BentoButton
                     onClick={() => {
-                      setIsModalOpen(true);
+                      openContactModal();
                       setIsMobileMenuOpen(false);
                     }}
                     variant="primary"
@@ -146,7 +146,6 @@ function Header() {
           </div>
         )}
       </header>
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

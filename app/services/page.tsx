@@ -1,6 +1,5 @@
 import LazySection from "../components/LazySection";
-import ContactModalWrapper from "../components/ContactModalWrapper";
-import BentoButton from "../components/BentoButton";
+import ServicesCtaButton from "../components/ServicesCtaButton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -132,11 +131,9 @@ export default function ServicesPage() {
               className="bg-white p-8 rounded-xl shadow-[0_0_50px_rgba(123,104,238,0.1)] flex items-start gap-12"
             >
               {/* Левая колонка с цифрой */}
-              <div className="flex-shrink-0 w-32 h-32 p-[3px] rounded-xl bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)]">
+              <div className="flex-shrink-0 w-32 h-32 p-[3px] rounded-xl gradient-bg-diagonal">
                 <div className="w-full h-full flex items-center justify-center rounded-xl bg-white">
-                  <span className="text-7xl font-bold bg-[linear-gradient(135deg,#9137DF_50%,#7A68EE_75%)] bg-clip-text text-transparent">
-                    {index + 1}
-                  </span>
+                  <span className="text-7xl font-bold gradient-text-diagonal">{index + 1}</span>
                 </div>
               </div>
               {/* Правая колонка с контентом */}
@@ -167,7 +164,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="h-[3px] w-full bg-[linear-gradient(to_right,#9137DF_0%,#7A68EE_100%)] my-5" />
+                <div className="h-[3px] w-full bg-gradient-to-r from-accent to-primary my-5" />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800">Результат:</h3>
                   <p className="mt-2 text-gray-700">{service.result}</p>
@@ -188,9 +185,7 @@ export default function ServicesPage() {
             <br />Я помогу разобраться и предложу подходящий формат работы.
           </p>
           <div className="mt-8">
-            <ContactModalWrapper
-              button={<BentoButton variant="primary">Написать мне</BentoButton>}
-            />
+            <ServicesCtaButton />
           </div>
         </div>
       </div>

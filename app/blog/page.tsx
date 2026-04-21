@@ -45,7 +45,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <main className="py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix bg-[linear-gradient(135deg,#9137DF_50%,#7B68EE_75%)] bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold text-center mb-12 font-unbounded-fix gradient-text-diagonal">
           Блог
         </h1>
         <InfiniteScrollBlog

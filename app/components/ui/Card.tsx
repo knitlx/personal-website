@@ -19,7 +19,7 @@ function Card({ children, className = "", variant = "default", onClick }: CardPr
   const combinedClassName = `${baseStyles} ${variantStyles} ${className} ${onClick ? "cursor-pointer" : ""} gradient-border-card-hover`;
 
   const style = {
-    "--gradient-border": "linear-gradient(45deg, #9137DF, #7B68EE)",
+    "--gradient-border": "linear-gradient(45deg, var(--accent-color), var(--primary-color))",
   } as React.CSSProperties;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

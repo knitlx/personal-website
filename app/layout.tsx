@@ -113,8 +113,6 @@ export default function RootLayout({
           <GoogleAnalytics />
           <ErrorBoundary>
             <div className="relative flex-grow">
-              {/* <TracerCanvas /> */}
-              {/* <PlexusCanvas /> */}
               <div className="site-content relative z-10 flex flex-col flex-grow">
                 <Header />
                 <div className="flex-grow">{children}</div>

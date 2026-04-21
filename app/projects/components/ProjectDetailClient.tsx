@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import ImageModal from "../../components/ImageModal";
-import ContactModal from "../../components/ContactModal";
 import BentoButton from "../../components/BentoButton";
+import { useContactModal } from "@/contexts/ModalContext";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw"; // Import rehypeRaw
@@ -26,13 +27,7 @@ interface ProjectDetailClientProps {
 
 export default function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
-  const [contactModal, setContactModal] = useState<{
-    isOpen: boolean;
-    projectTitle: string | null;
-  }>({
-    isOpen: false,
-    projectTitle: null,
-  });
+  const { openContactModal } = useContactModal();
 
   const closeModal = () => {
     setModalImageUrl(null);
@@ -44,12 +39,11 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
         <div className="container mx-auto max-w-4xl">
           <div className="flex items-center mb-8">
             {project.projectIcon && (
-              <img
+              <Image
                 src={project.projectIcon}
                 alt={project.title ?? "Project icon"}
                 width={60}
                 height={60}
-                style={{ width: "60px", height: "60px" }}
                 className="rounded-xl mr-6 object-cover"
               />
             )}
@@ -71,12 +65,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             {!project.trylink && (
               <div className="my-8 flex justify-start">
                 <BentoButton
-                  onClick={() =>
-                    setContactModal({
-                      isOpen: true,
-                      projectTitle: project.title ?? null,
-                    })
-                  }
+                  onClick={() => openContactModal(project.title)}
                   variant="primary"
                   size="default"
                 >
@@ -105,12 +94,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
               </BentoButton>
             ) : (
               <BentoButton
-                onClick={() =>
-                  setContactModal({
-                    isOpen: true,
-                    projectTitle: project.title ?? null,
-                  })
-                }
+                onClick={() => openContactModal(project.title)}
                 variant="primary"
                 size="default"
               >
@@ -122,11 +106,6 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
 
         {modalImageUrl && <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />}
       </main>
-      <ContactModal
-        isOpen={contactModal.isOpen}
-        onClose={() => setContactModal({ isOpen: false, projectTitle: null })}
-        projectTitle={contactModal.projectTitle}
-      />
     </>
   );
 }

@@ -9,7 +9,7 @@ import { appendMarkdownImage } from "@/lib/markdown";
 import { useFormState } from "@/hooks/useFormState";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useGalleryModal } from "@/contexts/ModalContext";
-import { MD_EDITOR_HEIGHT } from "@/lib/constants";
+import { EDITOR_HEIGHTS } from "@/lib/constants";
 import { API_ROUTES } from "@/lib/routes";
 import FormInput from "../../components/FormInput";
 import FormTextarea from "../../components/FormTextarea";
@@ -305,7 +305,7 @@ export default function BlogForm({ initialData, baseUrl }: BlogFormProps) {
         <MDEditor
           value={formData.articleBody ?? ""}
           onChange={(val) => handleRichTextChange("articleBody", val)}
-          height={MD_EDITOR_HEIGHT.FULL}
+          height={EDITOR_HEIGHTS.TALL}
         />
         {validationErrors.articleBody && (
           <p className="text-red-500 text-sm mt-1">{validationErrors.articleBody}</p>

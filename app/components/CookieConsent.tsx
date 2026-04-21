@@ -54,7 +54,7 @@ export default function CookieConsent() {
         <div className="flex gap-3 flex-shrink-0">
           <button
             onClick={accept}
-            className="px-4 py-2 text-sm font-medium rounded-lg bg-[linear-gradient(135deg,#9137DF,#7B68EE)] text-white hover:opacity-90 transition-opacity"
+            className="px-4 py-2 text-sm font-medium rounded-lg gradient-bg-diagonal text-white hover:opacity-90 transition-opacity"
           >
             Принять
           </button>

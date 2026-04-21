@@ -34,14 +34,6 @@ export interface ApiError {
   }>;
 }
 
-// Content item types
-export interface ContentItem {
-  slug: string;
-  title?: string;
-  description?: string;
-  [key: string]: unknown;
-}
-
 // Image types
 export interface ImageData {
   url: string;

@@ -101,7 +101,7 @@ export default function InfiniteScrollBlog({
     const baseClass =
       "inline-block px-3 py-1 text-sm font-medium rounded-full transition-colors duration-200";
     if (tag === activeTag) {
-      return `${baseClass} bg-gradient-to-r from-[#9137DF] to-[#7A68EE] text-white`;
+      return `${baseClass} bg-gradient-to-r from-accent to-primary text-white`;
     }
     return `${baseClass} bg-gray-200 text-gray-700 hover:bg-gray-300`;
   };

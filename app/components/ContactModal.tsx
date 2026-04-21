@@ -351,7 +351,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="w-full bg-gradient-to-r from-accent to-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary/60"
                 aria-busy={isSubmitting}
               >
                 {isSubmitting ? "Отправка..." : "Отправить"}
@@ -375,7 +375,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
             <p className="text-gray-700 mb-6">{statusMessage}</p>
             <button
               onClick={handleClose}
-              className="bg-gradient-to-r from-[#AB5EED] to-[#7A68EE] text-white py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600"
+              className="bg-gradient-to-r from-accent to-primary text-white py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-opacity cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/60"
             >
               Закрыть
             </button>

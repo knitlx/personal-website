@@ -1,5 +1,6 @@
 import { memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ProjectData {
   slug: string;
@@ -19,7 +20,7 @@ function ProjectCardSimple({ project }: ProjectCardSimpleProps) {
       <div className="flex-grow">
         <Link href={project.link ?? `/projects/${project.slug}`}>
           {project.projectIcon && (
-            <img
+            <Image
               src={project.projectIcon}
               alt={project.title ?? "Project icon"}
               width={50}
