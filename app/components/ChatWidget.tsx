@@ -86,7 +86,9 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
         setIsGreetingTyping(true);
         const timer = setTimeout(() => {
           setIsGreetingTyping(false);
-          setMessages([{ id: "msg-greeting", role: "bot", text: "Здравствуйте! Чем могу помочь?" }]);
+          setMessages([
+            { id: "msg-greeting", role: "bot", text: "Здравствуйте! Чем могу помочь?" },
+          ]);
         }, 1200);
         return () => clearTimeout(timer);
       }
@@ -122,14 +124,21 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
         const responseText = data.response;
 
         if (responseText) {
-          setMessages((prev) => [...prev, { id: `msg-${Date.now()}-b`, role: "bot", text: responseText }]);
+          setMessages((prev) => [
+            ...prev,
+            { id: `msg-${Date.now()}-b`, role: "bot", text: responseText },
+          ]);
         } else {
           throw new Error("No response from bot");
         }
       } catch {
         setMessages((prev) => [
           ...prev,
-          { id: `msg-${Date.now()}-err`, role: "bot", text: "Ошибка соединения, попробуйте ещё раз" },
+          {
+            id: `msg-${Date.now()}-err`,
+            role: "bot",
+            text: "Ошибка соединения, попробуйте ещё раз",
+          },
         ]);
       } finally {
         setIsLoading(false);

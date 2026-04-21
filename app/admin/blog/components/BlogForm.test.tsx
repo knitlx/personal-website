@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import BlogForm from "./BlogForm";
 import Providers from "../../../components/Providers";
 
@@ -32,46 +32,60 @@ describe("BlogForm", () => {
     (global.fetch as jest.Mock).mockClear();
   });
 
-  it("should render initial data in the form fields", () => {
+  it("should render initial data in the form fields", async () => {
     const initialData = {
       title: "Тестовая статья",
       slug: "testovaya-statya",
       description: "Краткое описание статьи",
     };
 
-    renderWithProviders(<BlogForm initialData={initialData} baseUrl={baseUrl} />);
+    await act(async () => {
+      renderWithProviders(<BlogForm initialData={initialData} baseUrl={baseUrl} />);
+    });
 
     expect(screen.getByLabelText("Заголовок")).toHaveValue(initialData.title);
     expect(screen.getByLabelText("ЧПУ (URL)")).toHaveValue(initialData.slug);
     expect(screen.getByLabelText("Краткое описание")).toHaveValue(initialData.description);
   });
 
-  it("should automatically generate a slug when typing a title", () => {
-    renderWithProviders(<BlogForm baseUrl={baseUrl} />);
+  it("should automatically generate a slug when typing a title", async () => {
+    await act(async () => {
+      renderWithProviders(<BlogForm baseUrl={baseUrl} />);
+    });
 
     const titleInput = screen.getByLabelText("Заголовок");
     const slugInput = screen.getByLabelText("ЧПУ (URL)");
 
-    fireEvent.change(titleInput, {
-      target: { value: "Новая Интересная Статья" },
+    await act(async () => {
+      fireEvent.change(titleInput, {
+        target: { value: "Новая Интересная Статья" },
+      });
     });
 
     expect(slugInput).toHaveValue("novaya-interesnaya-statya");
   });
 
-  it("should stop auto-generating slug after it has been manually edited", () => {
-    renderWithProviders(<BlogForm baseUrl={baseUrl} />);
+  it("should stop auto-generating slug after it has been manually edited", async () => {
+    await act(async () => {
+      renderWithProviders(<BlogForm baseUrl={baseUrl} />);
+    });
 
     const titleInput = screen.getByLabelText("Заголовок");
     const slugInput = screen.getByLabelText("ЧПУ (URL)");
 
-    fireEvent.change(titleInput, { target: { value: "Первый Заголовок" } });
+    await act(async () => {
+      fireEvent.change(titleInput, { target: { value: "Первый Заголовок" } });
+    });
     expect(slugInput).toHaveValue("pervyy-zagolovok");
 
-    fireEvent.change(slugInput, { target: { value: "slug-dlya-bloga" } });
+    await act(async () => {
+      fireEvent.change(slugInput, { target: { value: "slug-dlya-bloga" } });
+    });
     expect(slugInput).toHaveValue("slug-dlya-bloga");
 
-    fireEvent.change(titleInput, { target: { value: "Другой Заголовок" } });
+    await act(async () => {
+      fireEvent.change(titleInput, { target: { value: "Другой Заголовок" } });
+    });
     expect(slugInput).toHaveValue("slug-dlya-bloga");
   });
 });

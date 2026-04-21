@@ -1,6 +1,8 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import Header from "./Header";
+import Providers from "./Providers";
+import ModalManager from "./ModalManager";
 
 // Mock the ContactModal to isolate the Header component's functionality
 jest.mock("./ContactModal", () => {
@@ -17,8 +19,15 @@ jest.mock("./ContactModal", () => {
 });
 
 describe("Header", () => {
-  it("should open and close the contact modal when the button is clicked", () => {
-    render(<Header />);
+  it("should open and close the contact modal when the button is clicked", async () => {
+    await act(async () => {
+      render(
+        <Providers>
+          <Header />
+          <ModalManager />
+        </Providers>
+      );
+    });
 
     // 1. Initially, the modal should not be in the document
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

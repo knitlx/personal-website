@@ -88,6 +88,7 @@ export default function ImageUploadField({
       {previewUrl && (
         <div className="mt-2">
           <p className="text-sm font-medium text-gray-700">{previewLabel ?? "Предпросмотр:"}</p>
+          {/* eslint-disable-next-line @next/next/no-img-element -- blob/data URLs not supported by next/image */}
           <img
             src={previewUrl}
             alt="Preview"

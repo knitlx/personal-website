@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ComponentProps } from "react";
 
 interface MarkdownImageProps extends ComponentProps<"img"> {
@@ -60,15 +61,16 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
   };
 
   const image = (
-    <img
+    <Image
       src={imageSrc}
       alt={alt ?? ""}
       title={title}
       loading={loadingValue}
-      decoding="async"
+      unoptimized={imageSrc.startsWith("http")}
+      width={props.width ? Number(props.width) : 800}
+      height={props.height ? Number(props.height) : 600}
       className={imageClassName}
       style={finalStyle}
-      {...props}
     />
   );
 

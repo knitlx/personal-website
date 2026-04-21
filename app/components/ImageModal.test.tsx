@@ -4,9 +4,13 @@ import ImageModal from "./ImageModal";
 
 jest.mock("next/image", () => {
   return function MockNextImage(
-    props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; sizes?: string }
+    props: React.ImgHTMLAttributes<HTMLImageElement> & {
+      fill?: boolean;
+      sizes?: string;
+      priority?: boolean;
+    }
   ) {
-    const { fill: _fill, sizes: _sizes, ...imgProps } = props;
+    const { fill: _fill, sizes: _sizes, priority: _priority, ...imgProps } = props;
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...imgProps} alt={props.alt ?? ""} />;
   };

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { API_ROUTES } from "@/lib/routes";
@@ -148,12 +149,14 @@ export default function ImageGalleryModal({
                   className="w-full h-full cursor-pointer"
                   aria-label={`Выбрать изображение: ${url.split("/").pop()}`}
                 >
-                  <img
+                  <Image
                     src={url}
                     alt="Галерея"
+                    fill
+                    unoptimized
                     loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 h-full w-full object-contain rounded-md"
+                    className="object-contain rounded-md"
+                    sizes="150px"
                   />
                 </button>
                 <button

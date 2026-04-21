@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { memo } from "react";
 import Link from "next/link";
 import BentoButton from "../../components/BentoButton";
@@ -19,7 +20,7 @@ function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
     <div className="bg-white border border-black/5 rounded-xl p-6 text-left shadow-card hover:shadow-card-hover hover:-translate-y-[5px] transition-card duration-300 gradient-border-card flex flex-col h-full">
       <Link href={`/projects/${project.slug}`} className="flex items-center mb-4 group">
         {project.projectIcon && (
-          <img
+          <Image
             src={project.projectIcon}
             alt={project.title ?? "Project icon"}
             width={40}
