@@ -19,7 +19,7 @@ export default [
       "**/*.md", // Ignore all Markdown files
       "**/*.json", // Ignore all JSON files
       ".claude/settings.local.json", // Specific ignore
-      "public/content-cache.json", // Specific ignore
+      ".content-cache.json", // Specific ignore
     ],
   },
   // Base JS config - applies to all JS-like files by default

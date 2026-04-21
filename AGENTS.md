@@ -247,7 +247,7 @@ describe("ProjectCard", () => {
 - Schema validation with Zod
 - Git commits for content changes (automatic push)
 - Support both blog posts and projects with different field structures
-- Cache file is stored at `public/content-cache.json`
+- Cache file is stored at `.content-cache.json` (project root, gitignored)
 - Memory caching avoids repeated file reads
 - Run `npm run cache:generate` after content changes
 

@@ -61,7 +61,7 @@ openGraphImage: "/uploads/og.webp"
 
 `lib/content.ts` — вся логика чтения и кеширования.
 
-1. **Build time**: `scripts/generate-content-cache.ts` читает все `.md` файлы и пишет `public/content-cache.json`
+1. **Build time**: `scripts/generate-content-cache.ts` читает все `.md` файлы и пишет `.content-cache.json` в корне проекта
 2. **Runtime**: первый вызов `getAllContent()` загружает кеш в память (`Map`)
 3. **После сохранения через админку**: `regenerateCache()` перечитывает файлы и обновляет in-memory кеш
 
