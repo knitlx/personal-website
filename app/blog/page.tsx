@@ -1,6 +1,6 @@
 import { getAllContent, getAllTags } from "@/lib/content";
 import InfiniteScrollBlog from "./components/InfiniteScrollBlog";
-import { PAGINATION } from "@/lib/constants";
+import { PAGINATION, SITE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   keywords:
     "блог автоматизация, статьи ai, цифровые процессы, систематизация информации, автоматизация работы",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/blog`,
+    canonical: `${SITE_URL}/blog`,
   },
   openGraph: {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/blog`,
+    url: `${SITE_URL}/blog`,
   },
 };
 

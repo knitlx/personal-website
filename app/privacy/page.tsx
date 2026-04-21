@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Политика конфиденциальности | NoChaos",
   description:
     "Политика конфиденциальности NoChaos: как мы собираем, используем и защищаем данные пользователей. Аналитика, cookie и ваши права.",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/privacy`,
+    canonical: `${SITE_URL}/privacy`,
   },
   openGraph: {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/privacy`,
+    url: `${SITE_URL}/privacy`,
   },
 };
 
 export default function PrivacyPage() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = SITE_URL;
 
   return (
     <main className="py-16 px-4 sm:px-6 lg:px-8">

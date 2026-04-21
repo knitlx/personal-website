@@ -1,10 +1,11 @@
 import { getMarkdownFile } from "@/lib/content";
 import ProjectForm from "../../components/ProjectForm";
+import { SITE_URL } from "@/lib/constants";
 
 interface ProjectEditPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProjectEditPage({ params }: ProjectEditPageProps) {
@@ -15,7 +16,7 @@ export default async function ProjectEditPage({ params }: ProjectEditPageProps) 
     project = getMarkdownFile("projects", slug);
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"; // Fallback for local development
+  const baseUrl = SITE_URL;
 
   return (
     <div className="p-8 max-w-4xl mx-auto">

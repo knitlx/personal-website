@@ -151,7 +151,7 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300 bg-black/50 backdrop-blur-sm"
       // Modify onClick to only close if the actual overlay is clicked
       onClick={(e) => {
         if (e.target === e.currentTarget) {

@@ -1,14 +1,20 @@
-import { getMarkdownFile, ContentItem } from "@/lib/content";
+import { getMarkdownFile, getSlugs, ContentItem } from "@/lib/content";
+import { SITE_URL } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "../components/ProjectDetailClient";
 import { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  const slugs = getSlugs("projects");
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface ProjectDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
@@ -23,7 +29,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 
   const project = projectFile.data;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = SITE_URL;
   const canonicalUrl = project.canonicalUrl ?? `${baseUrl}/projects/${slug}`;
   const title = project.seoTitle ?? project.title;
   const description = project.seoDescription ?? project.shortDescriptionHomepage ?? "";
@@ -72,7 +78,7 @@ const generateProjectSchema = (project: ContentItem, baseUrl: string) => {
     },
     publisher: {
       "@type": "Organization",
-      name: "Александра | AI-универсал и промт-инженер",
+      name: "NoChaos",
       logo: {
         "@type": "ImageObject",
         url: `${baseUrl}/profile.png`,
@@ -133,7 +139,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = SITE_URL;
   const jsonLd = generateProjectSchema(project, baseUrl);
 
   return (

@@ -1,11 +1,12 @@
 import { getMarkdownFile } from "@/lib/content";
 import BlogForm from "../../components/BlogForm";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/constants";
 
 interface BlogEditPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function BlogEditPage({ params }: BlogEditPageProps) {
@@ -19,7 +20,7 @@ export default async function BlogEditPage({ params }: BlogEditPageProps) {
     }
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"; // Fallback for local development
+  const baseUrl = SITE_URL;
 
   const initialData = blogPost
     ? {

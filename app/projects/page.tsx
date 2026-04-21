@@ -1,6 +1,7 @@
 import { getAllContent } from "@/lib/content";
 import InfiniteScrollProjects from "./components/InfiniteScrollProjects";
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -9,10 +10,10 @@ export const metadata: Metadata = {
   description:
     "Примеры проектов и кейсов по автоматизации процессов и внедрению ИИ: боты, AI-инструменты, обработка данных и рабочие решения",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/projects`,
+    canonical: `${SITE_URL}/projects`,
   },
   openGraph: {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/projects`,
+    url: `${SITE_URL}/projects`,
   },
   keywords:
     "внедрение ии, автоматизация процессов, автоматизация бизнес процессов, ии для бизнеса, ии автоматизация, ai системы, автоматизация задач, интеграция ии, внедрение ai, ai автоматизация, автоматизация бизнеса, интеграция ai, telegram боты, n8n автоматизация",

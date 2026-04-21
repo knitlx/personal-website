@@ -1,6 +1,7 @@
 import LazySection from "../components/LazySection";
 import ServicesCtaButton from "../components/ServicesCtaButton";
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Услуги по автоматизации и оптимизации бизнес-процессов | NoChaos",
@@ -9,10 +10,10 @@ export const metadata: Metadata = {
   keywords:
     "разбор бизнес процессов, оптимизация бизнес процессов, систематизация информации, база знаний для бизнеса, регламенты и инструкции, автоматизация процессов, сопровождение проектов",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/services`,
+    canonical: `${SITE_URL}/services`,
   },
   openGraph: {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/services`,
+    url: `${SITE_URL}/services`,
   },
 };
 

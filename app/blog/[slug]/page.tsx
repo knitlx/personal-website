@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getMarkdownFile, ContentItem } from "@/lib/content";
+import { getMarkdownFile, getSlugs, ContentItem } from "@/lib/content";
+import { SITE_URL } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,12 +9,17 @@ import MarkdownImage from "../../components/MarkdownImage";
 import PromptBlock from "../../components/PromptBlock";
 import { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  const slugs = getSlugs("blog");
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
@@ -28,7 +34,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 
   const post = postFile.data;
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = SITE_URL;
   const canonicalUrl = post.canonicalUrl ?? `${baseUrl}/blog/${slug}`;
   const title = post.seoTitle ?? post.title;
   const description = post.seoDescription ?? post.description;
@@ -74,7 +80,7 @@ export default async function PostPage({ params }: PostPageProps) {
     articleBody: postFile.content ?? postFile.data.articleBody ?? "", // Use content (markdown body) first
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const baseUrl = SITE_URL;
   const imageUrl = post.openGraphImage
     ? `${baseUrl}${post.openGraphImage}`
     : `${baseUrl}/profile.png`; // Fallback image
@@ -96,7 +102,7 @@ export default async function PostPage({ params }: PostPageProps) {
     },
     publisher: {
       "@type": "Organization",
-      name: "Александра | AI-универсал и промт-инженер",
+      name: "NoChaos",
       logo: {
         "@type": "ImageObject",
         url: `${baseUrl}/profile.png`,

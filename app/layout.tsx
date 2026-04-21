@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter as FontInter, Unbounded as FontUnbounded } from "next/font/google";
+import { SITE_URL } from "@/lib/constants";
 
 import "./globals.css";
 import Header from "./components/Header";
@@ -24,7 +25,7 @@ const fontUnbounded = FontUnbounded({
   weight: ["400", "500", "600", "700"],
 });
 
-const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteBaseUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteBaseUrl),
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     title: "Внедрение ИИ и автоматизация бизнес-процессов | NoChaos",
     description:
       "Внедрение ИИ и автоматизация процессов для бизнеса: анализ задач, интеграции, запуск в работу и сопровождение",
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    url: SITE_URL,
     siteName: "Внедрение ИИ и автоматизация бизнес-процессов | NoChaos",
     images: [
       {
@@ -67,7 +68,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = SITE_URL;
 
   const jsonLd = {
     "@context": "https://schema.org",

@@ -4,6 +4,7 @@ import CtaSection from "../components/CtaSection";
 import CheckIcon from "../components/icons/CheckIcon";
 import whatIDoStyles from "../components/WhatIDoSection.module.css";
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Воронова Александра — автоматизация процессов и ИИ | NoChaos",
@@ -12,10 +13,10 @@ export const metadata: Metadata = {
   keywords:
     "автоматизация процессов, ai инструменты, ии инструменты, системное мышление, цифровые задачи бизнеса, разработка автоматизаций",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/about`,
+    canonical: `${SITE_URL}/about`,
   },
   openGraph: {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/about`,
+    url: `${SITE_URL}/about`,
   },
 };
 

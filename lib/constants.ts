@@ -1,3 +1,6 @@
+// Site URL
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 // Image sizes
 export const IMAGE_SIZES = {
   SMALL: 40,

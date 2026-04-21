@@ -1,6 +1,15 @@
 import { getServerSideUrl } from "@/lib/utils";
 import { getAllContent } from "@/lib/content";
 
+function escapeXml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export async function GET() {
   const baseUrl = getServerSideUrl();
   const allBlogPosts = (await getAllContent("blog", { limit: 10 })).data; // Limit to 10 for RSS feed
@@ -26,11 +35,11 @@ export async function GET() {
 
         return `
     <item>
-      <title>${post.title}</title>
+      <title>${escapeXml(post.title ?? "")}</title>
       <link>${baseUrl}/blog/${post.slug}</link>
       <guid>${baseUrl}/blog/${post.slug}</guid>
       <pubDate>${pubDate}</pubDate>
-      <description>${description}</description>
+      <description>${escapeXml(description)}</description>
     </item>
   `;
       })
