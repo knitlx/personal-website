@@ -3,25 +3,6 @@ import path from "path";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
-const _validateGitEnvVars = () => {
-  if (isDevelopment && !process.env.GITHUB_PAT) {
-    console.warn("GITHUB_PAT not set. Git operations will fail in development.");
-    return false;
-  }
-
-  if (!isDevelopment && !process.env.GITHUB_PAT) {
-    throw new Error("GITHUB_PAT environment variable is required for git operations in production");
-  }
-
-  if (!isDevelopment && !process.env.GITHUB_USERNAME) {
-    throw new Error(
-      "GITHUB_USERNAME environment variable is required for git operations in production"
-    );
-  }
-
-  return true;
-};
-
 interface GitOptions {
   cwd?: string;
   filePath?: string;

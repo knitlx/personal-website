@@ -123,6 +123,8 @@ export async function POST(req: NextRequest) {
       console.log("revalidatePath('/admin/dashboard') called for blog post");
     }
     revalidatePath("/admin/dashboard");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${slug}`);
     revalidatePath("/api/content/blog");
 
     // Regenerate content cache
