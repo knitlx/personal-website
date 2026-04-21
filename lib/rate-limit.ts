@@ -14,6 +14,8 @@ interface RateLimitStore {
 }
 
 const store = new Map<string, RateLimitStore>();
+let callCount = 0;
+const CLEANUP_INTERVAL = 100;
 
 export interface RateLimitOptions {
   interval: number; // Time window in milliseconds
@@ -24,6 +26,10 @@ export function rateLimit(
   identifier: string,
   options: RateLimitOptions
 ): { success: boolean; resetTime?: number } {
+  if (++callCount % CLEANUP_INTERVAL === 0) {
+    cleanupRateLimit();
+  }
+
   const now = Date.now();
   const record = store.get(identifier);
 
@@ -70,7 +76,7 @@ export function getRateLimitHeaders(options: RateLimitOptions): {
 }
 
 // Cleanup expired records to prevent memory leaks
-// Called inline during rateLimit() checks — no need for a global setInterval
+// Auto-called every CLEANUP_INTERVAL invocations of rateLimit()
 export function cleanupRateLimit() {
   const now = Date.now();
   for (const [key, value] of store.entries()) {
