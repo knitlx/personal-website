@@ -24,7 +24,7 @@ npm run cache:generate   # Generate content cache from Markdown files
 
 - **Markdown-based content**: Blog posts and projects are stored as `.md` files in `content/blog/` and `content/projects/`
 - **Frontmatter**: Uses `gray-matter` for metadata parsing (title, description, dates, SEO fields, etc.)
-- **Content cache**: `scripts/generate-content-cache.ts` pre-processes Markdown files and outputs `public/content-cache.json`
+- **Content cache**: `scripts/generate-content-cache.ts` pre-processes Markdown files and outputs `.content-cache.json` (project root, gitignored)
 - **Build pipeline**: The `prebuild` script automatically generates the content cache before every build
 
 ### App Structure (Next.js App Router)

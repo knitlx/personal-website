@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 type ModalType = "contact" | "image" | "gallery" | null;
 
@@ -28,6 +28,12 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     type: null,
     data: undefined,
   });
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   const openModal = useCallback((type: ModalType, data?: ModalState["data"]) => {
     setModalState({ type, data });

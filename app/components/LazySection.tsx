@@ -1,55 +1,51 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface LazySectionProps {
   children: React.ReactNode;
-  rootMargin?: string; // Например: "100px" - начни грузить за 100px до появления
-  threshold?: number; // 0-1, сколько элемента должно быть видно
-  fallback?: React.ReactNode; // Что показывать во время загрузки
+  rootMargin?: string;
+  threshold?: number;
+  fallback?: React.ReactNode;
 }
 
 export default function LazySection({
   children,
   rootMargin = "200px",
   threshold = 0.1,
-  fallback = null,
 }: LazySectionProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && !isLoaded) {
-          setIsVisible(true);
-          setIsLoaded(true);
-          observer.disconnect(); // Отключаем после первой загрузки
+        if (entry.isIntersecting) {
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+          observer.disconnect();
         }
       },
-      {
-        rootMargin,
-        threshold,
-      }
+      { rootMargin, threshold }
     );
 
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [rootMargin, threshold, isLoaded]);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rootMargin, threshold]);
 
   return (
-    <div ref={ref} style={{ minHeight: isVisible ? "auto" : "200px" }}>
-      {isVisible ? children : fallback}
+    <div
+      ref={ref}
+      style={{
+        opacity: 0,
+        transform: "translateY(16px)",
+        transition: "opacity 0.5s ease, transform 0.5s ease",
+      }}
+    >
+      {children}
     </div>
   );
 }

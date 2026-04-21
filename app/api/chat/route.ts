@@ -1,9 +1,23 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { chatRequestSchema } from "@/lib/validations/chat";
+import { rateLimit } from "@/lib/rate-limit";
 
 const WEBHOOK_URL = process.env.CHAT_WEBHOOK_URL;
 
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+  const rateLimitResult = rateLimit(ip, {
+    interval: 60 * 1000, // 1 minute
+    limit: 10,
+  });
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: "Слишком много сообщений. Попробуйте позже." },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = (await request.json()) as unknown;
 

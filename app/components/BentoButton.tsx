@@ -51,6 +51,14 @@ export default function BentoButton({
   }
 
   if (href) {
+    const isExternal = href.startsWith("http://") || href.startsWith("https://");
+    if (isExternal) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={className}>
         {children}

@@ -77,7 +77,7 @@ export function generateStaticParams() {
 
 ## Кеш контента
 
-Markdown-файлы читаются один раз при старте и кешируются в памяти (`lib/content.ts`). При сборке генерируется `public/content-cache.json` через `scripts/generate-content-cache.ts`.
+Markdown-файлы читаются один раз при старте и кешируются в памяти (`lib/content.ts`). При сборке генерируется `.content-cache.json` в корне проекта через `scripts/generate-content-cache.ts`.
 
 При сохранении через админку — `regenerateCache()` обновляет in-memory кеш без перезапуска.
 
