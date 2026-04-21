@@ -1,4 +1,4 @@
-import { getServerSideUrl } from "@/lib/utils";
+import { SITE_URL } from "@/lib/constants";
 import { getAllContent } from "@/lib/content";
 
 function escapeXml(text: string): string {
@@ -11,7 +11,7 @@ function escapeXml(text: string): string {
 }
 
 export async function GET() {
-  const baseUrl = getServerSideUrl();
+  const baseUrl = SITE_URL;
   const allBlogPosts = (await getAllContent("blog", { limit: 10 })).data; // Limit to 10 for RSS feed
 
   const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>

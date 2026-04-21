@@ -1,7 +1,11 @@
-import { getServerSideUrl } from "@/lib/utils";
+import { SITE_URL } from "@/lib/constants";
 import { getContentMetadata } from "@/lib/content";
 import fs from "fs";
 import path from "path";
+
+function escapeXml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 // Helper function to get file modification date
 function getFileModDate(filePath: string): Date {
@@ -14,7 +18,7 @@ function getFileModDate(filePath: string): Date {
 }
 
 export async function GET() {
-  const baseUrl = getServerSideUrl();
+  const baseUrl = SITE_URL;
 
   // Use lightweight metadata function instead of getAllContent
   const allProjects = await getContentMetadata("projects");
@@ -67,7 +71,7 @@ export async function GET() {
       const modDate = getFileModDate(path.join(process.cwd(), page.file));
       return `
     <url>
-      <loc>${baseUrl}${page.url}</loc>
+      <loc>${escapeXml(baseUrl + page.url)}</loc>
       <lastmod>${modDate.toISOString()}</lastmod>
       <changefreq>${page.changefreq}</changefreq>
       <priority>${page.priority}</priority>
@@ -81,7 +85,7 @@ export async function GET() {
       const lastmod = date ? new Date(date).toISOString() : new Date().toISOString();
       return `
     <url>
-      <loc>${baseUrl}/projects/${project.slug}</loc>
+      <loc>${escapeXml(`${baseUrl}/projects/${project.slug}`)}</loc>
       <lastmod>${lastmod}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -95,7 +99,7 @@ export async function GET() {
       const lastmod = date ? new Date(date).toISOString() : new Date().toISOString();
       return `
     <url>
-      <loc>${baseUrl}/blog/${post.slug}</loc>
+      <loc>${escapeXml(`${baseUrl}/blog/${post.slug}`)}</loc>
       <lastmod>${lastmod}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>

@@ -1,7 +1,7 @@
-import { getServerSideUrl } from "@/lib/utils";
+import { SITE_URL } from "@/lib/constants";
 
 export async function GET() {
-  const baseUrl = getServerSideUrl();
+  const baseUrl = SITE_URL;
 
   const robotsTxt = `User-agent: *
 Allow: /
