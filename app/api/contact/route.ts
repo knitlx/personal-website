@@ -10,6 +10,15 @@ import {
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 interface MailOptions {
   from: string;
   to: string | undefined;
@@ -112,14 +121,14 @@ export async function POST(request: NextRequest) {
     const mailOptions: MailOptions = {
       from: `"Сайт-портфолио" <${process.env.EMAIL_SERVER_USER}>`,
       to: process.env.EMAIL_TO,
-      subject: `Новая заявка с сайта от ${name}`,
+      subject: `Новая заявка с сайта от ${escapeHtml(name)}`,
       html: `
         <h2>Новая заявка с вашего сайта-портфолио</h2>
-        ${projectTitle ? `<h3>Заявка по проекту: ${projectTitle}</h3>` : ""}
-        <p><strong>Имя:</strong> ${name}</p>
-        <p><strong>Контакт:</strong> ${contact}</p>
+        ${projectTitle ? `<h3>Заявка по проекту: ${escapeHtml(projectTitle)}</h3>` : ""}
+        <p><strong>Имя:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Контакт:</strong> ${escapeHtml(contact)}</p>
         <p><strong>Сообщение:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>
       `,
       attachments: [],
     };

@@ -5,8 +5,6 @@ import PortfolioSection from "./components/PortfolioSection";
 import CtaSection from "./components/CtaSection";
 import LazySection from "./components/LazySection";
 
-export const dynamic = "force-dynamic";
-
 export default function HomePage() {
   return (
     <main className="relative flex flex-col pt-8 pb-8 min-h-[calc(100vh-120px)]">

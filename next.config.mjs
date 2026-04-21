@@ -39,8 +39,6 @@ const nextConfig = {
       "form-action 'self';",
       "frame-ancestors 'none';",
       "upgrade-insecure-requests;",
-      // Additional security directives
-      "block-all-mixed-content;",
     ].join(" ");
 
     return [

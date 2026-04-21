@@ -3,7 +3,12 @@ import GithubProvider from "next-auth/providers/github";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
+let envValidated = false;
+
 const validateEnvVars = () => {
+  if (envValidated) return;
+  envValidated = true;
+
   const requiredVars = ["GITHUB_ID", "GITHUB_SECRET"];
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
@@ -20,8 +25,6 @@ const validateEnvVars = () => {
   }
 };
 
-validateEnvVars();
-
 export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
@@ -31,6 +34,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ profile }) {
+      validateEnvVars();
       const allowedGithubEmails = (process.env.ALLOWED_GITHUB_EMAILS ?? "")
         .split(",")
         .map((email) => email.trim().toLowerCase())

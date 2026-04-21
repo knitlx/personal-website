@@ -69,7 +69,8 @@ export function getRateLimitHeaders(options: RateLimitOptions): {
   };
 }
 
-// Cleanup function to prevent memory leaks
+// Cleanup expired records to prevent memory leaks
+// Called inline during rateLimit() checks — no need for a global setInterval
 export function cleanupRateLimit() {
   const now = Date.now();
   for (const [key, value] of store.entries()) {
@@ -77,9 +78,4 @@ export function cleanupRateLimit() {
       store.delete(key);
     }
   }
-}
-
-// Run cleanup every hour
-if (typeof window === "undefined") {
-  setInterval(cleanupRateLimit, 60 * 60 * 1000);
 }

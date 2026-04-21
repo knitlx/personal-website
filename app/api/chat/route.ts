@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { chatRequestSchema } from "@/lib/validations/chat";
 
-const WEBHOOK_URL = "http://45.144.235.234:5678/webhook/rag-bot";
+const WEBHOOK_URL = process.env.CHAT_WEBHOOK_URL ?? "http://45.144.235.234:5678/webhook/rag-bot";
 
 export async function POST(request: NextRequest) {
   try {

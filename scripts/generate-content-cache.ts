@@ -1,36 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-interface CacheItem {
-  slug: string;
-  title?: string;
-  description?: string;
-  creationDate?: string;
-  updateDate?: string;
-  projectIcon?: string;
-  icon?: string;
-  shortDescriptionHomepage?: string;
-  shortDescriptionProjectsPage?: string;
-  shortDescription?: string;
-  pageDescription?: string;
-  trylink?: string;
-  introDescription?: string;
-  fullDescription?: string;
-  date?: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoTags?: string;
-  canonicalUrl?: string;
-  openGraphImage?: string;
-  [key: string]: unknown;
-}
-
-interface ContentCache {
-  blogs: CacheItem[];
-  projects: CacheItem[];
-  generatedAt: string;
-}
+import type { CacheItem, ContentCache } from "../types/content";
 
 const contentDirectory = path.join(process.cwd(), "content");
 
@@ -84,5 +55,12 @@ function generateCache() {
 // Export for use in other modules
 export { generateCache };
 
-// Run if called directly
-generateCache();
+// Run only when called directly (not when imported)
+const isDirectRun =
+  typeof process !== "undefined" &&
+  process.argv[1] &&
+  process.argv[1].includes("generate-content-cache");
+
+if (isDirectRun) {
+  generateCache();
+}

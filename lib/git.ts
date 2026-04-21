@@ -3,7 +3,7 @@ import path from "path";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
-const validateGitEnvVars = () => {
+const _validateGitEnvVars = () => {
   if (isDevelopment && !process.env.GITHUB_PAT) {
     console.warn("GITHUB_PAT not set. Git operations will fail in development.");
     return false;
@@ -21,8 +21,6 @@ const validateGitEnvVars = () => {
 
   return true;
 };
-
-validateGitEnvVars();
 
 interface GitOptions {
   cwd?: string;

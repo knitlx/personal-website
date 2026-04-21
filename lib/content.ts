@@ -1,37 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-// Cache file structure
-interface CacheItem {
-  slug: string;
-  title?: string;
-  description?: string;
-  creationDate?: string;
-  updateDate?: string;
-  projectIcon?: string;
-  icon?: string;
-  shortDescriptionHomepage?: string;
-  shortDescriptionProjectsPage?: string;
-  shortDescription?: string;
-  pageDescription?: string;
-  trylink?: string;
-  introDescription?: string;
-  fullDescription?: string;
-  date?: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoTags?: string;
-  canonicalUrl?: string;
-  openGraphImage?: string;
-  [key: string]: unknown;
-}
-
-interface ContentCache {
-  blogs: CacheItem[];
-  projects: CacheItem[];
-  generatedAt: string;
-}
+import type { CacheItem, ContentCache } from "@/types/content";
 
 // Note: No in-memory cache - Next.js runs multiple processes on production
 // Each process would have its own cache, causing stale data issues
@@ -167,13 +137,15 @@ export function getAllContent(collection: string, options?: GetAllContentOptions
   // Apply search (only searches metadata, not full content)
   if (options?.search && options.search.trim() !== "") {
     const searchTerm = options.search.toLowerCase();
+    /* eslint-disable @typescript-eslint/prefer-nullish-coalescing -- || is intentional: ?? would not fall through when .includes() returns false */
     allContent = allContent.filter(
       (item) =>
-        item.title?.toLowerCase().includes(searchTerm) ??
-        item.description?.toLowerCase().includes(searchTerm) ??
-        item.shortDescription?.toLowerCase().includes(searchTerm) ??
+        item.title?.toLowerCase().includes(searchTerm) ||
+        item.description?.toLowerCase().includes(searchTerm) ||
+        item.shortDescription?.toLowerCase().includes(searchTerm) ||
         false
     );
+    /* eslint-enable @typescript-eslint/prefer-nullish-coalescing */
   }
 
   // Filter by tag

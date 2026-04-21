@@ -8,6 +8,11 @@ import { commitAndPush } from "@/lib/git";
 const projectRoot = process.cwd(); // Assume project root for Git operations
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   const uploadsDirectory = path.join(projectRoot, "public", "uploads");
 
   try {
@@ -29,7 +34,7 @@ export async function GET() {
 export async function DELETE(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return NextResponse.json({ message: "Неавторизованный доступ" }, { status: 401 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   const { filename } = await request.json();
