@@ -49,21 +49,11 @@ const MarkdownImage: React.FC<MarkdownImageProps> = ({
       : typeof props.width === "string"
         ? props.width
         : undefined;
-  const heightFromProp =
-    typeof props.height === "number"
-      ? `${props.height}px`
-      : typeof props.height === "string"
-        ? props.height
-        : undefined;
 
-  const hasExplicitWidth = Boolean(sizeFromTitle.width ?? widthFromProp);
-  const finalStyle = {
-    width: sizeFromTitle.width ?? widthFromProp,
-    height: sizeFromTitle.height ?? heightFromProp,
-  };
-  const imageClassName = hasExplicitWidth
-    ? "h-auto max-w-full"
-    : "h-auto w-full max-w-[min(100%,760px)]";
+  const explicitWidth = sizeFromTitle.width ?? widthFromProp;
+  const hasExplicitWidth = Boolean(explicitWidth);
+  const finalStyle = hasExplicitWidth ? { maxWidth: explicitWidth, width: "100%" } : {};
+  const imageClassName = "h-auto w-full max-w-full";
 
   const handleClick = () => {
     onImageClick?.(imageSrc);

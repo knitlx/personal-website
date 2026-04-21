@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/projects`,
   },
+  openGraph: {
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/projects`,
+  },
   keywords:
     "внедрение ии, автоматизация процессов, автоматизация бизнес процессов, ии для бизнеса, ии автоматизация, ai системы, автоматизация задач, интеграция ии, внедрение ai, ai автоматизация, автоматизация бизнеса, интеграция ai, telegram боты, n8n автоматизация",
 };

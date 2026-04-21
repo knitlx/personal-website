@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/about`,
   },
+  openGraph: {
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/about`,
+  },
 };
 
 export default function AboutPage() {

@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/blog`,
   },
+  openGraph: {
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/blog`,
+  },
 };
 
 interface BlogPageProps {

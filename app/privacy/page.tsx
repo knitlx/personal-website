@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Политика конфиденциальности | NoChaos",
   description:
-    "Политика конфиденциальности сайта NoChaos. Информация о сборе, использовании и защите персональных данных.",
+    "Политика конфиденциальности NoChaos: как мы собираем, используем и защищаем данные пользователей. Аналитика, cookie и ваши права.",
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/privacy`,
   },
-  robots: {
-    index: false,
+  openGraph: {
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/privacy`,
   },
 };
 
