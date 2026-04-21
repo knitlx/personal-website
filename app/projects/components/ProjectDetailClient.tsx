@@ -47,7 +47,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 className="rounded-xl mr-6 object-cover"
               />
             )}
-            <h1 className="text-5xl font-bold font-unbounded-fix">{project.title}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold font-unbounded-fix">{project.title}</h1>
           </div>
           <div className="prose lg:prose-xl max-w-4xl">
             {/* Render the intro description using ReactMarkdown */}

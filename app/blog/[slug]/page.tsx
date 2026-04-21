@@ -120,7 +120,7 @@ export default async function PostPage({ params }: PostPageProps) {
       />
       <main className="bg-white py-16">
         <div className="container mx-auto max-w-4xl px-4">
-          <h1 className="text-4xl md:text-5xl font-bold font-unbounded-fix mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold font-unbounded-fix mb-4">
             {postFile.data.title}
           </h1>
           <p className="text-gray-500 mb-4">{postFile.data.date}</p>

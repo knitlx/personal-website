@@ -19,8 +19,8 @@
 
 /* Markdown typography styles for .prose */
 .prose h2 {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -238,7 +238,7 @@ body {
 }
 
 .prose h3 {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
