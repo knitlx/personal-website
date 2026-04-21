@@ -6,34 +6,10 @@ import type { CacheItem, ContentCache } from "@/types/content";
 // Note: No in-memory cache - Next.js runs multiple processes on production
 // Each process would have its own cache, causing stale data issues
 
-// Define a more comprehensive ContentItem interface
-export interface ContentItem {
-  slug: string;
-  title?: string;
-  description?: string; // Optional description
+// ContentItem extends CacheItem with full-content fields (markdown body, etc.)
+export interface ContentItem extends CacheItem {
   articleBody?: string; // Optional for blog posts
-  content?: string; // Content field (for some pages)
-  creationDate?: string; // Explicitly add creationDate
-  updateDate?: string; // Explicitly add updateDate
-  // Common project fields
-  projectIcon?: string;
-  icon?: string;
-  shortDescriptionHomepage?: string;
-  shortDescriptionProjectsPage?: string;
-  pageDescription?: string; // Legacy field name
-  trylink?: string;
-  introDescription?: string;
-  fullDescription?: string;
-  // Common blog fields
-  date?: string;
-  shortDescription?: string;
-  // SEO fields
-  seoTitle?: string;
-  seoDescription?: string;
-  seoTags?: string;
-  canonicalUrl?: string;
-  openGraphImage?: string;
-  [key: string]: unknown; // Allow additional properties from frontmatter
+  content?: string; // Raw markdown body
 }
 
 // Define options interface for getAllContent

@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { chatRequestSchema } from "@/lib/validations/chat";
 
-const WEBHOOK_URL = process.env.CHAT_WEBHOOK_URL ?? "http://45.144.235.234:5678/webhook/rag-bot";
+const WEBHOOK_URL = process.env.CHAT_WEBHOOK_URL;
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,6 +22,11 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       );
+    }
+
+    if (!WEBHOOK_URL) {
+      console.error("CHAT_WEBHOOK_URL environment variable is not set");
+      return NextResponse.json({ error: "Чат временно недоступен" }, { status: 503 });
     }
 
     const { chat_id, text } = validationResult.data;

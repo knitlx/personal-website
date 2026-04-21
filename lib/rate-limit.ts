@@ -1,7 +1,7 @@
-// Simple in-memory rate limiter for development
-// WARNING: This will NOT work correctly in serverless environments (Vercel, AWS Lambda, etc.)
-// because the Map is recreated on each invocation.
-// For production/serverless, use Redis, Upstash Ratelimit, or Vercel KV:
+// In-memory rate limiter. Works correctly when running as a persistent process (next start on VPS).
+// WARNING: Does NOT work in serverless environments (Vercel, AWS Lambda, etc.)
+// because each invocation gets a fresh process — the Map resets.
+// For serverless, replace with Redis, Upstash Ratelimit, or Vercel KV:
 //
 // Example with Upstash:
 // import { Ratelimit } from "@upstash/ratelimit";

@@ -2,13 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 export default function GoogleAnalytics() {
   const pathname = usePathname();
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const consentAccepted = useCookieConsent();
 
-  // Не загружаем счетчик на админских страницах или если ID не указан
-  if (pathname?.startsWith("/admin") || !gaId) {
+  // Не загружаем счетчик на админских страницах, без ID или без согласия
+  if (pathname?.startsWith("/admin") || !gaId || !consentAccepted) {
     return null;
   }
 

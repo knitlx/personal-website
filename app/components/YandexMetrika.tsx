@@ -2,13 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Script from "next/script";
+import { useCookieConsent } from "@/hooks/useCookieConsent";
 
 export default function YandexMetrika() {
   const pathname = usePathname();
   const metrikaId = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
+  const consentAccepted = useCookieConsent();
 
-  // Не загружаем счетчик на админских страницах
-  if (pathname?.startsWith("/admin") || !metrikaId) {
+  // Не загружаем счетчик на админских страницах, без ID или без согласия
+  if (pathname?.startsWith("/admin") || !metrikaId || !consentAccepted) {
     return null;
   }
 

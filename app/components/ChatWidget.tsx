@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 interface Message {
+  id: string;
   role: "user" | "bot";
   text: string;
 }
@@ -44,7 +45,12 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
       // Load messages only if they belong to current chat session
       if (savedMessages && savedChatIdForMessages === storedChatId) {
         const parsed = JSON.parse(savedMessages) as { messages: Message[] };
-        setMessages(parsed.messages);
+        // Migrate old messages without id
+        const migrated = parsed.messages.map((m, i) => ({
+          ...m,
+          id: m.id ?? `msg-legacy-${i}`,
+        }));
+        setMessages(migrated);
       }
     } else {
       const newChatId = Date.now().toString();
@@ -80,7 +86,7 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
         setIsGreetingTyping(true);
         const timer = setTimeout(() => {
           setIsGreetingTyping(false);
-          setMessages([{ role: "bot", text: "Здравствуйте! Чем могу помочь?" }]);
+          setMessages([{ id: "msg-greeting", role: "bot", text: "Здравствуйте! Чем могу помочь?" }]);
         }, 1200);
         return () => clearTimeout(timer);
       }
@@ -91,7 +97,7 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
     async (text: string) => {
       if (!text.trim() || !chatId) return;
 
-      const userMessage: Message = { role: "user", text: text.trim() };
+      const userMessage: Message = { id: `msg-${Date.now()}-u`, role: "user", text: text.trim() };
       setMessages((prev) => [...prev, userMessage]);
       setInputValue("");
       setIsLoading(true);
@@ -116,14 +122,14 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
         const responseText = data.response;
 
         if (responseText) {
-          setMessages((prev) => [...prev, { role: "bot", text: responseText }]);
+          setMessages((prev) => [...prev, { id: `msg-${Date.now()}-b`, role: "bot", text: responseText }]);
         } else {
           throw new Error("No response from bot");
         }
       } catch {
         setMessages((prev) => [
           ...prev,
-          { role: "bot", text: "Ошибка соединения, попробуйте ещё раз" },
+          { id: `msg-${Date.now()}-err`, role: "bot", text: "Ошибка соединения, попробуйте ещё раз" },
         ]);
       } finally {
         setIsLoading(false);
@@ -241,9 +247,9 @@ function ChatWidget({ title = "Ассистент" }: ChatWidgetProps) {
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white">
-            {messages.map((message, index) => (
+            {messages.map((message) => (
               <div
-                key={index}
+                key={message.id}
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
