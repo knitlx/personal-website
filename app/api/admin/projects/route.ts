@@ -9,6 +9,7 @@ import { commitAndPush } from "@/lib/git";
 import { projectSchema } from "@/lib/validations/project";
 import { deleteSchema } from "@/lib/validations/common";
 import { regenerateCache } from "@/lib/content";
+import { processUrl } from "@/lib/utils";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
@@ -23,21 +24,6 @@ export async function POST(req: NextRequest) {
 
   try {
     const projectData = await req.json();
-
-    // Convert full URLs to relative paths for production compatibility
-    const processUrl = (url: string | undefined): string => {
-      if (!url) return "";
-      // If it's already a relative path, return as is
-      if (url.startsWith("/")) return url;
-      // Convert full URLs to relative paths
-      try {
-        const urlObj = new URL(url);
-        return urlObj.pathname;
-      } catch {
-        // If not a valid URL, return as is (might be a relative path without leading /)
-        return url;
-      }
-    };
 
     projectData.projectIcon = processUrl(projectData.projectIcon);
     projectData.openGraphImage = processUrl(projectData.openGraphImage);

@@ -10,6 +10,13 @@ import {
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
+const { EMAIL_SERVER_USER, EMAIL_SERVER_PASSWORD, EMAIL_TO } = process.env;
+if (!EMAIL_SERVER_USER || !EMAIL_SERVER_PASSWORD || !EMAIL_TO) {
+  console.error(
+    "[contact/route] Missing required env vars: EMAIL_SERVER_USER, EMAIL_SERVER_PASSWORD, EMAIL_TO"
+  );
+}
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -113,14 +120,14 @@ export async function POST(request: NextRequest) {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: process.env.EMAIL_SERVER_USER,
-        pass: process.env.EMAIL_SERVER_PASSWORD,
+        user: EMAIL_SERVER_USER,
+        pass: EMAIL_SERVER_PASSWORD,
       },
     });
 
     const mailOptions: MailOptions = {
-      from: `"Сайт-портфолио" <${process.env.EMAIL_SERVER_USER}>`,
-      to: process.env.EMAIL_TO,
+      from: `"Сайт-портфолио" <${EMAIL_SERVER_USER}>`,
+      to: EMAIL_TO,
       subject: `Новая заявка с сайта от ${escapeHtml(name)}`,
       html: `
         <h2>Новая заявка с вашего сайта-портфолио</h2>

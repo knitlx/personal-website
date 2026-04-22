@@ -13,6 +13,23 @@
 
 ---
 
+## Стандартный workflow
+
+```bash
+# 1. Убедиться что lint и тесты чистые
+npm run lint && npm test
+
+# 2. Закоммитить и запушить
+git add -A
+git commit -m "feat/fix: описание изменений"
+git push
+
+# 3. Задеплоить на VPS
+ssh planer-vps 'bash ~/personal-website/scripts/deploy-vps.sh'
+```
+
+---
+
 ## Деплой одной командой
 
 ```bash

@@ -1,4 +1,4 @@
-import { ReactNode, memo, KeyboardEvent } from "react";
+import { ReactNode, memo } from "react";
 
 interface CardProps {
   children: ReactNode;
@@ -22,22 +22,16 @@ function Card({ children, className = "", variant = "default", onClick }: CardPr
     "--gradient-border": "linear-gradient(45deg, var(--accent-color), var(--primary-color))",
   } as React.CSSProperties;
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (onClick && (e.key === "Enter" || e.key === " ")) {
-      e.preventDefault(); // Prevent default scroll for Spacebar
-      onClick();
-    }
-  };
+  if (onClick) {
+    return (
+      <button type="button" className={combinedClassName} style={style} onClick={onClick}>
+        {children}
+      </button>
+    );
+  }
 
   return (
-    <div
-      className={combinedClassName}
-      style={style}
-      onClick={onClick}
-      onKeyDown={handleKeyDown} // Add keyboard handler
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-    >
+    <div className={combinedClassName} style={style}>
       {children}
     </div>
   );

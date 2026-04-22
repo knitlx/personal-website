@@ -59,6 +59,20 @@ export function isValidUrl(url: string): boolean {
 }
 
 /**
+ * Convert full URL to relative path for production compatibility
+ */
+export function processUrl(url: string | undefined): string {
+  if (!url) return "";
+  if (url.startsWith("/")) return url;
+  try {
+    const urlObj = new URL(url);
+    return urlObj.pathname;
+  } catch {
+    return url;
+  }
+}
+
+/**
  * Sleep utility for testing/delays
  */
 export function sleep(ms: number): Promise<void> {

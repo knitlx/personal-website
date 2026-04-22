@@ -7,6 +7,10 @@ const nextConfig = {
         hostname: "localhost",
         port: "3000",
       },
+      {
+        protocol: "https",
+        hostname: "nochaos.space",
+      },
     ],
   },
 
@@ -74,10 +78,6 @@ const nextConfig = {
           {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "SAMEORIGIN",
           },
           {
             key: "X-Content-Type-Options",

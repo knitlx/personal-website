@@ -9,6 +9,7 @@ import { commitAndPush } from "@/lib/git";
 import { blogPostSchema } from "@/lib/validations/blog";
 import { deleteSchema } from "@/lib/validations/common";
 import { regenerateCache } from "@/lib/content";
+import { processUrl } from "@/lib/utils";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const projectRoot = process.cwd();
@@ -32,21 +33,6 @@ export async function POST(req: NextRequest) {
         articleBodyLength: blogPostData.articleBody?.length ?? 0,
       });
     }
-
-    // Convert full URLs to relative paths for production compatibility
-    const processUrl = (url: string | undefined): string => {
-      if (!url) return "";
-      // If it's already a relative path, return as is
-      if (url.startsWith("/")) return url;
-      // Convert full URLs to relative paths
-      try {
-        const urlObj = new URL(url);
-        return urlObj.pathname;
-      } catch {
-        // If not a valid URL, return as is
-        return url;
-      }
-    };
 
     blogPostData.openGraphImage = processUrl(blogPostData.openGraphImage);
     blogPostData.canonicalUrl = processUrl(blogPostData.canonicalUrl);
@@ -126,6 +112,7 @@ export async function POST(req: NextRequest) {
     revalidatePath("/blog");
     revalidatePath(`/blog/${slug}`);
     revalidatePath("/api/content/blog");
+    revalidatePath("/rss.xml");
 
     // Regenerate content cache
     await regenerateCache();
@@ -212,6 +199,7 @@ export async function DELETE(req: NextRequest) {
     revalidatePath("/blog");
     revalidatePath(`/blog/${slug}`);
     revalidatePath("/api/content/blog");
+    revalidatePath("/rss.xml");
 
     // Regenerate content cache
     await regenerateCache();

@@ -152,27 +152,18 @@ const ContactModalImpl: React.FC<ContactModalProps> = ({ isOpen, onClose, projec
   return (
     <div
       className="fixed inset-0 z-50 flex justify-center items-center p-4 transition-opacity duration-300 bg-black/50 backdrop-blur-sm"
-      // Modify onClick to only close if the actual overlay is clicked
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           handleClose();
         }
       }}
-      // Add keyboard accessibility for closing with Escape key (standard modal behavior)
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          handleClose();
-        }
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="contact-modal-title"
-      tabIndex={-1} // Allow focus, but don't add to tab sequence naturally
     >
       <div
         className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative transition-all duration-300"
-        // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed with the overlay's improved onClick
-        role="document"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        tabIndex={-1}
       >
         <button
           onClick={handleClose}

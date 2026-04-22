@@ -143,7 +143,11 @@ export function getAllContent(collection: string, options?: GetAllContentOptions
   allContent.sort((a, b) => {
     const orderA: number = (a.sortOrder as number | undefined) ?? Infinity;
     const orderB: number = (b.sortOrder as number | undefined) ?? Infinity;
-    return orderA - orderB;
+    if (orderA !== orderB) return orderA - orderB;
+    return (
+      new Date((b.creationDate ?? b.date ?? 0) as string).getTime() -
+      new Date((a.creationDate ?? a.date ?? 0) as string).getTime()
+    );
   });
 
   // Apply pagination

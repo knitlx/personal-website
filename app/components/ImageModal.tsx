@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 
 interface ImageModalProps {
   imageUrl: string;
@@ -28,37 +28,22 @@ const ImageModal: React.FC<ImageModalProps> = ({ imageUrl, onClose }) => {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
-  // Define handleOverlayKeyDown
-  const handleOverlayKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-      // Modify onClick to only close if the actual overlay is clicked
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
         }
       }}
-      onKeyDown={handleOverlayKeyDown} // Added for jsx-a11y/click-events-have-key-events
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="image-modal-title"
-      tabIndex={0} // Changed to 0 so it's focusable by keyboard for onKeyDown, or -1 as before if only Escape is global
     >
       <div
         data-testid="image-modal-frame"
         className="relative h-[min(88vh,900px)] w-[min(96vw,1200px)]"
-        // Remove onClick={(e) => e.stopPropagation()} as it's no longer needed
-        role="document"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="image-modal-title"
+        tabIndex={-1}
       >
         <h2 id="image-modal-title" className="sr-only">
           Просмотр изображения

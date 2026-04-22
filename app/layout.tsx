@@ -11,6 +11,7 @@ import YandexMetrika from "./components/YandexMetrika";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import ChatWidgetDynamic from "./components/ChatWidgetDynamic";
 import CookieConsent from "./components/CookieConsent";
+import Providers from "./components/Providers";
 
 const fontInter = FontInter({
   subsets: ["latin"],
@@ -60,8 +61,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
-import Providers from "./components/Providers";
 
 export default function RootLayout({
   children,

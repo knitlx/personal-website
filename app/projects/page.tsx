@@ -3,8 +3,6 @@ import InfiniteScrollProjects from "./components/InfiniteScrollProjects";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Проекты и кейсы автоматизации и AI-решений | NoChaos",
   description:

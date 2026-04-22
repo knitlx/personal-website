@@ -34,9 +34,10 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
     (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
       const file = e.target.files?.[0];
       if (file) {
-        // Revoke previous object URL
-        if (state.previewUrls[field]) {
-          URL.revokeObjectURL(state.previewUrls[field]!);
+        // Revoke previous object URL via ref to avoid stale closure
+        const prevUrl = previewUrlRefs.current[field];
+        if (prevUrl) {
+          URL.revokeObjectURL(prevUrl);
         }
 
         const newPreviewUrl = URL.createObjectURL(file);
@@ -50,8 +51,9 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
         }));
       } else {
         // Clear if no file selected
-        if (state.previewUrls[field]) {
-          URL.revokeObjectURL(state.previewUrls[field]!);
+        const prevUrl = previewUrlRefs.current[field];
+        if (prevUrl) {
+          URL.revokeObjectURL(prevUrl);
         }
         updatePreviewUrlRef(field, null);
 
@@ -62,7 +64,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}) {
         }));
       }
     },
-    [state.previewUrls, updatePreviewUrlRef]
+    [updatePreviewUrlRef]
   );
 
   // Обработчик загрузки файла

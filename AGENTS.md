@@ -35,6 +35,14 @@ npm run cache:generate   # Generate content cache from markdown files
 ## Project Overview
 
 This is a Next.js 16 personal website with TypeScript, featuring:
+
+**IMPORTANT: This project is deployed on a VPS (Virtual Private Server), NOT on Vercel.**
+- The app runs as a persistent Node.js process (`next start`)
+- In-memory rate limiting in `lib/rate-limit.ts` works correctly because the process persists
+- File system operations (content cache, uploads) persist across requests
+- Server runs continuously and handles multiple requests in the same process
+
+**Deployment Stack:**
 - Static site generation with content caching
 - Project portfolio and blog functionality
 - Admin dashboard for content management
@@ -60,162 +68,29 @@ This is a Next.js 16 personal website with TypeScript, featuring:
 
 ## Code Style Guidelines
 
-### Imports
+### Code Style Quick Reference
 
-```typescript
-"use client"; // Place at top for client components
-
-// 1. React/Next.js
-import React from "react";
-import { useRouter } from "next/navigation";
-
-// 2. External packages
-import dynamic from "next/dynamic";
-import toast from "react-hot-toast";
-
-// 3. Internal imports (use @/ alias)
-import { generateSlug } from "@/lib/slug";
-import { useFormState } from "@/hooks/useFormState";
-```
-
-- Use absolute imports with `@/` prefix for project files
-- Group imports in order: 1) React/Next.js, 2) External libraries, 3) Internal utilities, 4) Relative imports
-- Prefer named exports, default exports only for components/pages
-- Always import React explicitly in `.tsx` files when using JSX
-
-### Components
-
-- Client components must start with `"use client";` directive
-- Use `export default function ComponentName() {}` pattern
-- Props interfaces defined above component
-- Use `useCallback` for event handlers passed to children
-- Use functional components with hooks
-- Wrap components in `memo()` for performance optimization
-- Extract reusable logic into custom hooks
-
-```typescript
-"use client";
-
-import { memo, useCallback } from "react";
-
-function MyComponent({ data, onUpdate }: Props) {
-  const handleClick = useCallback(() => {
-    // Handler logic
-  }, [onUpdate]);
-
-  return <div>...</div>;
-}
-
-export default memo(MyComponent);
-```
-
-### TypeScript
-
-- Strict mode enabled in tsconfig.json
-- Use interfaces for object shapes, types for unions/primitives
-- Prefer generic types: `UseFormStateOptions<T extends object>`
-- Use `unknown` instead of `any` for truly unknown data
-- Unused variables prefixed with `_` (ignored by ESLint)
-- Define interfaces for all component props and data structures
-- Prefer `unknown` over `any` for untyped data
-
-```typescript
-interface ProjectCardProps {
-  project: {
-    title?: string;
-    slug: string;
-    projectIcon?: string;
-  };
-  onOrderClick: (title: string | null) => void;
-}
-
-function ProjectCard({ project, onOrderClick }: ProjectCardProps) {
-  // Component implementation
-}
-```
-
-### Naming Conventions
-
-- **Components**: PascalCase (ProjectForm, HeroSection)
-- **Hooks**: camelCase with use prefix (useFormState, useModal)
-- **Types/Interfaces**: PascalCase (ProjectFormData, ApiResponse)
-- **Constants**: UPPER_SNAKE_CASE (API_ROUTES, MD_EDITOR_HEIGHT)
-- **Functions**: camelCase (generateSlug, handleSubmit)
-- **Files**: ComponentName.tsx, hookName.ts, typeName.ts
-- **Utilities**: `camelCase.ts` (e.g., `content.ts`)
-- **Pages**: `page.tsx` (App Router) or `index.tsx` (Pages Router)
-- **Test files**: `ComponentName.test.tsx` alongside component
-- **Types**: Keep interfaces in dedicated `types/` directory or component files
-
-### Error Handling
-
-- Use Zod schemas for API input validation (lib/validations/)
-- Wrap async operations in try/catch with toast notifications
-- Return structured errors: `{ message: string; errors?: Array<{field, message}> }`
-- Clear field errors when user starts typing
-- Implement proper error boundaries for client components
-- Provide meaningful error messages and fallback UIs
-
-```typescript
-import { z } from "zod";
-
-const ProjectSchema = z.object({
-  title: z.string().min(1),
-  slug: z.string().min(1),
-  description: z.string().optional(),
-});
-
-// Usage
-try {
-  const validatedData = ProjectSchema.parse(rawData);
-} catch (error) {
-  console.error("Validation failed:", error);
-}
-```
-
-### Styling
-
-- Tailwind CSS v4 for all styling
-- Custom colors: primary (#7B68EE), accent (#9137DF)
-- Component styling inline with className prop
-- For complex component-specific styles, use CSS Modules (ComponentName.module.css)
-- Follow mobile-first responsive design
-- Use CSS variables for theme colors (`--accent-color`, `--primary-color`)
-- Apply consistent spacing and layout patterns
-
-```typescript
-<div className="bg-white border border-black/5 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-card duration-300">
-  <h2 className="text-2xl font-semibold text-gray-900">
-    {title}
-  </h2>
-</div>
-```
+| Category | Rule |
+|----------|------|
+| **Imports** | Group: 1) React/Next.js, 2) External, 3) Internal (`@/` alias), 4) Relative |
+| **Components** | `"use client"` at top, `export default function Name() {}`, use `memo()` |
+| **Hooks** | Prefix `use`, extract reusable logic |
+| **Types** | Interfaces for objects, types for unions, prefer `unknown` over `any` |
+| **Naming** | PascalCase (components), camelCase (hooks/functions), UPPER_SNAKE_CASE (constants) |
+| **Files** | `ComponentName.tsx`, `hookName.ts`, `page.tsx` |
+| **Validation** | Zod schemas in `lib/validations/`, return structured errors |
+| **Styling** | Tailwind v4, custom colors: #7B68EE (primary), #9137DF (accent), CSS Modules for complex cases |
 
 ---
 
 ## Testing Guidelines
 
 - Jest + React Testing Library
-- Test files: ComponentName.test.tsx
-- Mock external dependencies (next/navigation, @uiw/react-md-editor)
-- Use `renderWithProviders` wrapper for components needing context
-- Mock `global.fetch` for API tests
-- Setup in jest.setup.js
-- Write tests for all components and utilities
-- Test user interactions and component behavior
-- Follow the Arrange-Act-Assert pattern
-
-```typescript
-import { render, screen, fireEvent } from "@testing-library/react";
-import ProjectCard from "./ProjectForm";
-
-describe("ProjectCard", () => {
-  it("should render project title correctly", () => {
-    render(<ProjectCard project={mockProject} />);
-    expect(screen.getByText("Test Project")).toBeInTheDocument();
-  });
-});
-```
+- Test files: `ComponentName.test.tsx` alongside component
+- Mock: `next/navigation`, `@uiw/react-md-editor`, `global.fetch`
+- Use `renderWithProviders` wrapper for context-dependent components
+- Setup in `jest.setup.js`
+- Pattern: Arrange-Act-Assert
 
 ---
 
@@ -290,53 +165,8 @@ describe("ProjectCard", () => {
 
 ---
 
-## Common Patterns
+### Path Aliases & Quick Tips
 
-### API Data Fetching
-```typescript
-async function getData() {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Failed to fetch");
-    return await response.json();
-  } catch (error) {
-    console.error("Fetch error:", error);
-    return null;
-  }
-}
-```
-
-### Context Usage
-```typescript
-// Create context with proper TypeScript typing
-const MyContext = createContext<MyContextValue | undefined>(undefined);
-
-// Create custom hook for safer usage
-export function useMyContext() {
-  const context = useContext(MyContext);
-  if (!context) {
-    throw new Error("useMyContext must be used within MyProvider");
-  }
-  return context;
-}
-```
-
-### Path Aliases
-
-- `@/*` maps to root directory (configured in tsconfig.json)
-- Use for all internal imports: `@/lib/slug`, `@/hooks/useFormState`
-
----
-
-## ESLint Rules (Key Ones)
-
-- `@typescript-eslint/no-unused-vars` - unused vars allowed if prefixed with `_`
-- `@typescript-eslint/no-explicit-any` - warns, use `unknown` instead
-- `react/jsx-boolean-value` - always use shorthand: `value={true}` → `value`
-- `react/jsx-curly-brace-presence` - never use curly braces for string props
-- `react/self-closing-comp` - self-close empty tags: `<Component />`
-- `prettier/prettier` - enforced via eslint-plugin-prettier
-
----
-
-Remember to always run `npm run lint` and `npm run test` before submitting changes to ensure code quality and consistency.
+- `@/*` maps to root (tsconfig.json)
+- **ESLint key rules**: `no-unused-vars` (prefix `_` to ignore), `no-explicit-any` (use `unknown`), `jsx-boolean-value` (shorthand), `self-closing-comp`
+- **Always run**: `npm run lint` && `npm run test` before committing

@@ -85,11 +85,7 @@ export default [
   {
     files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
     ...jsxA11y.flatConfigs.recommended,
-    rules: {
-      "jsx-a11y/no-noninteractive-element-interactions": "off", // Temporarily disable
-      "jsx-a11y/click-events-have-key-events": "off", // Temporarily disable
-      "jsx-a11y/no-noninteractive-tabindex": "off", // Temporarily disable
-    },
+    rules: {},
   },
 
   // Next.js specific configuration

@@ -59,10 +59,14 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    await sharp(buffer)
-      .resize(1200, null, { withoutEnlargement: true }) // Resize width to 1200px max, no upscale
-      .webp({ quality: 80 }) // Convert to webp with 80% quality
-      .toFile(filePath);
+    try {
+      await sharp(buffer)
+        .resize(1200, null, { withoutEnlargement: true }) // Resize width to 1200px max, no upscale
+        .webp({ quality: 80 }) // Convert to webp with 80% quality
+        .toFile(filePath);
+    } catch {
+      return NextResponse.json({ message: "Invalid or corrupted image file." }, { status: 400 });
+    }
 
     // --- Git Operations ---
     const relativeFilePath = path.relative(projectRoot, filePath);

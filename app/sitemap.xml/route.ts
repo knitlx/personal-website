@@ -21,8 +21,8 @@ export async function GET() {
   const baseUrl = SITE_URL;
 
   // Use lightweight metadata function instead of getAllContent
-  const allProjects = await getContentMetadata("projects");
-  const allBlogPosts = await getContentMetadata("blog");
+  const allProjects = getContentMetadata("projects");
+  const allBlogPosts = getContentMetadata("blog");
 
   // Static pages with correct priorities and real file modification dates
   const staticPages = [
