@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoChaos — personal website
 
-## Getting Started
+Site: [nochaos.space](https://nochaos.space)  
+Personal website about AI implementation and business process automation. Portfolio, blog, admin panel.
 
-First, run the development server:
+**Stack:** Next.js 16 + TypeScript + Tailwind CSS v4 + PM2 on VPS
+
+---
+
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build & test before commit:
+```bash
+npm run build        # includes cache:generate
+npm run lint
+npm test
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Documentation
 
-## Learn More
+All technical details are in [`docs/`](./docs/):
 
-To learn more about Next.js, take a look at the following resources:
+| File | Content |
+|------|---------|
+| [docs/README.md](./docs/README.md) | Docs navigation, quick commands |
+| [docs/deploy.md](./docs/deploy.md) | **VPS deploy**: PM2, nginx, environment variables |
+| [docs/architecture.md](./docs/architecture.md) | Stack, structure, routing, content cache |
+| [docs/admin.md](./docs/admin.md) | Admin panel: auth, forms, CRUD |
+| [docs/api.md](./docs/api.md) | API routes: contact, chat, uploads |
+| [docs/content.md](./docs/content.md) | Markdown, frontmatter, static generation |
+| [docs/components.md](./docs/components.md) | UI components reference |
+| [docs/lib.md](./docs/lib.md) | Utils, hooks, validations |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+VPS deploy one-liner:
+```bash
+ssh planer-vps "~/personal-website/scripts/deploy-vps.sh"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [docs/deploy.md](./docs/deploy.md) for full setup.

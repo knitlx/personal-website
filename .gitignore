@@ -41,6 +41,9 @@ yarn-error.log*
 # generated content cache
 public/content-cache.json
 
+# internal documentation (contains infrastructure details)
+docs/
+
 # pm2 ecosystem and logs
 ecosystem.config.js
 logs/
