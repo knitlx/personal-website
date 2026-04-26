@@ -9,7 +9,6 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import ModalManager from "./components/ModalManager";
 import YandexMetrika from "./components/YandexMetrika";
 import GoogleAnalytics from "./components/GoogleAnalytics";
-import ChatWidgetDynamic from "./components/ChatWidgetDynamic";
 import CookieConsent from "./components/CookieConsent";
 import Providers from "./components/Providers";
 
@@ -121,7 +120,6 @@ export default function RootLayout({
             </div>
           </ErrorBoundary>
           <ModalManager />
-          <ChatWidgetDynamic />
           <CookieConsent />
         </Providers>
       </body>
